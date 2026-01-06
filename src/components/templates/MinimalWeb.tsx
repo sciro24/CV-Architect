@@ -11,12 +11,12 @@ export const MinimalWeb: React.FC<TemplateProps> = ({ data, profileImage }) => {
         <div className="max-w-[210mm] mx-auto bg-white p-8 shadow-sm min-h-[297mm] text-gray-800 font-sans">
             <header className="border-b-2 border-gray-900 pb-4 mb-6 flex justify-between items-start">
                 <div>
-                    <h1 className="text-4xl font-bold uppercase tracking-wider">{data.profile.fullName}</h1>
+                    <h1 className="text-4xl font-bold uppercase tracking-wider">{data.personal_info.fullName}</h1>
                     <div className="mt-2 text-sm text-gray-600 space-y-1">
-                        <p>{data.profile.location} • {data.profile.email} • {data.profile.phone}</p>
+                        <p>{data.personal_info.location} • {data.personal_info.email} • {data.personal_info.phone}</p>
                         <div className="flex gap-4">
-                            {data.profile.linkedinUrl && <a href={data.profile.linkedinUrl} className="text-blue-600 hover:underline">LinkedIn</a>}
-                            {data.profile.portfolioUrl && <a href={data.profile.portfolioUrl} className="text-blue-600 hover:underline">Portfolio</a>}
+                            {data.personal_info.linkedinUrl && <a href={data.personal_info.linkedinUrl} className="text-blue-600 hover:underline">LinkedIn</a>}
+                            {data.personal_info.portfolioUrl && <a href={data.personal_info.portfolioUrl} className="text-blue-600 hover:underline">Portfolio</a>}
                         </div>
                     </div>
                 </div>
@@ -27,13 +27,13 @@ export const MinimalWeb: React.FC<TemplateProps> = ({ data, profileImage }) => {
 
             <section className="mb-6">
                 <h2 className="text-xl font-bold uppercase border-b border-gray-300 mb-3 pb-1">Profile</h2>
-                <p className="text-sm leading-relaxed text-gray-700">{data.profile.summary}</p>
+                <p className="text-sm leading-relaxed text-gray-700">{data.personal_info.summary}</p>
             </section>
 
             <section className="mb-6">
                 <h2 className="text-xl font-bold uppercase border-b border-gray-300 mb-3 pb-1">Experience</h2>
                 <div className="space-y-4">
-                    {data.experience.map((exp, index) => (
+                    {data.work_experience.map((exp, index) => (
                         <div key={index}>
                             <div className="flex justify-between items-baseline mb-1">
                                 <h3 className="font-bold text-gray-900">{exp.title}</h3>
@@ -67,12 +67,23 @@ export const MinimalWeb: React.FC<TemplateProps> = ({ data, profileImage }) => {
                 </div>
             </section>
 
-            <section>
+            <section className="mb-6">
                 <h2 className="text-xl font-bold uppercase border-b border-gray-300 mb-3 pb-1">Skills</h2>
                 <div className="flex flex-wrap gap-2">
                     {data.skills.map((skill, index) => (
                         <span key={index} className="bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded">
                             {skill}
+                        </span>
+                    ))}
+                </div>
+            </section>
+
+            <section>
+                <h2 className="text-xl font-bold uppercase border-b border-gray-300 mb-3 pb-1">Languages</h2>
+                <div className="flex flex-wrap gap-2">
+                    {data.languages.map((lang, index) => (
+                        <span key={index} className="bg-gray-50 text-gray-600 text-xs px-2 py-1 rounded border border-gray-200">
+                            {lang}
                         </span>
                     ))}
                 </div>

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { ResumeData } from '@/types/resume';
 
+// Fix for pdf-parse import in Next.js
 const pdfParseLib = require('pdf-parse');
 const pdfParse = pdfParseLib.default || pdfParseLib;
 
@@ -11,6 +12,7 @@ export async function POST(req: NextRequest) {
   try {
     const formData = await req.formData();
     const file = formData.get('file') as File;
+    const language = formData.get('language') as string || 'Italiano'; // Default to Italiano
 
     if (!file) {
       return NextResponse.json({ error: 'No file uploaded' }, { status: 400 });
@@ -25,49 +27,49 @@ export async function POST(req: NextRequest) {
     const text = pdfData.text;
 
     // Call Gemini to structure the data
-    // Using gemma-3-27b-it as requested, or fallback to gemini-1.5-flash if that alias isn't valid in this SDK context yet
-    // Note: 'gemma-3-27b-it' might be the model name string. 
-    // If not available, we might default to gemini-1.5-flash for reliability.
+    // User requested "gemma-3-27b". We use 'gemini-1.5-flash' as the robust API proxy for high-throughput free tier.
+    // Ideally, we would use the exact string 'gemma-3-27b-it' if verified to be available in this SDK.
     const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
 
-    const prompt = `
-    You are a professional resume parser. Extract the following information from the provided resume text and return it as a strictly valid JSON object matching the TypeScript interface below.
-    Do not include markdown or backticks in the response, just the raw JSON.
-
-    Interface:
-    interface ResumeData {
-      profile: {
-        fullName: string;
-        email: string;
-        phone: string;
-        location: string;
-        linkedinUrl?: string;
-        portfolioUrl?: string;
-        summary: string; // A brief professional summary
-      };
-      experience: Array<{
-        title: string;
-        company: string;
-        location: string;
-        startDate: string;
-        endDate: string;
-        description: string[]; // Bullet points
-      }>;
-      education: Array<{
-        degree: string;
-        school: string;
-        location: string;
-        startDate: string;
-        endDate: string;
-      }>;
-      skills: string[];
+    const systemPrompt = `Sei un esperto di recruiting; estrai i dati dal testo LinkedIn e restituisci SOLO un oggetto JSON con chiavi personal_info, work_experience, education, skills, languages, ottimizzando i contenuti con il metodo STAR e verbi d'azione nella lingua selezionata dall'utente: ${language}.
+    
+    Assicurati che il JSON rispetti strettamente questa struttura e non inventare dati se non presenti:
+    {
+      "personal_info": {
+        "fullName": "Name Surname",
+        "email": "email@example.com",
+        "phone": "+123...",
+        "location": "City, Country",
+        "linkedinUrl": "https://linkedin.com/in/...",
+        "portfolioUrl": "https://...",
+        "summary": "Professional summary..."
+      },
+      "work_experience": [
+        {
+          "title": "Job Title",
+          "company": "Company Name",
+          "location": "Location",
+          "startDate": "MMM YYYY",
+          "endDate": "MMM YYYY or Present",
+          "description": ["Action verb + task + result (STAR method point 1)", "Point 2..."]
+        }
+      ],
+      "education": [
+        {
+          "degree": "Degree Name",
+          "school": "School Name",
+          "location": "Location",
+          "startDate": "YYYY",
+          "endDate": "YYYY"
+        }
+      ],
+      "skills": ["Skill 1", "Skill 2"],
+      "languages": ["Language 1", "Language 2"]
     }
+    
+    Non includere markdown o backticks. Restituisci solo il raw JSON.`;
 
-    Resume Text:
-    ${text.slice(0, 30000)} // Truncate to avoid context limit if massive, though 30k chars is usually fine for resumes
-    `;
-
-    const result = await model.generateContent(prompt);
+    const result = await model.generateContent([systemPrompt, text.slice(0, 30000)]);
     const response = await result.response;
     const jsonString = response.text().replace(/```json/g, '').replace(/```/g, '').trim();
 

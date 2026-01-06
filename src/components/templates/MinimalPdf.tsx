@@ -2,11 +2,10 @@ import React from 'react';
 import { Document, Page, Text, View, StyleSheet, Font, Image } from '@react-pdf/renderer';
 import { ResumeData } from '@/types/resume';
 
-// Register a font found in standard OS or standard fonts
 Font.register({
     family: 'Helvetica',
     fonts: [
-        { src: 'https://fonts.gstatic.com/s/helveticaneue/v70/1Ptsg8zYS_SKggPNyC0IT_v30.woff2' }, // Example or use standard built-in
+        { src: 'https://fonts.gstatic.com/s/helveticaneue/v70/1Ptsg8zYS_SKggPNyC0IT_v30.woff2' },
     ]
 });
 
@@ -119,10 +118,10 @@ export const MinimalPdf: React.FC<TemplateProps> = ({ data, profileImage }) => {
             <Page size="A4" style={styles.page}>
                 <View style={styles.header}>
                     <View style={styles.headerLeft}>
-                        <Text style={styles.name}>{data.profile.fullName}</Text>
+                        <Text style={styles.name}>{data.personal_info.fullName}</Text>
                         <View style={styles.contact}>
-                            <Text>{data.profile.location} • {data.profile.email} • {data.profile.phone}</Text>
-                            <Text>{data.profile.linkedinUrl || ''} {data.profile.linkedinUrl && data.profile.portfolioUrl ? '•' : ''} {data.profile.portfolioUrl || ''}</Text>
+                            <Text>{data.personal_info.location} • {data.personal_info.email} • {data.personal_info.phone}</Text>
+                            <Text>{data.personal_info.linkedinUrl || ''} {data.personal_info.linkedinUrl && data.personal_info.portfolioUrl ? '•' : ''} {data.personal_info.portfolioUrl || ''}</Text>
                         </View>
                     </View>
                     {profileImage && (
@@ -134,12 +133,12 @@ export const MinimalPdf: React.FC<TemplateProps> = ({ data, profileImage }) => {
 
                 <View>
                     <Text style={styles.sectionTitle}>Profile</Text>
-                    <Text style={[styles.sectionContent, { fontSize: 10, color: '#374151' }]}>{data.profile.summary}</Text>
+                    <Text style={[styles.sectionContent, { fontSize: 10, color: '#374151' }]}>{data.personal_info.summary}</Text>
                 </View>
 
                 <View>
                     <Text style={styles.sectionTitle}>Experience</Text>
-                    {data.experience.map((exp, index) => (
+                    {data.work_experience.map((exp, index) => (
                         <View key={index} style={styles.experienceItem}>
                             <View style={styles.expHeader}>
                                 <Text style={styles.expTitle}>{exp.title}</Text>
@@ -175,6 +174,17 @@ export const MinimalPdf: React.FC<TemplateProps> = ({ data, profileImage }) => {
                         {data.skills.map((skill, index) => (
                             <View key={index} style={styles.skillTag}>
                                 <Text>{skill}</Text>
+                            </View>
+                        ))}
+                    </View>
+                </View>
+
+                <View>
+                    <Text style={styles.sectionTitle}>Languages</Text>
+                    <View style={styles.skillsContainer}>
+                        {data.languages.map((lang, index) => (
+                            <View key={index} style={styles.skillTag}>
+                                <Text>{lang}</Text>
                             </View>
                         ))}
                     </View>

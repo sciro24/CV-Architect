@@ -4,7 +4,11 @@ import React, { useState } from 'react';
 import FileDropzone from '@/components/FileDropzone';
 import ResumeRenderer from '@/components/ResumeRenderer';
 import { ResumeData } from '@/types/resume';
-import { FileText, Loader2, Image as ImageIcon } from 'lucide-react';
+import { FileText, Image as ImageIcon, Sparkles, Check } from 'lucide-react';
+import { SkeletonLoader } from '@/components/SkeletonLoader';
+import { templates } from '@/components/TemplateRegistry';
+
+const LANGUAGES = ['Italiano', 'English', 'Español', 'Français', 'Deutsch'];
 
 export default function Home() {
   const [file, setFile] = useState<File | null>(null);
@@ -14,7 +18,9 @@ export default function Home() {
   const [resumeData, setResumeData] = useState<ResumeData | null>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [templateId, setTemplateId] = useState<'minimal' | 'modern'>('minimal');
+
+  const [templateId, setTemplateId] = useState<string>('minimal');
+  const [selectedLanguage, setSelectedLanguage] = useState<string>('Italiano');
 
   const handlePdfSelect = (selectedFile: File) => {
     setFile(selectedFile);
@@ -32,9 +38,11 @@ export default function Home() {
 
     setIsAnalyzing(true);
     setError(null);
+    setResumeData(null); // Reset to show skeleton if re-generating
 
     const formData = new FormData();
     formData.append('file', file);
+    formData.append('language', selectedLanguage);
 
     try {
       const response = await fetch('/api/parse-cv', {
@@ -60,139 +68,153 @@ export default function Home() {
     setFile(null);
     setResumeData(null);
     setError(null);
-    // Keep profile image if they want? Or reset? Let's reset for full clear.
-    // Actually, maybe keep it. But let's simple reset.
-    // URL.revokeObjectURL(profileImageUrl!); // Cleanup memory
-    // setProfileImage(null);
-    // setProfileImageUrl(undefined);
+    // Keep template and language prefs
   };
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col font-sans text-gray-900">
-      <header className="bg-white border-b border-gray-200 py-4 px-6 flex justify-between items-center sticky top-0 z-20">
-        <h1 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">
-          LinkedIn to CV Converter
+      <header className="bg-white border-b border-gray-200 py-4 px-6 flex justify-between items-center sticky top-0 z-30 shadow-sm">
+        <h1 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-violet-600 flex items-center gap-2">
+          <Sparkles className="w-5 h-5 text-blue-600" />
+          LinkedIn to CV <span className="text-xs font-normal text-gray-500 ml-1 border border-gray-200 px-2 py-0.5 rounded-full">Beta V2</span>
         </h1>
-        {resumeData && (
-          <button onClick={reset} className="text-sm text-gray-500 hover:text-red-500">
+        {resumeData && !isAnalyzing && (
+          <button onClick={reset} className="text-sm font-medium text-gray-500 hover:text-red-500 transition-colors">
             Start Over
           </button>
         )}
       </header>
 
-      <main className="flex-1 flex flex-col lg:flex-row h-[calc(100vh-64px)] overflow-hidden">
+      <main className="flex-1 flex flex-col lg:flex-row h-[calc(100vh-65px)] overflow-hidden">
         {/* Left Sidebar: Controls & Upload */}
-        <aside className={`w-full lg:w-96 bg-white border-r border-gray-200 p-6 flex flex-col gap-6 overflow-y-auto z-10 
-          ${resumeData ? 'block' : 'mx-auto max-w-2xl lg:w-full lg:max-w-none lg:border-none lg:bg-transparent lg:justify-center'}`}
+        <aside className={`w-full lg:w-[400px] bg-white border-r border-gray-200 p-6 flex flex-col gap-6 overflow-y-auto z-20 shadow-[4px_0_24px_rgba(0,0,0,0.02)]
+          ${resumeData ? 'hidden lg:flex' : 'mx-auto max-w-2xl lg:w-full lg:max-w-none lg:border-none lg:bg-transparent lg:justify-center'}`}
         >
-          {!resumeData ? (
-            <div className="flex flex-col gap-6 w-full max-w-md mx-auto">
-              <div className="text-center mb-4">
-                <h2 className="text-2xl font-bold mb-2">Create your CV in seconds</h2>
-                <p className="text-gray-500">Upload your LinkedIn PDF and let AI do the magic.</p>
+          {/* Upload State or Edit State */}
+          <div className={`flex flex-col gap-6 w-full ${!resumeData ? 'max-w-md mx-auto py-10' : ''}`}>
+
+            {!resumeData && (
+              <div className="text-center mb-2">
+                <h2 className="text-3xl font-bold mb-3 text-slate-800">Transform your Profile</h2>
+                <p className="text-slate-500">Upload your LinkedIn PDF to generate an ATS-friendly resume in seconds.</p>
+              </div>
+            )}
+
+            <div className="space-y-5">
+              {/* Language Selector */}
+              <div className="space-y-2">
+                <label className="text-sm font-semibold text-gray-700">Language</label>
+                <select
+                  value={selectedLanguage}
+                  onChange={(e) => setSelectedLanguage(e.target.value)}
+                  className="w-full p-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
+                  disabled={isAnalyzing}
+                >
+                  {LANGUAGES.map(lang => (
+                    <option key={lang} value={lang}>{lang}</option>
+                  ))}
+                </select>
               </div>
 
-              <div className="space-y-4">
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-gray-700">1. Upload LinkedIn PDF</label>
-                  <FileDropzone
-                    onFileSelect={handlePdfSelect}
-                    accept={{ 'application/pdf': ['.pdf'] }}
-                    label="Drop LinkedIn PDF here"
-                    selectedFile={file}
-                    onClear={() => setFile(null)}
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-gray-700">2. Profile Photo (Optional)</label>
-                  <FileDropzone
-                    onFileSelect={handleImageSelect}
-                    accept={{ 'image/*': ['.png', '.jpg', '.jpeg'] }}
-                    label="Drop Profile Photo here"
-                    icon={<ImageIcon className="w-8 h-8 text-gray-400" />}
-                    selectedFile={profileImage}
-                    onClear={() => {
-                      setProfileImage(null);
-                      setProfileImageUrl(undefined);
-                    }}
-                  />
-                </div>
+              {/* File Uploads */}
+              <div className="space-y-2">
+                <label className="text-sm font-semibold text-gray-700">LinkedIn PDF</label>
+                <FileDropzone
+                  onFileSelect={handlePdfSelect}
+                  accept={{ 'application/pdf': ['.pdf'] }}
+                  label="Drop LinkedIn PDF here"
+                  selectedFile={file}
+                  onClear={!isAnalyzing ? () => setFile(null) : undefined}
+                />
               </div>
 
-              <button
-                onClick={handleGenerateValues}
-                disabled={!file || isAnalyzing}
-                className={`w-full py-3 rounded-lg font-semibold text-white flex justify-center items-center gap-2 transition-all
-                   ${!file || isAnalyzing ? 'bg-gray-300 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5'}`}
-              >
-                {isAnalyzing ? (
-                  <>
-                    <Loader2 className="w-5 h-5 animate-spin" />
-                    Analyzing Resume...
-                  </>
-                ) : (
-                  'Generate CV'
-                )}
-              </button>
+              <div className="space-y-2">
+                <label className="text-sm font-semibold text-gray-700">Profile Photo <span className="font-normal text-gray-400">(Optional)</span></label>
+                <FileDropzone
+                  onFileSelect={handleImageSelect}
+                  accept={{ 'image/*': ['.png', '.jpg', '.jpeg'] }}
+                  label="Drop Photo"
+                  icon={<ImageIcon className="w-8 h-8 text-gray-400" />}
+                  selectedFile={profileImage}
+                  onClear={!isAnalyzing ? () => { setProfileImage(null); setProfileImageUrl(undefined); } : undefined}
+                />
+              </div>
+
+              {!resumeData && (
+                <button
+                  onClick={handleGenerateValues}
+                  disabled={!file || isAnalyzing}
+                  className={`w-full py-3.5 rounded-lg font-bold text-white flex justify-center items-center gap-2 transition-all mt-4
+                        ${!file || isAnalyzing ? 'bg-slate-300 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700 shadow-lg hover:shadow-blue-500/30 transform hover:-translate-y-0.5'}`}
+                >
+                  {isAnalyzing ? (
+                    <span className="flex items-center gap-2">Analyzing...</span>
+                  ) : (
+                    'Generate Resume'
+                  )}
+                </button>
+              )}
 
               {error && (
-                <div className="p-4 bg-red-50 text-red-700 rounded-lg text-sm border border-red-200">
+                <div className="p-4 bg-red-50 text-red-700 rounded-lg text-sm border border-red-200 flex items-start gap-2">
+                  <AlertCircle className="w-5 h-5 flex-shrink-0" />
                   {error}
                 </div>
               )}
             </div>
-          ) : (
-            // Sidebar Controls when CV is generated
-            <div className="space-y-8">
-              <div>
-                <h3 className="text-lg font-bold mb-4">Template</h3>
-                <div className="grid grid-cols-2 gap-4">
-                  <button
-                    onClick={() => setTemplateId('minimal')}
-                    className={`p-4 rounded border text-left transition ${templateId === 'minimal' ? 'border-blue-500 bg-blue-50 ring-2 ring-blue-200' : 'border-gray-200 hover:border-gray-300'}`}
-                  >
-                    <span className="font-bold block mb-1">Minimal</span>
-                    <span className="text-xs text-gray-500">Clean & Simple</span>
-                  </button>
-                  <button
-                    onClick={() => setTemplateId('modern')}
-                    className={`p-4 rounded border text-left transition ${templateId === 'modern' ? 'border-blue-500 bg-blue-50 ring-2 ring-blue-200' : 'border-gray-200 hover:border-gray-300'}`}
-                  >
-                    <span className="font-bold block mb-1">Modern</span>
-                    <span className="text-xs text-gray-500">Visual & Bold</span>
-                  </button>
-                </div>
-              </div>
 
-              <div className="space-y-4">
-                <h3 className="text-lg font-bold">Files</h3>
-                <div className="flex items-center gap-3 p-3 bg-white border border-gray-200 rounded">
-                  <FileText className="w-5 h-5 text-gray-500" />
-                  <span className="text-sm truncate flex-1">{file?.name}</span>
+            {/* Template Selector (Always visible unless initial empty state without data) */}
+            {resumeData && (
+              <div className="pt-6 border-t border-gray-200">
+                <h3 className="text-lg font-bold mb-4 text-gray-800">Choose Template</h3>
+                <div className="grid grid-cols-2 gap-3">
+                  {templates.map(t => (
+                    <button
+                      key={t.id}
+                      onClick={() => setTemplateId(t.id)}
+                      className={`relative p-3 rounded-lg border-2 text-left transition-all group
+                                ${templateId === t.id ? 'border-blue-600 bg-blue-50 ring-1 ring-blue-600' : 'border-gray-200 hover:border-blue-300 hover:bg-gray-50'}`}
+                    >
+                      <div className={`h-16 w-full rounded mb-2 ${t.thumbnail} bg-opacity-50`}></div>
+                      <span className="font-bold text-sm block leading-tight text-gray-800">{t.name}</span>
+                      <span className="text-[10px] text-gray-500">{t.styles}</span>
+                      {templateId === t.id && (
+                        <div className="absolute top-2 right-2 bg-blue-600 text-white p-0.5 rounded-full">
+                          <Check className="w-3 h-3" />
+                        </div>
+                      )}
+                    </button>
+                  ))}
                 </div>
-                {profileImage && (
-                  <div className="flex items-center gap-3 p-3 bg-white border border-gray-200 rounded">
-                    <ImageIcon className="w-5 h-5 text-gray-500" />
-                    <span className="text-sm truncate flex-1">{profileImage.name}</span>
-                  </div>
-                )}
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </aside>
 
         {/* Right Area: Preview */}
-        {resumeData && (
-          <div className="flex-1 bg-gray-100 relative h-full">
+        <div className="flex-1 bg-slate-100 relative h-full overflow-hidden flex flex-col">
+          {isAnalyzing ? (
+            <div className="p-8 h-full overflow-hidden flex justify-center items-start pt-12">
+              <SkeletonLoader />
+            </div>
+          ) : resumeData ? (
             <ResumeRenderer
               data={resumeData}
               templateId={templateId}
               profileImage={profileImageUrl}
             />
-          </div>
-        )}
+          ) : (
+            // Desktop Placeholder
+            <div className="hidden lg:flex h-full items-center justify-center text-gray-400 flex-col gap-4">
+              <div className="w-24 h-32 border-2 border-dashed border-gray-300 rounded mx-auto"></div>
+              <p>Comparison Preview</p>
+            </div>
+          )}
+        </div>
       </main>
     </div>
   );
 }
+
+// Temporary import for error display in JSX above
+import { AlertCircle } from 'lucide-react';

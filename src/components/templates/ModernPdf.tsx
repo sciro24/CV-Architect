@@ -100,15 +100,6 @@ const styles = StyleSheet.create({
         marginLeft: 5,
         position: 'relative'
     },
-    expDot: {
-        position: 'absolute',
-        left: -20, // Adjust relative to padding
-        top: 0,
-        width: 8,
-        height: 8,
-        borderRadius: 4,
-        backgroundColor: '#3B82F6',
-    },
     expTitle: {
         fontSize: 12,
         fontWeight: 'bold',
@@ -158,16 +149,16 @@ export const ModernPdf: React.FC<TemplateProps> = ({ data, profileImage }) => {
                         {profileImage && (
                             <Image src={profileImage} style={styles.profileImage} />
                         )}
-                        <Text style={styles.sidebarName}>{data.profile.fullName}</Text>
-                        <Text style={styles.sidebarLocation}>{data.profile.location}</Text>
+                        <Text style={styles.sidebarName}>{data.personal_info.fullName}</Text>
+                        <Text style={styles.sidebarLocation}>{data.personal_info.location}</Text>
                     </View>
 
                     <View style={styles.sidebarSection}>
                         <Text style={styles.sidebarTitle}>Contact</Text>
-                        <Text style={styles.sidebarText}>{data.profile.email}</Text>
-                        <Text style={styles.sidebarText}>{data.profile.phone}</Text>
-                        <Text style={styles.sidebarLink}>{data.profile.linkedinUrl}</Text>
-                        <Text style={styles.sidebarLink}>{data.profile.portfolioUrl}</Text>
+                        <Text style={styles.sidebarText}>{data.personal_info.email}</Text>
+                        <Text style={styles.sidebarText}>{data.personal_info.phone}</Text>
+                        <Text style={styles.sidebarLink}>{data.personal_info.linkedinUrl}</Text>
+                        <Text style={styles.sidebarLink}>{data.personal_info.portfolioUrl}</Text>
                     </View>
 
                     <View style={styles.sidebarSection}>
@@ -175,6 +166,15 @@ export const ModernPdf: React.FC<TemplateProps> = ({ data, profileImage }) => {
                         <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 4 }}>
                             {data.skills.map((skill, index) => (
                                 <Text key={index} style={styles.skillTag}>{skill}</Text>
+                            ))}
+                        </View>
+                    </View>
+
+                    <View style={styles.sidebarSection}>
+                        <Text style={styles.sidebarTitle}>Languages</Text>
+                        <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 4 }}>
+                            {data.languages.map((lang, index) => (
+                                <Text key={index} style={styles.sidebarText}>{lang}</Text>
                             ))}
                         </View>
                     </View>
@@ -194,14 +194,13 @@ export const ModernPdf: React.FC<TemplateProps> = ({ data, profileImage }) => {
                 <View style={styles.main}>
                     <View style={styles.mainSection}>
                         <Text style={styles.mainTitle}>Profile</Text>
-                        <Text style={styles.summaryText}>{data.profile.summary}</Text>
+                        <Text style={styles.summaryText}>{data.personal_info.summary}</Text>
                     </View>
 
                     <View style={styles.mainSection}>
                         <Text style={styles.mainTitle}>Experience</Text>
-                        {data.experience.map((exp, index) => (
+                        {data.work_experience.map((exp, index) => (
                             <View key={index} style={styles.expItem}>
-                                {/* Dot simulation is hard in pure PDF without absolute positioning tricks or SVGs, simplifying */}
                                 <Text style={styles.expTitle}>{exp.title}</Text>
                                 <View style={styles.expCompanyRow}>
                                     <Text style={styles.expCompany}>{exp.company}</Text>

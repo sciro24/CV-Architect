@@ -1,5 +1,5 @@
 export interface ResumeData {
-  profile: {
+  personal_info: {
     fullName: string;
     email: string;
     phone: string;
@@ -8,13 +8,13 @@ export interface ResumeData {
     portfolioUrl?: string;
     summary: string;
   };
-  experience: Array<{
+  work_experience: Array<{
     title: string;
     company: string;
     location: string;
-    startDate: string; // e.g., "Jan 2020"
-    endDate: string;   // e.g., "Present" or "Dec 2022"
-    description: string[];
+    startDate: string;
+    endDate: string;
+    description: string[]; // STAR method points
   }>;
   education: Array<{
     degree: string;
@@ -24,4 +24,5 @@ export interface ResumeData {
     endDate: string;
   }>;
   skills: string[];
+  languages: string[];
 }
