@@ -1,117 +1,29 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Document, Page, Text, View, StyleSheet, Image } from '@react-pdf/renderer';
 import { ResumeData } from '@/types/resume';
 import { Language, dictionary } from '@/utils/translations';
 
 const styles = StyleSheet.create({
-    page: {
-        padding: 30,
-        fontFamily: 'Helvetica',
-        fontSize: 9, // Smaller base font
-        lineHeight: 1.4,
-        color: '#2d3748',
-    },
-    header: {
-        flexDirection: 'row',
-        marginBottom: 15,
-        borderBottomWidth: 1,
-        borderBottomColor: '#cbd5e0',
-        paddingBottom: 10,
-        alignItems: 'center',
-    },
-    headerLeft: {
-        flexGrow: 1,
-    },
-    name: {
-        fontSize: 20,
-        fontWeight: 'bold',
-        color: '#1a202c',
-        textTransform: 'uppercase',
-    },
-    subtitle: {
-        fontSize: 10,
-        color: '#4a5568',
-        marginTop: 2,
-        marginBottom: 4,
-    },
-    contacts: {
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        gap: 8,
-        fontSize: 8,
-        color: '#718096',
-    },
-    profileImage: {
-        width: 60,
-        height: 60,
-        borderRadius: 30,
-        marginLeft: 15,
-    },
-    section: {
-        marginBottom: 10,
-    },
-    sectionTitle: {
-        fontSize: 11,
-        fontWeight: 'bold',
-        color: '#2b6cb0',
-        borderBottomWidth: 1,
-        borderBottomColor: '#2b6cb0',
-        marginBottom: 6,
-        textTransform: 'uppercase',
-    },
-    content: {
-        fontSize: 9,
-    },
-    expItem: {
-        marginBottom: 6,
-    },
-    expHeader: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginBottom: 1,
-    },
-    expTitle: {
-        fontWeight: 'bold',
-        fontSize: 9.5,
-    },
-    expDate: {
-        fontSize: 8,
-        color: '#718096',
-        fontStyle: 'italic',
-    },
-    expCompany: {
-        fontSize: 9,
-        fontStyle: 'italic',
-        color: '#4a5568',
-        marginBottom: 2,
-    },
-    bulletConfig: {
-        flexDirection: 'row',
-        marginBottom: 1,
-    },
-    bulletIcon: {
-        width: 8,
-        fontSize: 8,
-        color: '#718096',
-    },
-    bulletText: {
-        flex: 1,
-        fontSize: 8.5,
-        color: '#4a5568',
-    },
-    skillsRow: {
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        gap: 4,
-    },
-    skillItem: {
-        backgroundColor: '#ebf8ff',
-        color: '#2b6cb0',
-        paddingVertical: 2,
-        paddingHorizontal: 6,
-        borderRadius: 4,
-        fontSize: 8,
-    }
+    page: { backgroundColor: '#FFFFFF', fontFamily: 'Helvetica', fontSize: 9 },
+    header: { backgroundColor: '#B8D4E8', padding: 20, flexDirection: 'row', alignItems: 'center', gap: 15 },
+    profileImage: { width: 80, height: 80, borderRadius: 40, borderWidth: 3, borderColor: '#FFFFFF' },
+    nameSection: { flex: 1 },
+    name: { fontSize: 22, fontWeight: 'bold', textTransform: 'uppercase', color: '#374151', letterSpacing: 1.5, marginBottom: 3 },
+    jobTitle: { fontSize: 11, color: '#4B5563' },
+    content: { flexDirection: 'row' },
+    sidebar: { width: '35%', backgroundColor: '#C5D9E6', padding: 20 },
+    main: { flex: 1, padding: 25 },
+    sidebarTitle: { fontSize: 10, fontWeight: 'bold', textTransform: 'uppercase', marginBottom: 10, color: '#1F2937' },
+    contactItem: { fontSize: 8, marginBottom: 6, color: '#374151' },
+    sectionTitle: { fontSize: 11, fontWeight: 'bold', color: '#1F2937', borderBottomWidth: 1, borderBottomColor: '#D1D5DB', paddingBottom: 4, marginBottom: 10 },
+    text: { fontSize: 8, color: '#4B5563', lineHeight: 1.4 },
+    skillItem: { fontSize: 8, marginBottom: 4, color: '#374151', flexDirection: 'row', alignItems: 'center' },
+    bullet: { width: 4, height: 4, backgroundColor: '#4B5563', borderRadius: 2, marginRight: 6 },
+    expItem: { marginBottom: 10 },
+    expDate: { fontSize: 9, fontWeight: 'bold', color: '#111827', marginBottom: 2 },
+    expTitle: { fontSize: 9, fontWeight: 'bold', color: '#1F2937', marginBottom: 2 },
+    expCompany: { fontSize: 8, color: '#6B7280', fontStyle: 'italic', marginBottom: 4 },
+    expDesc: { fontSize: 8, color: '#4B5563', marginBottom: 2 },
 });
 
 interface TemplateProps {
@@ -127,70 +39,84 @@ export const Template3Pdf: React.FC<TemplateProps> = ({ data, profileImage, lang
         <Document>
             <Page size="A4" style={styles.page}>
                 <View style={styles.header}>
-                    <View style={styles.headerLeft}>
-                        <Text style={styles.name}>{data.personal_info.fullName}</Text>
-                        <Text style={styles.subtitle}>{data.personal_info.location}</Text>
-                        <View style={styles.contacts}>
-                            <Text>{data.personal_info.email}</Text>
-                            <Text>{data.personal_info.phone}</Text>
-                            {data.personal_info.linkedinUrl && <Text>LinkedIn</Text>}
-                        </View>
-                    </View>
                     {profileImage && <Image src={profileImage} style={styles.profileImage} />}
+                    <View style={styles.nameSection}>
+                        <Text style={styles.name}>{data.personal_info.fullName}</Text>
+                        <Text style={styles.jobTitle}>Sales Representative</Text>
+                    </View>
                 </View>
 
-                <View style={styles.section}>
-                    <Text style={styles.sectionTitle}>{t.summary}</Text>
-                    <Text style={styles.content}>{data.personal_info.summary}</Text>
-                </View>
+                <View style={styles.content}>
+                    <View style={styles.sidebar}>
+                        <View style={{ marginBottom: 15 }}>
+                            <Text style={styles.contactItem}>📞 {data.personal_info.phone}</Text>
+                            <Text style={styles.contactItem}>✉ {data.personal_info.email}</Text>
+                            <Text style={styles.contactItem}>📍 {data.personal_info.location}</Text>
+                        </View>
 
-                <View style={styles.section}>
-                    <Text style={styles.sectionTitle}>{t.experience}</Text>
-                    {data.work_experience.slice(0, 4).map((exp, index) => (
-                        <View key={index} style={styles.expItem}>
-                            <View style={styles.expHeader}>
-                                <Text style={styles.expTitle}>{exp.title}</Text>
-                                <Text style={styles.expDate}>{exp.startDate} - {exp.endDate}</Text>
-                            </View>
-                            <Text style={styles.expCompany}>{exp.company}, {exp.location}</Text>
-                            {exp.description.slice(0, 2).map((desc, i) => (
-                                <View key={i} style={styles.bulletConfig}>
-                                    <Text style={styles.bulletIcon}>•</Text>
-                                    <Text style={styles.bulletText}>{desc}</Text>
+                        <View style={{ marginBottom: 15 }}>
+                            <Text style={styles.sidebarTitle}>Education</Text>
+                            {data.education.map((edu, i) => (
+                                <View key={i} style={{ marginBottom: 8 }}>
+                                    <Text style={{ fontSize: 9, fontWeight: 'bold', color: '#1F2937' }}>{edu.degree}</Text>
+                                    <Text style={{ fontSize: 8, color: '#374151' }}>{edu.school}</Text>
+                                    <Text style={{ fontSize: 8, color: '#6B7280' }}>{edu.startDate} - {edu.endDate}</Text>
                                 </View>
                             ))}
                         </View>
-                    ))}
-                </View>
 
-                <View style={styles.section}>
-                    <Text style={styles.sectionTitle}>{t.education}</Text>
-                    {data.education.slice(0, 2).map((edu, index) => (
-                        <View key={index} style={styles.expItem}>
-                            <View style={styles.expHeader}>
-                                <Text style={styles.expTitle}>{edu.school}</Text>
-                                <Text style={styles.expDate}>{edu.startDate} - {edu.endDate}</Text>
-                            </View>
-                            <Text style={styles.expCompany}>{edu.degree}</Text>
+                        <View style={{ marginBottom: 15 }}>
+                            <Text style={styles.sidebarTitle}>Skills</Text>
+                            {data.skills.filter(s => s.visible).map((skill, i) => (
+                                <View key={i} style={styles.skillItem}>
+                                    <View style={styles.bullet} />
+                                    <Text>{skill.name}</Text>
+                                </View>
+                            ))}
                         </View>
-                    ))}
-                </View>
 
-                <View style={[styles.section, { flexDirection: 'row', gap: 20 }]}>
-                    <View style={{ flex: 1 }}>
-                        <Text style={styles.sectionTitle}>{t.skills}</Text>
-                        <View style={styles.skillsRow}>
-                            {data.skills.filter(s => s.visible).slice(0, 8).map((skill, i) => (
-                                <Text key={i} style={styles.skillItem}>{skill.name}</Text>
+                        <View>
+                            <Text style={styles.sidebarTitle}>Language</Text>
+                            {data.languages.map((lang, i) => (
+                                <Text key={i} style={{ fontSize: 8, color: '#374151', marginBottom: 4 }}>{lang}</Text>
                             ))}
                         </View>
                     </View>
-                    <View style={{ flex: 1 }}>
-                        <Text style={styles.sectionTitle}>{t.languages}</Text>
-                        <View style={styles.skillsRow}>
-                            {data.languages.map((lang, i) => (
-                                <Text key={i} style={[styles.skillItem, { backgroundColor: '#f7fafc', color: '#4a5568', borderWidth: 1, borderColor: '#e2e8f0' }]}>{lang}</Text>
+
+                    <View style={styles.main}>
+                        <View style={{ marginBottom: 15 }}>
+                            <Text style={styles.sectionTitle}>About Me</Text>
+                            <Text style={styles.text}>{data.personal_info.summary}</Text>
+                        </View>
+
+                        <View style={{ marginBottom: 15 }}>
+                            <Text style={styles.sectionTitle}>Work Experience</Text>
+                            {data.work_experience.slice(0, 3).map((exp, i) => (
+                                <View key={i} style={styles.expItem}>
+                                    <Text style={styles.expDate}>{exp.startDate} - {exp.endDate}</Text>
+                                    <Text style={styles.expTitle}>{exp.title}</Text>
+                                    <Text style={styles.expCompany}>{exp.company}</Text>
+                                    {exp.description.slice(0, 2).map((desc, idx) => (
+                                        <Text key={idx} style={styles.expDesc}>• {desc}</Text>
+                                    ))}
+                                </View>
                             ))}
+                        </View>
+
+                        <View>
+                            <Text style={styles.sectionTitle}>References</Text>
+                            <View style={{ flexDirection: 'row', gap: 15 }}>
+                                <View style={{ flex: 1 }}>
+                                    <Text style={{ fontSize: 8, fontWeight: 'bold' }}>Estelle Darcy</Text>
+                                    <Text style={{ fontSize: 7, color: '#6B7280' }}>Wardiere Inc. / CEO</Text>
+                                    <Text style={{ fontSize: 7, color: '#6B7280' }}>Phone: 123-456-7890</Text>
+                                </View>
+                                <View style={{ flex: 1 }}>
+                                    <Text style={{ fontSize: 8, fontWeight: 'bold' }}>Harper Russo</Text>
+                                    <Text style={{ fontSize: 7, color: '#6B7280' }}>Wardiere Inc. / CEO</Text>
+                                    <Text style={{ fontSize: 7, color: '#6B7280' }}>Phone: 123-456-7890</Text>
+                                </View>
+                            </View>
                         </View>
                     </View>
                 </View>
