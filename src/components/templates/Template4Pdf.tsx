@@ -97,7 +97,7 @@ export const Template4Pdf: React.FC<TemplateProps> = ({ data, profileImage, lang
                                     <View key={i} style={styles.skillContainer}>
                                         <Text style={styles.skillName}>{skill.name}</Text>
                                         <View style={styles.progressBg}>
-                                            <View style={[styles.progressFill, { width: `${80 - (i * 5)}%` }]} />
+                                            <View style={[styles.progressFill, { width: '100%' }]} />
                                         </View>
                                     </View>
                                 ))}

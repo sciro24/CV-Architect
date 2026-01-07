@@ -60,7 +60,7 @@ export const Template4Web: React.FC<TemplateProps> = ({ data, profileImage, lang
                                         <p className="text-xs font-semibold text-gray-700">{skill.name}</p>
                                     </div>
                                     <div className="w-full bg-gray-300 h-1 rounded-full overflow-hidden">
-                                        <div className="bg-gray-800 h-full rounded-full" style={{ width: `${Math.floor(Math.random() * (100 - 70) + 70)}%` }}></div>
+                                        <div className="bg-gray-800 h-full rounded-full" style={{ width: '100%' }}></div>
                                     </div>
                                 </div>
                             ))}

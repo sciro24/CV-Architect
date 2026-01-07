@@ -2,6 +2,7 @@ import React from 'react';
 import { ResumeData } from '@/types/resume';
 import { Language, dictionary } from '@/utils/translations';
 import { Phone, Mail, MapPin, Globe } from 'lucide-react';
+import { getLanguageProficiency } from '@/utils/formatting';
 
 interface TemplateProps {
     data: ResumeData;
@@ -83,14 +84,17 @@ export const Template1Web: React.FC<TemplateProps> = ({ data, profileImage, lang
                     <div>
                         <h3 className="text-lg font-bold mb-4 uppercase tracking-wide">Language</h3>
                         <div className="space-y-3">
-                            {data.languages.map((lang, i) => (
-                                <div key={i}>
-                                    <p className="text-xs mb-1">{lang}</p>
-                                    <div className="w-full bg-white/20 h-1.5 rounded-full">
-                                        <div className="bg-white h-full rounded-full" style={{ width: '85%' }}></div>
+                            {data.languages.map((lang, i) => {
+                                const { percentage, name } = getLanguageProficiency(lang);
+                                return (
+                                    <div key={i}>
+                                        <p className="text-xs mb-1">{name}</p>
+                                        <div className="w-full bg-white/20 h-1.5 rounded-full">
+                                            <div className="bg-white h-full rounded-full transition-all duration-1000 ease-out" style={{ width: `${percentage}%` }}></div>
+                                        </div>
                                     </div>
-                                </div>
-                            ))}
+                                );
+                            })}
                         </div>
                     </div>
                 )}

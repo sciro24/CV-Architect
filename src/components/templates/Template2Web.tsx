@@ -2,6 +2,7 @@ import React from 'react';
 import { ResumeData } from '@/types/resume';
 import { Language, dictionary } from '@/utils/translations';
 import { Phone, Mail, Globe } from 'lucide-react';
+import { getLanguageProficiency } from '@/utils/formatting';
 
 interface TemplateProps {
   data: ResumeData;
@@ -78,9 +79,9 @@ export const Template2Web: React.FC<TemplateProps> = ({ data, profileImage, lang
       <aside className="w-[38%] bg-[#2C3E50] text-white p-8 flex flex-col">
         {profileImage && (
           <div className="mb-6 -mt-4">
-            <img 
-              src={profileImage} 
-              alt="Profile" 
+            <img
+              src={profileImage}
+              alt="Profile"
               className="w-40 h-40 rounded-full object-cover border-4 border-white mx-auto"
             />
           </div>
@@ -135,20 +136,33 @@ export const Template2Web: React.FC<TemplateProps> = ({ data, profileImage, lang
           <div>
             <h3 className="text-base font-bold mb-4 uppercase tracking-wide">Language</h3>
             <div className="flex gap-4 justify-center">
-              {data.languages.slice(0, 3).map((lang, i) => (
-                <div key={i} className="text-center">
-                  <div className="relative w-16 h-16 mb-2">
-                    <svg className="w-full h-full transform -rotate-90">
-                      <circle cx="32" cy="32" r="28" stroke="rgba(255,255,255,0.2)" strokeWidth="4" fill="none" />
-                      <circle cx="32" cy="32" r="28" stroke="white" strokeWidth="4" fill="none" strokeDasharray={`${28 * 2 * Math.PI * 0.85} ${28 * 2 * Math.PI}`} strokeLinecap="round" />
-                    </svg>
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <span className="text-xs font-bold">85%</span>
+              {data.languages.slice(0, 3).map((lang, i) => {
+                const { percentage, name } = getLanguageProficiency(lang);
+                const radius = 28;
+                const circumference = 2 * Math.PI * radius;
+                const dashArray = `${circumference * (percentage / 100)} ${circumference}`;
+
+                return (
+                  <div key={i} className="text-center">
+                    <div className="relative w-16 h-16 mb-2">
+                      <svg className="w-full h-full transform -rotate-90">
+                        <circle cx="32" cy="32" r="28" stroke="rgba(255,255,255,0.2)" strokeWidth="4" fill="none" />
+                        <circle
+                          cx="32" cy="32" r="28"
+                          stroke="white" strokeWidth="4" fill="none"
+                          strokeDasharray={dashArray}
+                          strokeLinecap="round"
+                          className="transition-all duration-1000 ease-out"
+                        />
+                      </svg>
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <span className="text-xs font-bold">{percentage}%</span>
+                      </div>
                     </div>
+                    <p className="text-xs">{name}</p>
                   </div>
-                  <p className="text-xs">{lang}</p>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         )}

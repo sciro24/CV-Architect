@@ -2,6 +2,7 @@ import React from 'react';
 import { Document, Page, Text, View, StyleSheet, Image } from '@react-pdf/renderer';
 import { ResumeData } from '@/types/resume';
 import { Language, dictionary } from '@/utils/translations';
+import { getLanguageProficiency } from '@/utils/formatting';
 
 const styles = StyleSheet.create({
     page: { flexDirection: 'row', backgroundColor: '#FFFFFF', fontFamily: 'Helvetica', fontSize: 9 },
@@ -78,14 +79,17 @@ export const Template1Pdf: React.FC<TemplateProps> = ({ data, profileImage, lang
                     {data.languages.length > 0 && (
                         <View style={styles.sidebarSection}>
                             <Text style={styles.sidebarTitle}>Language</Text>
-                            {data.languages.map((lang, i) => (
-                                <View key={i} style={styles.languageItem}>
-                                    <Text style={styles.languageName}>{lang}</Text>
-                                    <View style={styles.progressBar}>
-                                        <View style={styles.progressFill} />
+                            {data.languages.map((lang, i) => {
+                                const { percentage, name } = getLanguageProficiency(lang);
+                                return (
+                                    <View key={i} style={styles.languageItem}>
+                                        <Text style={styles.languageName}>{name}</Text>
+                                        <View style={styles.progressBar}>
+                                            <View style={[styles.progressFill, { width: `${percentage}%` }]} />
+                                        </View>
                                     </View>
-                                </View>
-                            ))}
+                                );
+                            })}
                         </View>
                     )}
                 </View>
