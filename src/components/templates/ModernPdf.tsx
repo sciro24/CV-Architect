@@ -1,6 +1,7 @@
 import React from 'react';
 import { Document, Page, Text, View, StyleSheet, Image } from '@react-pdf/renderer';
 import { ResumeData } from '@/types/resume';
+import { Language, dictionary } from '@/utils/translations';
 
 const styles = StyleSheet.create({
     page: {
@@ -9,15 +10,16 @@ const styles = StyleSheet.create({
         fontFamily: 'Helvetica',
     },
     sidebar: {
-        width: '33%',
-        backgroundColor: '#0F172A', // Slate 900
-        color: 'white',
-        padding: 20,
+        width: '32%',
+        backgroundColor: '#1a202c', // Darker slate
+        color: '#f7fafc',
+        padding: 24,
         height: '100%',
     },
     main: {
-        width: '67%',
-        padding: 30,
+        width: '68%',
+        padding: 35,
+        paddingTop: 45,
         height: '100%',
     },
     profileImage: {
@@ -25,122 +27,144 @@ const styles = StyleSheet.create({
         height: 100,
         borderRadius: 50,
         borderWidth: 3,
-        borderColor: '#334155',
+        borderColor: '#4a5568',
         alignSelf: 'center',
         marginBottom: 15,
+        objectFit: 'cover',
     },
     sidebarName: {
         fontSize: 20,
         fontWeight: 'bold',
         textAlign: 'center',
-        color: 'white',
-        marginBottom: 5,
+        color: '#ffffff',
+        marginBottom: 6,
+        textTransform: 'uppercase',
     },
     sidebarLocation: {
         fontSize: 10,
         textAlign: 'center',
-        color: '#94A3B8', // Slate 400
-        marginBottom: 20,
+        color: '#a0aec0', // Gray 400
+        marginBottom: 25,
+        textTransform: 'uppercase',
+        letterSpacing: 1,
     },
     sidebarSection: {
-        marginBottom: 20,
+        marginBottom: 25,
     },
     sidebarTitle: {
         fontSize: 10,
+        fontWeight: 'bold',
         textTransform: 'uppercase',
-        color: '#94A3B8',
+        color: '#718096', // Gray 500
         borderBottomWidth: 1,
-        borderBottomColor: '#334155',
+        borderBottomColor: '#2d3748',
         paddingBottom: 5,
         marginBottom: 10,
         letterSpacing: 2,
     },
     sidebarText: {
         fontSize: 10,
-        color: '#CBD5E1', // Slate 300
-        marginBottom: 3,
-    },
-    sidebarLink: {
-        fontSize: 9,
-        color: '#60A5FA', // Blue 400
-        marginBottom: 3,
+        color: '#e2e8f0', // Gray 200
+        marginBottom: 4,
+        lineHeight: 1.3,
     },
     skillTag: {
-        backgroundColor: '#1E293B', // Slate 800
-        color: '#E2E8F0', // Slate 200
-        padding: 4,
-        marginBottom: 4,
+        backgroundColor: '#2d3748', // Gray 700
+        color: '#edf2f7', // Gray 100
+        paddingVertical: 3,
+        paddingHorizontal: 6,
+        marginBottom: 5,
         borderRadius: 3,
         fontSize: 9,
         alignSelf: 'flex-start',
     },
     mainSection: {
-        marginBottom: 20,
+        marginBottom: 25,
     },
     mainTitle: {
         fontSize: 18,
         fontWeight: 'bold',
-        color: '#1E293B',
+        color: '#1a202c', // Gray 900
         borderBottomWidth: 2,
-        borderBottomColor: '#3B82F6', // Blue 500
-        paddingBottom: 2,
-        marginBottom: 10,
-        alignSelf: 'flex-start', // Mimic inline-block behavior
+        borderBottomColor: '#3182ce', // Blue 500
+        paddingBottom: 3,
+        marginBottom: 12,
+        alignSelf: 'flex-start',
+        textTransform: 'uppercase',
+        letterSpacing: 0.5,
     },
     summaryText: {
         fontSize: 10,
-        color: '#475569', // Slate 600
-        lineHeight: 1.4,
+        color: '#4a5568', // Gray 700
+        lineHeight: 1.5,
+        textAlign: 'justify',
     },
     expItem: {
-        marginBottom: 12,
+        marginBottom: 15,
         borderLeftWidth: 2,
-        borderLeftColor: '#E2E8F0',
+        borderLeftColor: '#e2e8f0', // Gray 200
         paddingLeft: 15,
-        marginLeft: 5,
-        position: 'relative'
+        marginLeft: 4,
+    },
+    // Dot decoration for timeline
+    timelineDot: {
+        position: 'absolute',
+        left: -20, // Adjust based on margin/padding
+        top: 2,
+        width: 8,
+        height: 8,
+        borderRadius: 4,
+        backgroundColor: '#3182ce',
+        borderWidth: 2,
+        borderColor: 'white',
     },
     expTitle: {
         fontSize: 12,
         fontWeight: 'bold',
-        color: '#1E293B',
+        color: '#1a202c',
     },
     expCompanyRow: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         marginTop: 2,
-        marginBottom: 4,
+        marginBottom: 5,
     },
     expCompany: {
         fontSize: 10,
         fontWeight: 'bold',
-        color: '#2563EB', // Blue 600
+        color: '#2b6cb0', // Blue 700
     },
     expDate: {
         fontSize: 10,
-        color: '#64748B', // Slate 500
+        color: '#718096', // Gray 500
+        fontStyle: 'italic',
     },
     bulletPoint: {
         flexDirection: 'row',
-        marginBottom: 2,
+        marginBottom: 3,
     },
     bullet: {
         width: 10,
         fontSize: 10,
+        color: '#718096',
     },
     bulletText: {
         flex: 1,
-        fontSize: 9,
-        color: '#475569',
+        fontSize: 9.5,
+        color: '#4a5568',
+        lineHeight: 1.3,
     },
 });
 
 interface TemplateProps {
     data: ResumeData;
     profileImage?: string;
+    language: Language;
 }
 
-export const ModernPdf: React.FC<TemplateProps> = ({ data, profileImage }) => {
+export const ModernPdf: React.FC<TemplateProps> = ({ data, profileImage, language }) => {
+    const t = dictionary[language];
+
     return (
         <Document>
             <Page size="A4" style={styles.page}>
@@ -154,15 +178,15 @@ export const ModernPdf: React.FC<TemplateProps> = ({ data, profileImage }) => {
                     </View>
 
                     <View style={styles.sidebarSection}>
-                        <Text style={styles.sidebarTitle}>Contact</Text>
+                        <Text style={styles.sidebarTitle}>{t.contact}</Text>
                         <Text style={styles.sidebarText}>{data.personal_info.email}</Text>
                         <Text style={styles.sidebarText}>{data.personal_info.phone}</Text>
-                        <Text style={styles.sidebarLink}>{data.personal_info.linkedinUrl}</Text>
-                        <Text style={styles.sidebarLink}>{data.personal_info.portfolioUrl}</Text>
+                        {data.personal_info.linkedinUrl && <Text style={styles.sidebarText}>{data.personal_info.linkedinUrl}</Text>}
+                        {data.personal_info.portfolioUrl && <Text style={styles.sidebarText}>{data.personal_info.portfolioUrl}</Text>}
                     </View>
 
                     <View style={styles.sidebarSection}>
-                        <Text style={styles.sidebarTitle}>Skills</Text>
+                        <Text style={styles.sidebarTitle}>{t.skills}</Text>
                         <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 4 }}>
                             {data.skills.map((skill, index) => (
                                 <Text key={index} style={styles.skillTag}>{skill}</Text>
@@ -171,7 +195,7 @@ export const ModernPdf: React.FC<TemplateProps> = ({ data, profileImage }) => {
                     </View>
 
                     <View style={styles.sidebarSection}>
-                        <Text style={styles.sidebarTitle}>Languages</Text>
+                        <Text style={styles.sidebarTitle}>{t.languages}</Text>
                         <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 4 }}>
                             {data.languages.map((lang, index) => (
                                 <Text key={index} style={styles.sidebarText}>{lang}</Text>
@@ -180,12 +204,12 @@ export const ModernPdf: React.FC<TemplateProps> = ({ data, profileImage }) => {
                     </View>
 
                     <View style={styles.sidebarSection}>
-                        <Text style={styles.sidebarTitle}>Education</Text>
+                        <Text style={styles.sidebarTitle}>{t.education}</Text>
                         {data.education.map((edu, index) => (
-                            <View key={index} style={{ marginBottom: 8 }}>
+                            <View key={index} style={{ marginBottom: 10 }}>
                                 <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 10 }}>{edu.school}</Text>
-                                <Text style={styles.sidebarText}>{edu.degree}</Text>
-                                <Text style={{ color: '#64748B', fontSize: 9 }}>{edu.startDate} - {edu.endDate}</Text>
+                                <Text style={[styles.sidebarText, { fontStyle: 'italic', marginBottom: 1 }]}>{edu.degree}</Text>
+                                <Text style={{ color: '#718096', fontSize: 9 }}>{edu.startDate} - {edu.endDate}</Text>
                             </View>
                         ))}
                     </View>
@@ -193,12 +217,12 @@ export const ModernPdf: React.FC<TemplateProps> = ({ data, profileImage }) => {
 
                 <View style={styles.main}>
                     <View style={styles.mainSection}>
-                        <Text style={styles.mainTitle}>Profile</Text>
+                        <Text style={styles.mainTitle}>{t.summary}</Text>
                         <Text style={styles.summaryText}>{data.personal_info.summary}</Text>
                     </View>
 
                     <View style={styles.mainSection}>
-                        <Text style={styles.mainTitle}>Experience</Text>
+                        <Text style={styles.mainTitle}>{t.experience}</Text>
                         {data.work_experience.map((exp, index) => (
                             <View key={index} style={styles.expItem}>
                                 <Text style={styles.expTitle}>{exp.title}</Text>

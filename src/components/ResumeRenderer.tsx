@@ -1,10 +1,11 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import dynamic from 'next/dynamic';
 import { ResumeData } from '@/types/resume';
 import { getTemplate } from './TemplateRegistry';
 import { Download, AlertCircle } from 'lucide-react';
+import { Language, dictionary } from '@/utils/translations';
 
 // Avoid SSR for PDFDownloadLink
 const PDFDownloadLink = dynamic(
@@ -16,10 +17,12 @@ interface ResumeRendererProps {
     data: ResumeData;
     templateId: string;
     profileImage?: string;
+    language: Language;
 }
 
-export default function ResumeRenderer({ data, templateId, profileImage }: ResumeRendererProps) {
+export default function ResumeRenderer({ data, templateId, profileImage, language }: ResumeRendererProps) {
     const template = getTemplate(templateId);
+    const t = dictionary[language] || dictionary['Italiano'];
 
     if (!template) {
         return (
@@ -40,15 +43,14 @@ export default function ResumeRenderer({ data, templateId, profileImage }: Resum
                     <span className="ml-2 font-bold text-gray-800">{template.name}</span>
                 </div>
                 <PDFDownloadLink
-                    document={<PdfDocument data={data} profileImage={profileImage} />}
+                    document={<PdfDocument data={data} profileImage={profileImage} language={language} />}
                     fileName={`${data.personal_info.fullName.replace(/\s+/g, '_')}_CV.pdf`}
                     className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition shadow-sm font-medium text-sm"
                 >
-
                     {({ loading }) =>
                         loading ? 'Preparing...' : (
                             <>
-                                <Download className="w-4 h-4" /> Download PDF
+                                <Download className="w-4 h-4" /> {t.downloadPdf}
                             </>
                         )
                     }
@@ -58,7 +60,7 @@ export default function ResumeRenderer({ data, templateId, profileImage }: Resum
             <div className="flex-1 overflow-auto p-8 flex justify-center items-start">
                 {/* Responsive scaling container */}
                 <div className="origin-top transform scale-[0.5] sm:scale-[0.6] md:scale-[0.75] lg:scale-[0.85] xl:scale-100 transition-transform bg-white shadow-2xl">
-                    <WebComponent data={data} profileImage={profileImage} />
+                    <WebComponent data={data} profileImage={profileImage} language={language} />
                 </div>
             </div>
         </div>

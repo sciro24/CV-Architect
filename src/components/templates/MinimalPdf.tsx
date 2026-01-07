@@ -1,6 +1,7 @@
 import React from 'react';
 import { Document, Page, Text, View, StyleSheet, Font, Image } from '@react-pdf/renderer';
 import { ResumeData } from '@/types/resume';
+import { Language, dictionary } from '@/utils/translations';
 
 Font.register({
     family: 'Helvetica',
@@ -11,108 +12,134 @@ Font.register({
 
 const styles = StyleSheet.create({
     page: {
-        padding: 30,
+        padding: 40,
         fontFamily: 'Helvetica',
-        fontSize: 11,
+        fontSize: 10,
         lineHeight: 1.5,
+        color: '#333333',
     },
     header: {
-        marginBottom: 20,
+        marginBottom: 25,
         borderBottomWidth: 2,
         borderBottomColor: '#111827',
-        paddingBottom: 10,
+        paddingBottom: 15,
         flexDirection: 'row',
         justifyContent: 'space-between',
+        alignItems: 'flex-start',
     },
     headerLeft: {
         flexGrow: 1,
+        paddingRight: 20,
     },
     headerRight: {
-        marginLeft: 20,
+        marginLeft: 10,
     },
     name: {
-        fontSize: 24,
+        fontSize: 26,
         fontWeight: 'bold',
         textTransform: 'uppercase',
+        marginBottom: 6,
+        color: '#000000',
     },
     contact: {
-        fontSize: 10,
+        fontSize: 9,
         color: '#4B5563',
-        marginTop: 5,
+        lineHeight: 1.4,
+    },
+    contactRow: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        gap: 5,
     },
     profileImage: {
-        width: 80,
-        height: 80,
-        borderRadius: 40,
+        width: 70,
+        height: 70,
+        borderRadius: 35,
+        objectFit: 'cover',
     },
     sectionTitle: {
-        fontSize: 14,
+        fontSize: 13,
         fontWeight: 'bold',
         textTransform: 'uppercase',
         borderBottomWidth: 1,
         borderBottomColor: '#D1D5DB',
-        marginBottom: 10,
-        paddingBottom: 2,
-        marginTop: 15,
+        marginBottom: 12,
+        paddingBottom: 4,
+        marginTop: 18,
+        color: '#111827',
+        letterSpacing: 1,
     },
     sectionContent: {
         marginBottom: 5,
     },
-    experienceItem: {
+    summary: {
         marginBottom: 10,
+        textAlign: 'justify',
+    },
+    experienceItem: {
+        marginBottom: 12,
     },
     expHeader: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         marginBottom: 2,
+        alignItems: 'baseline',
     },
     expTitle: {
         fontWeight: 'bold',
-        fontSize: 12,
+        fontSize: 11,
+        color: '#000000',
     },
     expDate: {
-        fontSize: 10,
+        fontSize: 9,
         color: '#6B7280',
+        fontStyle: 'italic',
     },
     expCompany: {
-        fontSize: 11,
+        fontSize: 10,
         fontStyle: 'italic',
         color: '#374151',
-        marginBottom: 3,
+        marginBottom: 4,
     },
     bulletPoint: {
         flexDirection: 'row',
         marginBottom: 2,
+        paddingLeft: 5,
     },
     bullet: {
         width: 10,
         fontSize: 10,
+        color: '#6B7280',
     },
     bulletText: {
         flex: 1,
-        fontSize: 10,
+        fontSize: 9.5,
         color: '#4B5563',
     },
     skillsContainer: {
         flexDirection: 'row',
         flexWrap: 'wrap',
-        gap: 5,
+        gap: 6,
     },
     skillTag: {
         backgroundColor: '#F3F4F6',
-        paddingVertical: 2,
-        paddingHorizontal: 6,
+        paddingVertical: 3,
+        paddingHorizontal: 8,
         borderRadius: 4,
         fontSize: 9,
+        color: '#1F2937',
     },
 });
 
 interface TemplateProps {
     data: ResumeData;
     profileImage?: string;
+    language: Language;
 }
 
-export const MinimalPdf: React.FC<TemplateProps> = ({ data, profileImage }) => {
+export const MinimalPdf: React.FC<TemplateProps> = ({ data, profileImage, language }) => {
+    const t = dictionary[language];
+
     return (
         <Document>
             <Page size="A4" style={styles.page}>
@@ -120,8 +147,9 @@ export const MinimalPdf: React.FC<TemplateProps> = ({ data, profileImage }) => {
                     <View style={styles.headerLeft}>
                         <Text style={styles.name}>{data.personal_info.fullName}</Text>
                         <View style={styles.contact}>
-                            <Text>{data.personal_info.location} • {data.personal_info.email} • {data.personal_info.phone}</Text>
-                            <Text>{data.personal_info.linkedinUrl || ''} {data.personal_info.linkedinUrl && data.personal_info.portfolioUrl ? '•' : ''} {data.personal_info.portfolioUrl || ''}</Text>
+                            <Text style={{ marginBottom: 2 }}>{data.personal_info.location} • {data.personal_info.email} • {data.personal_info.phone}</Text>
+                            <LinkText url={data.personal_info.linkedinUrl} label="LinkedIn" />
+                            <LinkText url={data.personal_info.portfolioUrl} label="Portfolio" prefix=" • " />
                         </View>
                     </View>
                     {profileImage && (
@@ -132,12 +160,12 @@ export const MinimalPdf: React.FC<TemplateProps> = ({ data, profileImage }) => {
                 </View>
 
                 <View>
-                    <Text style={styles.sectionTitle}>Profile</Text>
-                    <Text style={[styles.sectionContent, { fontSize: 10, color: '#374151' }]}>{data.personal_info.summary}</Text>
+                    <Text style={styles.sectionTitle}>{t.summary}</Text>
+                    <Text style={styles.summary}>{data.personal_info.summary}</Text>
                 </View>
 
                 <View>
-                    <Text style={styles.sectionTitle}>Experience</Text>
+                    <Text style={styles.sectionTitle}>{t.experience}</Text>
                     {data.work_experience.map((exp, index) => (
                         <View key={index} style={styles.experienceItem}>
                             <View style={styles.expHeader}>
@@ -156,7 +184,7 @@ export const MinimalPdf: React.FC<TemplateProps> = ({ data, profileImage }) => {
                 </View>
 
                 <View>
-                    <Text style={styles.sectionTitle}>Education</Text>
+                    <Text style={styles.sectionTitle}>{t.education}</Text>
                     {data.education.map((edu, index) => (
                         <View key={index} style={styles.experienceItem}>
                             <View style={styles.expHeader}>
@@ -169,7 +197,7 @@ export const MinimalPdf: React.FC<TemplateProps> = ({ data, profileImage }) => {
                 </View>
 
                 <View>
-                    <Text style={styles.sectionTitle}>Skills</Text>
+                    <Text style={styles.sectionTitle}>{t.skills}</Text>
                     <View style={styles.skillsContainer}>
                         {data.skills.map((skill, index) => (
                             <View key={index} style={styles.skillTag}>
@@ -180,10 +208,10 @@ export const MinimalPdf: React.FC<TemplateProps> = ({ data, profileImage }) => {
                 </View>
 
                 <View>
-                    <Text style={styles.sectionTitle}>Languages</Text>
+                    <Text style={styles.sectionTitle}>{t.languages}</Text>
                     <View style={styles.skillsContainer}>
                         {data.languages.map((lang, index) => (
-                            <View key={index} style={styles.skillTag}>
+                            <View key={index} style={[styles.skillTag, { backgroundColor: 'transparent', borderWidth: 1, borderColor: '#D1D5DB' }]}>
                                 <Text>{lang}</Text>
                             </View>
                         ))}
@@ -193,3 +221,8 @@ export const MinimalPdf: React.FC<TemplateProps> = ({ data, profileImage }) => {
         </Document>
     );
 };
+
+const LinkText = ({ url, label, prefix = '' }: { url?: string, label: string, prefix?: string }) => {
+    if (!url) return null;
+    return <Text>{prefix}{url}</Text>; // Simply rendering text for now to avoid layout issues with Link
+}

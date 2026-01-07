@@ -3,17 +3,15 @@ import { MinimalWeb } from './templates/MinimalWeb';
 import { ModernWeb } from './templates/ModernWeb';
 import { MinimalPdf } from './templates/MinimalPdf';
 import { ModernPdf } from './templates/ModernPdf';
-
-// We will add the other 4 templates here as we create them
-// For now, mapping the existing ones and placeholders
+import { Language } from '@/utils/translations';
 
 export interface TemplateConfig {
     id: string;
     name: string;
     styles: string;
-    Web: React.FC<{ data: ResumeData; profileImage?: string }>;
-    Pdf: React.FC<{ data: ResumeData; profileImage?: string }>;
-    thumbnail: string; // Color code or image path
+    Web: React.FC<{ data: ResumeData; profileImage?: string; language: Language }>;
+    Pdf: React.FC<{ data: ResumeData; profileImage?: string; language: Language }>;
+    thumbnail: string;
 }
 
 export const templates: TemplateConfig[] = [
@@ -32,39 +30,6 @@ export const templates: TemplateConfig[] = [
         Web: ModernWeb,
         Pdf: ModernPdf,
         thumbnail: 'bg-slate-800',
-    },
-    // Future templates (3, 4, 5, 6) will be added here
-    {
-        id: 'classic',
-        name: 'Classic Professional',
-        styles: 'Traditional layout',
-        Web: MinimalWeb, // Placeholder
-        Pdf: MinimalPdf, // Placeholder
-        thumbnail: 'bg-blue-50',
-    },
-    {
-        id: 'creative',
-        name: 'Creative',
-        styles: 'Colorful header',
-        Web: ModernWeb, // Placeholder
-        Pdf: ModernPdf, // Placeholder
-        thumbnail: 'bg-purple-100',
-    },
-    {
-        id: 'tech',
-        name: 'Tech Resume',
-        styles: 'Skills focused',
-        Web: MinimalWeb, // Placeholder
-        Pdf: MinimalPdf, // Placeholder
-        thumbnail: 'bg-green-50',
-    },
-    {
-        id: 'executive',
-        name: 'Executive',
-        styles: 'High level overview',
-        Web: ModernWeb, // Placeholder
-        Pdf: ModernPdf, // Placeholder
-        thumbnail: 'bg-gray-800',
     }
 ];
 

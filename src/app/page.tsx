@@ -202,6 +202,7 @@ export default function Home() {
               data={resumeData}
               templateId={templateId}
               profileImage={profileImageUrl}
+              language={selectedLanguage as any}
             />
           ) : (
             // Desktop Placeholder
