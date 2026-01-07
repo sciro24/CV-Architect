@@ -75,9 +75,9 @@ export const MinimalWeb: React.FC<TemplateProps> = ({ data, profileImage, langua
                 <section>
                     <h2 className="text-xl font-bold uppercase border-b border-gray-300 mb-4 pb-1 tracking-wide">{t.skills}</h2>
                     <div className="flex flex-wrap gap-2">
-                        {data.skills.map((skill, index) => (
+                        {data.skills.filter(s => s.visible).map((skill, index) => (
                             <span key={index} className="bg-gray-100 text-gray-800 text-xs font-medium px-2.5 py-1 rounded border border-gray-200">
-                                {skill}
+                                {skill.name}
                             </span>
                         ))}
                     </div>

@@ -188,12 +188,11 @@ export const ModernPdf: React.FC<TemplateProps> = ({ data, profileImage, languag
                     <View style={styles.sidebarSection}>
                         <Text style={styles.sidebarTitle}>{t.skills}</Text>
                         <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 4 }}>
-                            {data.skills.map((skill, index) => (
-                                <Text key={index} style={styles.skillTag}>{skill}</Text>
+                            {data.skills.filter(s => s.visible).map((skill, index) => (
+                                <Text key={index} style={styles.skillTag}>{skill.name}</Text>
                             ))}
                         </View>
                     </View>
-
                     <View style={styles.sidebarSection}>
                         <Text style={styles.sidebarTitle}>{t.languages}</Text>
                         <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 4 }}>

@@ -60,9 +60,34 @@ export async function POST(req: NextRequest) {
     // Using gemma-3-27b-it as requested (or gemma-3-27b if it is the precise string)
     const model = genAI.getGenerativeModel({ model: 'gemma-3-27b-it' });
 
-    const systemPrompt = `Sei un esperto di recruiting; estrai i dati dal testo LinkedIn e restituisci SOLO un oggetto JSON con chiavi personal_info, work_experience, education, skills, languages, ottimizzando i contenuti con il metodo STAR e verbi d'azione nella lingua selezionata dall'utente: ${language}.
-    
-    Assicurati che il JSON rispetti strettamente questa struttura e non inventare dati se non presenti:
+    const systemPrompt = `Sei un esperto HR specializzato in ottimizzazione CV per sistemi ATS (Applicant Tracking Systems).
+
+**OBIETTIVO CRITICO**: Generare un CV che stia in UNA SOLA PAGINA A4 (massimo 800 parole totali).
+
+**REGOLE DI TRADUZIONE**:
+1. Traduci TUTTO il contenuto descrittivo (Summary, Descrizioni lavori, Skills) in: **${language}**
+2. NON tradurre: Nomi Aziende, Nomi Scuole/Università, Nomi Certificazioni
+3. Usa verbi d'azione e metodo STAR (Situation-Task-Action-Result) ma sii ESTREMAMENTE conciso
+
+**LIMITI DI LUNGHEZZA (RISPETTA RIGOROSAMENTE)**:
+- Summary: max 200 caratteri
+- Work Experience: max 3 posizioni più recenti/rilevanti
+  - Per ogni posizione: max 2 bullet points (max 100 caratteri ciascuno)
+- Education: max 2 titoli principali
+- Skills: max 12-15 competenze TOTALI (ordinate per rilevanza ATS)
+- Languages: max 4 lingue
+- Certifications: max 5 certificazioni più rilevanti
+
+**SKILLS - IMPORTANTE**: 
+- Ordina le skills dalla PIÙ RILEVANTE alla MENO RILEVANTE per il profilo professionale
+- Le prime 4-5 skills devono essere le più importanti per sistemi ATS
+- Includi mix di: hard skills tecniche, soft skills, tools/software
+
+**CERTIFICATIONS**:
+- Estrai certificazioni professionali, corsi rilevanti, licenze
+- Ordina per rilevanza/prestigio
+
+Struttura JSON richiesta:
     {
       "personal_info": {
         "fullName": "Name Surname",
@@ -93,7 +118,8 @@ export async function POST(req: NextRequest) {
         }
       ],
       "skills": ["Skill 1", "Skill 2"],
-      "languages": ["Language 1", "Language 2"]
+      "languages": ["Language 1", "Language 2"],
+      "certifications": ["Cert 1", "Cert 2"]
     }
     
     Non includere markdown o backticks. Restituisci solo il raw JSON.`;
@@ -104,7 +130,22 @@ export async function POST(req: NextRequest) {
 
     let resumeData: ResumeData;
     try {
-      resumeData = JSON.parse(jsonString);
+      const rawData = JSON.parse(jsonString);
+
+      // Transform skills: first 5 are visible (most important from AI), rest hidden
+      // Transform certifications: first 3 visible
+      resumeData = {
+        ...rawData,
+        skills: Array.isArray(rawData.skills)
+          ? rawData.skills.map((s: string | any, index: number) =>
+            typeof s === 'string' ? { name: s, visible: index < 5 } : s)
+          : [],
+        certifications: Array.isArray(rawData.certifications)
+          ? rawData.certifications.map((c: string | any, index: number) =>
+            typeof c === 'string' ? { name: c, visible: index < 3 } : c)
+          : []
+      };
+
     } catch (e) {
       console.error("Failed to parse JSON from AI response:", jsonString);
       return NextResponse.json({ error: 'Failed to parse AI response. The model output was not valid JSON.' }, { status: 500 });

@@ -37,9 +37,9 @@ export const ModernWeb: React.FC<TemplateProps> = ({ data, profileImage, languag
                     <div>
                         <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-gray-500 border-b border-gray-700 pb-2 mb-4">{t.skills}</h3>
                         <div className="flex flex-wrap gap-2">
-                            {data.skills.map((skill, index) => (
+                            {data.skills.filter(s => s.visible).map((skill, index) => (
                                 <span key={index} className="bg-gray-800 text-gray-200 text-xs px-2.5 py-1 rounded leading-none border border-gray-700">
-                                    {skill}
+                                    {skill.name}
                                 </span>
                             ))}
                         </div>

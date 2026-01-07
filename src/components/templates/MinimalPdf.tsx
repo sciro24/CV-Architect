@@ -199,9 +199,9 @@ export const MinimalPdf: React.FC<TemplateProps> = ({ data, profileImage, langua
                 <View>
                     <Text style={styles.sectionTitle}>{t.skills}</Text>
                     <View style={styles.skillsContainer}>
-                        {data.skills.map((skill, index) => (
+                        {data.skills.filter(s => s.visible).map((skill, index) => (
                             <View key={index} style={styles.skillTag}>
-                                <Text>{skill}</Text>
+                                <Text>{skill.name}</Text>
                             </View>
                         ))}
                     </View>
