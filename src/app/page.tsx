@@ -32,7 +32,7 @@ export default function Home() {
 
   const [templateId, setTemplateId] = useState<string>('template1');
   const [selectedLanguage, setSelectedLanguage] = useState<Language>('Italiano');
-  const [customColor, setCustomColor] = useState<string | undefined>(undefined);
+  const [customColors, setCustomColors] = useState<Record<string, string>>({});
   const [originalImageSrc, setOriginalImageSrc] = useState<string | null>(null);
 
   const PRESET_COLORS = [
@@ -95,8 +95,8 @@ export default function Home() {
 
   // Helper to generate filename
   const getFilename = (ext: string) => {
-    const name = resumeData ? `${resumeData.personal_info.fullName}` : 'resume';
-    return `${name.replace(/\s+/g, '_')}_CV.${ext}`;
+    const name = resumeData ? resumeData.personal_info.fullName.trim() : 'resume';
+    return `${name}.${ext}`;
   };
 
   // PDF Export Logic
@@ -107,7 +107,7 @@ export default function Home() {
 
     const PdfComp = tmpl.Pdf;
     // Defaults if data missing
-    const primaryColor = customColor || tmpl.defaultPrimaryColor;
+    const primaryColor = customColors[templateId] || tmpl.defaultPrimaryColor;
 
     const blob = await pdf(
       <PdfComp
@@ -162,7 +162,7 @@ export default function Home() {
     setResumeData(null);
     setError(null);
     setIsAnalyzing(false);
-    setCustomColor(undefined);
+    setCustomColors({});
   };
 
   const Logo = () => (
@@ -446,31 +446,25 @@ export default function Home() {
               {isExportMenuOpen && (
                 <div className="absolute right-0 top-full mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg z-50 py-1">
                   <button
-                    onClick={() => { setIsExportMenuOpen(false); /* Handled by ResumeRenderer via DOM or just keep the generic export button there? Actually, ResumeRenderer has the PDF blob. We might need a way to trigger it. For now, assume User knows "Export PDF" is the standard download. I'll map the first option to just closing this as the actual PDF download is often inside the renderer. Wait, the user wants "Remove Download PDF button, keep Export PDF at top". So THIS button must trigger PDF download too. */ }}
+                    onClick={() => handlePdfExport()}
                     className="w-full text-left px-4 py-2 text-xs text-gray-700 hover:bg-gray-50 flex items-center gap-2"
                   >
                     <FileCheck size={14} /> PDF (Standard)
-                    {/* Note: In a real app, we'd lift pdf generation state or use a ref to trigger download. For this 'mock' logic, I'll instruct user to use the specialized button if I can't trigger it easily, OR I assume the Renderer exposes a method.
-                               Actually, standard practice: render PDF to blob in background and save.
-                               However, since I can't easily ref the PDF instance here without context, I will just list the Other formats which work 100%. For PDF, the user usually has a toolbar in the PDF viewer or I can use the @react-pdf/renderer's PDFDownloadLink if I wrap it.
-                               Let's skip generic PDF trigger for this dropdown if it's complex and just add DOCX/JSON/TXT. The user said "allow user to download... JSON, TXT".
-                               I'll add specific handlers here.
-                           */}
                   </button>
                   <button
-                    onClick={() => { exportToDocx(resumeData); setIsExportMenuOpen(false); }}
+                    onClick={() => { exportToDocx(resumeData, getFilename('docx')); setIsExportMenuOpen(false); }}
                     className="w-full text-left px-4 py-2 text-xs text-gray-700 hover:bg-gray-50 flex items-center gap-2"
                   >
                     <FileText size={14} /> DOCX (Word)
                   </button>
                   <button
-                    onClick={() => { exportToJson(resumeData); setIsExportMenuOpen(false); }}
+                    onClick={() => { exportToJson(resumeData, getFilename('json')); setIsExportMenuOpen(false); }}
                     className="w-full text-left px-4 py-2 text-xs text-gray-700 hover:bg-gray-50 flex items-center gap-2"
                   >
                     <Cpu size={14} /> JSON (Data)
                   </button>
                   <button
-                    onClick={() => { exportToTxt(resumeData); setIsExportMenuOpen(false); }}
+                    onClick={() => { exportToTxt(resumeData, getFilename('txt')); setIsExportMenuOpen(false); }}
                     className="w-full text-left px-4 py-2 text-xs text-gray-700 hover:bg-gray-50 flex items-center gap-2"
                   >
                     <FileText size={14} /> TXT (Plain)
@@ -584,10 +578,7 @@ export default function Home() {
               </h3>
 
               <div className="grid grid-cols-2 gap-2">
-                {templates.map((tmpl, index) => ( // Use templates from getTemplate call not redundant, but we need import templates too? No, getTemplate is helper. 'templates' array is export.
-                  // I replaced 'import { templates }' with 'getTemplate' but page.tsx uses 'templates.map'. 
-                  // I should invoke default_api to change import line properly to import BOTH if needed.
-                  // Actually, let's just make sure I import `templates` as well in the first chunk.
+                {templates.map((tmpl) => (
                   <button
                     key={tmpl.id}
                     onClick={() => setTemplateId(tmpl.id)}
@@ -600,7 +591,6 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Color Selector */}
             <div className="mb-8 border-t border-gray-100 pt-6">
               <h3 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-4 flex items-center gap-2">
                 Primary Color
@@ -609,8 +599,8 @@ export default function Home() {
                 {PRESET_COLORS.map(color => (
                   <button
                     key={color}
-                    onClick={() => setCustomColor(color)}
-                    className={`w-6 h-6 rounded-full border transition-transform hover:scale-110 ${customColor === color ? 'border-gray-900 scale-110 shadow-sm' : 'border-gray-200'}`}
+                    onClick={() => setCustomColors(prev => ({ ...prev, [templateId]: color }))}
+                    className={`w-6 h-6 rounded-full border transition-transform hover:scale-110 ${customColors[templateId] === color ? 'border-gray-900 scale-110 shadow-sm' : 'border-gray-200'}`}
                     style={{ backgroundColor: color }}
                     title={color}
                   />
@@ -621,14 +611,18 @@ export default function Home() {
                     <input
                       type="color"
                       className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
-                      value={customColor || '#000000'}
-                      onChange={(e) => setCustomColor(e.target.value)}
+                      value={customColors[templateId] || '#000000'}
+                      onChange={(e) => setCustomColors(prev => ({ ...prev, [templateId]: e.target.value }))}
                     />
                   </div>
                 </div>
                 {/* Reset Color */}
                 <button
-                  onClick={() => setCustomColor(undefined)}
+                  onClick={() => setCustomColors(prev => {
+                    const next = { ...prev };
+                    delete next[templateId];
+                    return next;
+                  })}
                   className="text-[10px] text-gray-400 underline ml-auto hover:text-gray-600"
                 >
                   Default
@@ -684,7 +678,7 @@ export default function Home() {
                 templateId={templateId}
                 profileImage={profileImageUrl}
                 language={selectedLanguage as any}
-                customColor={customColor}
+                customColor={customColors[templateId]}
               />
             ) : (
               <div className="h-full flex items-center justify-center text-gray-300 font-mono text-xs uppercase tracking-widest">

@@ -66,13 +66,12 @@ const SortableItem = ({ id, content, visible, onToggle, onDelete }: { id: string
 };
 
 // -- Accordion Section Wrapper --
-const AccordionSection = ({ title, children, defaultOpen = false }: { title: string; children: React.ReactNode; defaultOpen?: boolean }) => {
-    const [isOpen, setIsOpen] = useState(defaultOpen);
+const AccordionSection = ({ title, children, isOpen, onToggle }: { title: string; children: React.ReactNode; isOpen: boolean; onToggle: () => void }) => {
     return (
         <div className="border-b border-gray-100 last:border-0">
             <button
                 className="w-full flex items-center justify-between p-4 bg-gray-50 hover:bg-gray-100 transition-colors text-left"
-                onClick={() => setIsOpen(!isOpen)}
+                onClick={onToggle}
             >
                 <span className="font-bold text-gray-700 text-xs uppercase tracking-wider">{title}</span>
                 {isOpen ? <ChevronDown size={14} className="text-gray-400" /> : <ChevronRight size={14} className="text-gray-400" />}
@@ -107,6 +106,12 @@ const InputGroup = ({ label, value, onChange, placeholder, type = 'text', textar
 );
 
 export const SectionEditor: React.FC<SectionEditorProps> = ({ data, onUpdate }) => {
+    const [activeSection, setActiveSection] = useState<string>('Personal Info');
+
+    const toggleSection = (section: string) => {
+        setActiveSection(activeSection === section ? '' : section);
+    };
+
     const sensors = useSensors(
         useSensor(PointerSensor),
         useSensor(KeyboardSensor, {
@@ -264,7 +269,11 @@ export const SectionEditor: React.FC<SectionEditorProps> = ({ data, onUpdate }) 
 
     return (
         <div className="flex flex-col h-full bg-white">
-            <AccordionSection title="Personal Info" defaultOpen={true}>
+            <AccordionSection
+                title="Personal Info"
+                isOpen={activeSection === 'Personal Info'}
+                onToggle={() => toggleSection('Personal Info')}
+            >
                 <InputGroup label="Full Name" value={data.personal_info.fullName} onChange={(v: string) => updatePersonalInfo('fullName', v)} />
                 <InputGroup label="Email" value={data.personal_info.email} onChange={(v: string) => updatePersonalInfo('email', v)} />
                 <InputGroup label="Phone" value={data.personal_info.phone} onChange={(v: string) => updatePersonalInfo('phone', v)} />
@@ -273,7 +282,11 @@ export const SectionEditor: React.FC<SectionEditorProps> = ({ data, onUpdate }) 
                 <InputGroup label="Summary" value={data.personal_info.summary} onChange={(v: string) => updatePersonalInfo('summary', v)} textarea />
             </AccordionSection>
 
-            <AccordionSection title="Work Experience">
+            <AccordionSection
+                title="Work Experience"
+                isOpen={activeSection === 'Work Experience'}
+                onToggle={() => toggleSection('Work Experience')}
+            >
                 <div className="space-y-6">
                     {data.work_experience?.map((exp, index) => (
                         <div key={index} className="bg-gray-50 border border-gray-200 rounded p-4 relative group">
@@ -306,7 +319,11 @@ export const SectionEditor: React.FC<SectionEditorProps> = ({ data, onUpdate }) 
                 </div>
             </AccordionSection>
 
-            <AccordionSection title="Education">
+            <AccordionSection
+                title="Education"
+                isOpen={activeSection === 'Education'}
+                onToggle={() => toggleSection('Education')}
+            >
                 <div className="space-y-4">
                     {data.education?.map((edu, index) => (
                         <div key={index} className="bg-gray-50 border border-gray-200 rounded p-4 relative">
@@ -333,7 +350,11 @@ export const SectionEditor: React.FC<SectionEditorProps> = ({ data, onUpdate }) 
                 </div>
             </AccordionSection>
 
-            <AccordionSection title="Skills & Languages">
+            <AccordionSection
+                title="Skills & Languages"
+                isOpen={activeSection === 'Skills & Languages'}
+                onToggle={() => toggleSection('Skills & Languages')}
+            >
                 <div className="space-y-6">
                     <div>
                         <h4 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">Skills</h4>

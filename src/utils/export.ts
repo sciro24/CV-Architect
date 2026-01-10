@@ -11,7 +11,7 @@ export const exportToJson = (data: ResumeData, filename: string = 'resume.json')
 export const exportToTxt = (data: ResumeData, filename: string = 'resume.txt') => {
     let text = `${data.personal_info.fullName}\n`;
     text += `${data.personal_info.email || ''} | ${data.personal_info.phone || ''} | ${data.personal_info.location || ''}\n`;
-    if (data.personal_info.linkedinUrl) text += `${data.personal_info.linkedinUrl}\n`;
+    if (data.personal_info.linkedinUrl) text += 'LinkedIn Profile\n';
     text += '\nAbout:\n';
     text += `${data.personal_info.summary || ''}\n\n`;
 
@@ -35,8 +35,27 @@ export const exportToTxt = (data: ResumeData, filename: string = 'resume.txt') =
     }
 
     if (data.skills && data.skills.length > 0) {
-        text += 'SKILLS\n=================\n';
-        text += data.skills.map(s => s.name).join(', ') + '\n\n';
+        const visibleSkills = data.skills.filter(s => s.visible);
+        if (visibleSkills.length > 0) {
+            text += 'SKILLS\n=================\n';
+            text += visibleSkills.map(s => s.name).join(', ') + '\n\n';
+        }
+    }
+
+    if (data.languages && data.languages.length > 0) {
+        const visibleLangs = data.languages.filter(l => l.visible);
+        if (visibleLangs.length > 0) {
+            text += 'LANGUAGES\n=================\n';
+            text += visibleLangs.map(l => l.name).join(', ') + '\n\n';
+        }
+    }
+
+    if (data.certifications && data.certifications.length > 0) {
+        const visibleCerts = data.certifications.filter(c => c.visible);
+        if (visibleCerts.length > 0) {
+            text += 'CERTIFICATIONS\n=================\n';
+            text += visibleCerts.map(c => c.name).join('\n') + '\n\n';
+        }
     }
 
     const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
@@ -101,9 +120,21 @@ export const exportToDocx = async (data: ResumeData, filename: string = 'resume.
                 ] : []),
 
                 // Skills
-                ...(data.skills && data.skills.length > 0 ? [
+                ...(data.skills && data.skills.filter(s => s.visible).length > 0 ? [
                     new Paragraph({ text: 'Skills', heading: HeadingLevel.HEADING_2 }),
-                    new Paragraph({ text: data.skills.map(s => s.name).join(', ') })
+                    new Paragraph({ text: data.skills.filter(s => s.visible).map(s => s.name).join(', ') })
+                ] : []),
+
+                // Languages
+                ...(data.languages && data.languages.filter(l => l.visible).length > 0 ? [
+                    new Paragraph({ text: 'Languages', heading: HeadingLevel.HEADING_2 }),
+                    new Paragraph({ text: data.languages.filter(l => l.visible).map(l => l.name).join(', ') })
+                ] : []),
+
+                // Certifications
+                ...(data.certifications && data.certifications.filter(c => c.visible).length > 0 ? [
+                    new Paragraph({ text: 'Certifications', heading: HeadingLevel.HEADING_2 }),
+                    ...data.certifications.filter(c => c.visible).map(c => new Paragraph({ text: `• ${c.name}` }))
                 ] : []),
             ],
         }],
