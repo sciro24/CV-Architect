@@ -1,4 +1,4 @@
-# LinkedIn to CV Generator
+# CV Architect
 
 An AI-powered web application that transforms LinkedIn PDF profiles into professional, ATS-optimized CVs with multiple customizable templates.
 
@@ -112,13 +112,6 @@ An AI-powered web application that transforms LinkedIn PDF profiles into profess
 - **Google Generative AI (Gemini)** - AI-powered content extraction and optimization
 - **pdf-parse** - PDF text extraction
 
-### Template Customization
-Each template has two versions:
-- **Web version** (`*Web.tsx`): For browser preview
-- **PDF version** (`*Pdf.tsx`): For PDF export
-
-Modify colors, fonts, layouts in these files to match your brand.
-
 ## 🌍 Supported Languages
 
 - 🇮🇹 Italian (Italiano)
@@ -126,28 +119,4 @@ Modify colors, fonts, layouts in these files to match your brand.
 - 🇪🇸 Spanish (Español)
 - 🇫🇷 French (Français)
 - 🇩🇪 German (Deutsch)
-
-## 📊 AI Content Optimization
-
-The AI model (Gemini) is configured to:
-- **Rank skills by ATS relevance**: Most important skills appear first
-- **Apply STAR method**: Rewrites descriptions with Situation-Task-Action-Result
-- **Enforce A4 limits**: Maximum 800 words total
-- **Preserve proper nouns**: Company names, schools, certifications stay in original language
-- **Translate descriptions**: Job descriptions, summaries, skills translated to target language
-
-## 🤝 Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## 📝 License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
 
