@@ -1,54 +1,76 @@
 # CV Architect
 
-An AI-powered web application that transforms LinkedIn PDF profiles into professional, ATS-optimized CVs with multiple customizable templates.
+[![Live Demo](https://img.shields.io/badge/Live_Demo-Visit_App-sparkles?style=for-the-badge&logo=vercel&color=000000)](https://curriculum-architect.vercel.app/)
+![License](https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge)
 
-![Next.js](https://img.shields.io/badge/Next.js-16.1.1-black?style=flat-square&logo=next.js)
-![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=flat-square&logo=typescript)
-![React](https://img.shields.io/badge/React-19.0-61DAFB?style=flat-square&logo=react)
-![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3.4-38B2AC?style=flat-square&logo=tailwind-css)
+**Architect the perfect CV with AI.**
 
-## 🌟 Features
+Transform your LinkedIn PDF export into a professional, ATS-optimized, and design-rich Curriculum Vitae in seconds. Powered by Google Gemini AI and built with modern web technologies.
 
-### 🤖 AI-Powered Extraction
-- **Intelligent PDF Parsing**: Automatically extracts information from LinkedIn PDF exports using Google's Gemini AI
-- **Smart Content Optimization**: Rewrites job descriptions using the STAR method (Situation-Task-Action-Result)
-- **ATS-Friendly**: Generates content optimized for Applicant Tracking Systems
-- **Multi-language Support**: Translates CV content while preserving company and school names
+---
 
-### 🎨 Professional Templates
-- **4 Unique Designs**: Choose from professionally designed templates
-  - **Template 1**: Dark sidebar with clean layout
-  - **Template 2**: Navy blue sidebar with circular language indicators
-  - **Template 3**: Light blue header with elegant styling
-  - **Template 4**: Black header with progress bar skills
-- **Responsive Preview**: Real-time preview of your CV as you customize
-- **PDF Export**: Download your CV as a print-ready A4 PDF
+## 🔗 Try It Live
+🚀 **Experience the app directly in your browser:**  
+👉 **[https://curriculum-architect.vercel.app/](https://curriculum-architect.vercel.app/)**
 
-### ✨ Customization Features
-- **Skill Visibility Toggle**: Show/hide individual skills with eye icon
-- **Drag & Drop Reordering**: Rearrange skills, certifications, and languages
-- **Smart Visibility**: AI automatically shows top 4-5 most relevant skills
-- **Certification Management**: Add and manage professional certifications
-- **Language Selection**: Generate CVs in Italian, English, Spanish, French, or German
+---
 
-### 📄 Single-Page A4 Optimization
-- **Strict Length Control**: AI enforces content limits to fit one A4 page
-- **Smart Truncation**: Automatically selects most relevant experiences
-- **Concise Descriptions**: Maximum 2-3 bullet points per role
-- **Optimized Sections**: Balanced layout across all sections
+## 🌟 Overview
+
+**CV Architect** is an intelligent tool designed to streamline the job application process. By analyzing your LinkedIn profile, it leverages advanced AI to rewrite your experiences using the STAR method, optimizing your content for Applicant Tracking Systems (ATS) while presenting it in a visually stunning layout.
+
+## 🚀 Key Features
+
+### 🤖 Intelligent Core
+- **AI Extraction & Optimization**: Uses Google's Gemini AI to parse LinkedIn PDFs and rewrite descriptions for maximum impact.
+- **STAR Method Application**: Automatically structures bullet points (Situation, Task, Action, Result) to highlight achievements.
+- **ATS Compliance**: Ensures your CV is readable by recruitment software.
+- **Multi-Language Support**: Smart translation into Italian, English, Spanish, French, and German while preserving proper nouns.
+
+### 🎨 Professional Design
+- **8  Premium Templates**:
+- **A4 Optimization**: Content is intelligently summarized to fit perfectly on a single page.
+- **Real-Time Preview**: Instant visual feedback as you customize your document.
+
+### ✨ Interactive Customization
+- **Smart Visibility**: AI suggests the most relevant skills, but you have full control.
+- **Drag & Drop**: Intuitively reorder skills, languages, and certifications.
+- **Granular Control**: Toggle visibility for individual items to tailor your CV for specific applications.
+
+---
+
+## 🛠️ Tech Stack
+
+### Frontend Architecture
+![Next.js](https://img.shields.io/badge/Next.js_15-black?style=flat&logo=next.js)
+![React](https://img.shields.io/badge/React_19-20232a?style=flat&logo=react)
+![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=flat&logo=typescript)
+![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=flat&logo=tailwind-css)
+
+- **Engine**: Next.js 16.1.1 (App Router & Turbopack)
+- **Styling**: TailwindCSS for utility-first design
+- **State & Interaction**: `@dnd-kit` for complex drag-and-drop interfaces
+- **PDF Engine**: `@react-pdf/renderer` for robust client-side PDF generation
+
+### Backend & AI
+- **Serverless API**: Next.js API Routes
+- **Intelligence**: Google Generative AI (Gemini Pro) via `@google/generative-ai`
+- **Parsing**: `pdf-parse` for text extraction
+
+---
 
 ## 🚀 Getting Started
 
 ### Prerequisites
-- Node.js 18+ installed
-- Google Gemini API key ([Get one here](https://makersuite.google.com/app/apikey))
+- **Node.js**: Version 18 or higher
+- **Gemini API Key**: [Get your key from Google AI Studio](https://makersuite.google.com/app/apikey)
 
-### Installation
+### Development Setup
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/Linkedin-To-CV.git
-   cd Linkedin-To-CV
+   git clone https://github.com/sciro24/CV-Architect.git
+   cd CV-Architect
    ```
 
 2. **Install dependencies**
@@ -56,67 +78,40 @@ An AI-powered web application that transforms LinkedIn PDF profiles into profess
    npm install
    ```
 
-3. **Set up environment variables**
-   
+3. **Configure Environment**
    Create a `.env.local` file in the root directory:
    ```env
    GEMINI_API_KEY=your_gemini_api_key_here
    ```
 
-4. **Run the development server**
+4. **Launch Application**
    ```bash
    npm run dev
    ```
+   Visit `http://localhost:3000` to see the app running.
 
-5. **Open your browser**
-   
-   Navigate to [http://localhost:3000](http://localhost:3000)
+---
 
-## 📖 Usage
+## 📖 How to Use
 
-### Step 1: Export Your LinkedIn Profile
-1. Go to your LinkedIn profile
-2. Click "More" → "Save to PDF"
-3. Download the PDF file
+1. **Export LinkedIn Profile**: Go to your profile -> `More` -> `Save to PDF`.
+2. **Upload**: Select your target language and upload the PDF to CV Architect.
+3. **Customize**:
+   - Select a template that fits your style.
+   - Use the "Eye" icons to show/hide specific skills or roles.
+   - Drag sections to reorder them based on priority.
+4. **Download**: Generate a print-ready PDF with one click.
 
-### Step 2: Upload and Generate
-1. Open the application
-2. Select your preferred language (Italian, English, Spanish, French, German)
-3. Upload your LinkedIn PDF
-4. Click "Generate CV" and wait for AI processing
+---
 
-### Step 3: Customize
-1. **Choose a Template**: Select from 4 professional designs
-2. **Customize Content**:
-   - Toggle skill visibility with the eye icon
-   - Drag and drop to reorder skills
-   - Show/hide certifications
-   - Reorder languages
+## 🌍 Localization
 
-### Step 4: Download
-- Click "Download PDF" to get your professional CV in A4 format
-
-## 🛠️ Tech Stack
-
-### Frontend
-- **Next.js 16.1.1** - React framework with Turbopack
-- **React 19** - UI library
-- **TypeScript** - Type safety
-- **TailwindCSS** - Styling
-- **@react-pdf/renderer** - PDF generation
-- **@dnd-kit** - Drag and drop functionality
-- **Lucide React** - Icons
-
-### Backend
-- **Next.js API Routes** - Serverless functions
-- **Google Generative AI (Gemini)** - AI-powered content extraction and optimization
-- **pdf-parse** - PDF text extraction
-
-## 🌍 Supported Languages
-
-- 🇮🇹 Italian (Italiano)
+Fully supported languages for interface and generated content:
+- 🇮🇹 Italian
 - 🇬🇧 English
-- 🇪🇸 Spanish (Español)
-- 🇫🇷 French (Français)
-- 🇩🇪 German (Deutsch)
+- 🇪🇸 Spanish
+- 🇫🇷 French
+- 🇩🇪 German
 
+---
+*Created by Diego Scirocco*
