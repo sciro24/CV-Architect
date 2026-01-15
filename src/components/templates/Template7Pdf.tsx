@@ -169,7 +169,7 @@ export const Template7Pdf: React.FC<TemplateProps> = ({ data, profileImage, lang
                         </View>
                         <View style={styles.contactRow}>
                             {personal_info.location && <Text style={styles.contactItem}>{personal_info.location}</Text>}
-                            {personal_info.linkedinUrl && <Text style={{ ...styles.contactItem, color: primaryColor }}>LinkedIn Profile</Text>}
+
                         </View>
                     </View>
 
@@ -232,6 +232,15 @@ export const Template7Pdf: React.FC<TemplateProps> = ({ data, profileImage, lang
                                     <Text style={styles.sectionTitle}>Languages</Text>
                                     {languages.filter(l => l.visible).map((lang, index) => (
                                         <Text key={index} style={styles.langItem}>{lang.name}</Text>
+                                    ))}
+                                </View>
+                            )}
+
+                            {data.certifications && data.certifications.length > 0 && (
+                                <View style={{ marginTop: 20 }}>
+                                    <Text style={styles.sectionTitle}>Certifications</Text>
+                                    {data.certifications.filter(c => c.visible).map((cert, index) => (
+                                        <Text key={index} style={styles.langItem}>{cert.name}</Text>
                                     ))}
                                 </View>
                             )}

@@ -132,8 +132,7 @@ export const Template6Pdf: React.FC<TemplateProps> = ({ data, profileImage, lang
                         {personal_info.email && <Text>{personal_info.email}</Text>}
                         {personal_info.email && personal_info.phone && <Text style={styles.separator}>|</Text>}
                         {personal_info.phone && <Text>{personal_info.phone}</Text>}
-                        {personal_info.phone && personal_info.linkedinUrl && <Text style={styles.separator}>|</Text>}
-                        {personal_info.linkedinUrl && <Text>LinkedIn Profile</Text>}
+
                     </View>
                 </View>
 
@@ -194,6 +193,15 @@ export const Template6Pdf: React.FC<TemplateProps> = ({ data, profileImage, lang
                         <Text style={styles.sectionTitle}>Languages</Text>
                         <Text>
                             {languages.filter(l => l.visible).map(l => l.name).join(' • ')}
+                        </Text>
+                    </View>
+                )}
+
+                {data.certifications && data.certifications.length > 0 && (
+                    <View style={styles.section}>
+                        <Text style={styles.sectionTitle}>Certifications</Text>
+                        <Text>
+                            {data.certifications.filter(c => c.visible).map(c => c.name).join(' • ')}
                         </Text>
                     </View>
                 )}

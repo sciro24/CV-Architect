@@ -31,11 +31,7 @@ export const Template7Web: React.FC<TemplateProps> = ({ data, profileImage, lang
                             </div>
                             <div className="flex gap-4">
                                 {personal_info.location && <span>{personal_info.location}</span>}
-                                {personal_info.linkedinUrl && (
-                                    <span style={{ color: primaryColor }} className="cursor-default">
-                                        LinkedIn Profile
-                                    </span>
-                                )}
+
                             </div>
                         </div>
                     </div>
@@ -129,6 +125,21 @@ export const Template7Web: React.FC<TemplateProps> = ({ data, profileImage, lang
                                     {languages.filter(l => l.visible).map((lang, index) => (
                                         <li key={index} className="text-sm font-medium text-gray-700 border-b border-gray-100 pb-1">
                                             {lang.name}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </section>
+                        )}
+
+                        {data.certifications && data.certifications.length > 0 && (
+                            <section>
+                                <h2 className="text-sm font-bold uppercase tracking-widest mb-4" style={{ color: primaryColor }}>
+                                    Certifications
+                                </h2>
+                                <ul className="space-y-2">
+                                    {data.certifications.filter(c => c.visible).map((cert, index) => (
+                                        <li key={index} className="text-sm font-medium text-gray-700 border-b border-gray-100 pb-1">
+                                            {cert.name}
                                         </li>
                                     ))}
                                 </ul>

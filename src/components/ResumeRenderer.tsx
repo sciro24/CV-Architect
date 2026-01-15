@@ -15,9 +15,10 @@ interface ResumeRendererProps {
     profileImage?: string;
     language: Language;
     customColor?: string;
+    onUpdate?: (path: string, value: any) => void;
 }
 
-export default function ResumeRenderer({ data, templateId, profileImage, language, customColor }: ResumeRendererProps) {
+export default function ResumeRenderer({ data, templateId, profileImage, language, customColor, onUpdate }: ResumeRendererProps) {
     const template = getTemplate(templateId);
     const t = dictionary[language] || dictionary['Italiano'];
 
@@ -32,7 +33,7 @@ export default function ResumeRenderer({ data, templateId, profileImage, languag
     const primaryColor = customColor || template.defaultPrimaryColor;
 
     const WebComponent = template.Web;
-    const PdfDocument = template.Pdf;
+    // const PdfDocument = template.Pdf; // PdfDocument is not used in this component
 
     return (
         <div className="flex flex-col h-full bg-gray-100">

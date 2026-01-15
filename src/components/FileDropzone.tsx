@@ -9,20 +9,18 @@ interface FileDropzoneProps {
     accept: Record<string, string[]>;
     label: string;
     icon?: React.ReactNode;
-    selectedFile?: File | null;
+    selectedFile: File | null;
     onClear?: () => void;
 }
 
 export default function FileDropzone({ onFileSelect, accept, label, icon, selectedFile, onClear }: FileDropzoneProps) {
-    const onDrop = useCallback((acceptedFiles: File[]) => {
-        if (acceptedFiles?.length > 0) {
-            onFileSelect(acceptedFiles[0]);
-        }
-    }, [onFileSelect]);
-
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
-        onDrop,
-        accept,
+        onDrop: (acceptedFiles) => {
+            if (acceptedFiles?.[0]) {
+                onFileSelect(acceptedFiles[0]);
+            }
+        },
+        accept: accept,
         multiple: false
     });
 

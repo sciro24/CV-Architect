@@ -185,7 +185,7 @@ export const Template8Pdf: React.FC<TemplateProps> = ({ data, profileImage, lang
                             {personal_info.email && <Text style={styles.metaItem}>{personal_info.email}</Text>}
                             {personal_info.phone && <Text style={styles.metaItem}>{personal_info.phone}</Text>}
                             {personal_info.location && <Text style={styles.metaItem}>{personal_info.location}</Text>}
-                            {personal_info.linkedinUrl && <Text style={{ ...styles.metaItem, color: primaryColor, fontWeight: 'bold' }}>IN</Text>}
+
                         </View>
                     </View>
                 </View>
@@ -253,6 +253,18 @@ export const Template8Pdf: React.FC<TemplateProps> = ({ data, profileImage, lang
                                     <View key={index} style={styles.langRow}>
                                         <View style={styles.langDot} />
                                         <Text style={styles.langText}>{lang.name}</Text>
+                                    </View>
+                                ))}
+                            </View>
+                        )}
+
+                        {data.certifications && data.certifications.length > 0 && (
+                            <View style={{ marginTop: 20 }}>
+                                <Text style={styles.sectionLabel}>Certifications</Text>
+                                {data.certifications.filter(c => c.visible).map((cert, index) => (
+                                    <View key={index} style={styles.langRow}>
+                                        <View style={styles.langDot} />
+                                        <Text style={styles.langText}>{cert.name}</Text>
                                     </View>
                                 ))}
                             </View>

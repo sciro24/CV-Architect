@@ -40,11 +40,7 @@ export const Template8Web: React.FC<TemplateProps> = ({ data, profileImage, lang
                             {personal_info.location && (
                                 <span>{personal_info.location}</span>
                             )}
-                            {personal_info.linkedinUrl && (
-                                <span style={{ color: primaryColor }} className="cursor-default font-bold">
-                                    in
-                                </span>
-                            )}
+
                         </div>
                     </div>
                 </header>
@@ -142,6 +138,22 @@ export const Template8Web: React.FC<TemplateProps> = ({ data, profileImage, lang
                                         <div key={index} className="text-sm font-medium text-slate-700 flex items-center gap-2">
                                             <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: primaryColor }}></span>
                                             {lang.name}
+                                        </div>
+                                    ))}
+                                </div>
+                            </section>
+                        )}
+
+                        {data.certifications && data.certifications.length > 0 && (
+                            <section>
+                                <h2 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-4">
+                                    Certifications
+                                </h2>
+                                <div className="flex flex-col gap-2">
+                                    {data.certifications.filter(c => c.visible).map((cert, index) => (
+                                        <div key={index} className="text-sm font-medium text-slate-700 flex items-center gap-2">
+                                            <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: primaryColor }}></span>
+                                            {cert.name}
                                         </div>
                                     ))}
                                 </div>

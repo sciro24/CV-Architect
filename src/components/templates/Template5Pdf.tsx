@@ -229,7 +229,7 @@ export const Template5Pdf: React.FC<TemplateProps> = ({ data, profileImage, lang
                             {personal_info.email && <Text style={styles.contactItem}>{personal_info.email}</Text>}
                             {personal_info.phone && <Text style={styles.contactItem}>{personal_info.phone}</Text>}
                             {personal_info.location && <Text style={styles.contactItem}>{personal_info.location}</Text>}
-                            {personal_info.linkedinUrl && <Text style={styles.contactItem}>Link to Profile</Text>}
+
                         </View>
 
                         {skills && skills.length > 0 && (
@@ -261,6 +261,15 @@ export const Template5Pdf: React.FC<TemplateProps> = ({ data, profileImage, lang
                                 <Text style={styles.sidebarTitle}>Languages</Text>
                                 {languages.filter(l => l.visible).map((lang, index) => (
                                     <Text key={index} style={styles.langItem}>{lang.name}</Text>
+                                ))}
+                            </View>
+                        )}
+
+                        {data.certifications && data.certifications.length > 0 && (
+                            <View style={styles.sidebarSection}>
+                                <Text style={styles.sidebarTitle}>Certifications</Text>
+                                {data.certifications.filter(c => c.visible).map((cert, index) => (
+                                    <Text key={index} style={styles.langItem}>{cert.name}</Text>
                                 ))}
                             </View>
                         )}

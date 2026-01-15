@@ -1,15 +1,17 @@
 import React from 'react';
 import { ResumeData } from '../../types/resume';
 import { Language } from '../../utils/translations';
+import { EditableField } from '../EditableField';
 
 interface TemplateProps {
     data: ResumeData;
     profileImage?: string;
     language: Language;
     primaryColor?: string;
+    onUpdate?: (path: string, value: any) => void;
 }
 
-export const Template3Web: React.FC<TemplateProps> = ({ data, profileImage, language, primaryColor = '#334155' }) => {
+export const Template3Web: React.FC<TemplateProps> = ({ data, profileImage, language, primaryColor = '#334155', onUpdate }) => {
     const { personal_info, work_experience, education, skills, languages } = data;
 
     return (
@@ -18,11 +20,11 @@ export const Template3Web: React.FC<TemplateProps> = ({ data, profileImage, lang
             <main className="w-[65%] p-8 pr-12 text-slate-800">
                 <header className="mb-12">
                     <h1 className="text-5xl font-extrabold tracking-tight mb-2" style={{ color: primaryColor }}>
-                        {personal_info.fullName}
+                        <EditableField value={personal_info.fullName} onChange={(val) => onUpdate?.('personal_info.fullName', val)} />
                     </h1>
                     {personal_info.summary && (
                         <div className="mt-6 border-l-4 pl-4 italic text-slate-600" style={{ borderColor: `${primaryColor}60` }}>
-                            <p>{personal_info.summary}</p>
+                            <EditableField value={personal_info.summary} onChange={(val) => onUpdate?.('personal_info.summary', val)} multiline className="w-full" />
                         </div>
                     )}
                 </header>
@@ -39,15 +41,21 @@ export const Template3Web: React.FC<TemplateProps> = ({ data, profileImage, lang
                                     <div key={index} className="group">
                                         <div className="flex justify-between items-baseline mb-1">
                                             <h3 className="font-bold text-lg text-slate-900">
-                                                {exp.title}
+                                                <EditableField value={exp.title} onChange={(val) => onUpdate?.(`work_experience[${index}].title`, val)} />
                                             </h3>
                                         </div>
                                         <div className="text-[#64748B] text-sm font-medium mb-2 uppercase tracking-wide">
-                                            {exp.company} | {exp.startDate} - {exp.endDate || 'Present'}
+                                            <EditableField value={exp.company} onChange={(val) => onUpdate?.(`work_experience[${index}].company`, val)} />
+                                            {' | '}
+                                            <EditableField value={exp.startDate} onChange={(val) => onUpdate?.(`work_experience[${index}].startDate`, val)} />
+                                            {' - '}
+                                            <EditableField value={exp.endDate || ''} onChange={(val) => onUpdate?.(`work_experience[${index}].endDate`, val)} placeholder="Present" />
                                         </div>
                                         <ul className="list-disc list-inside text-slate-600 leading-relaxed text-sm">
                                             {exp.description.map((desc, i) => (
-                                                <li key={i}>{desc}</li>
+                                                <li key={i}>
+                                                    <EditableField value={desc} onChange={(val) => onUpdate?.(`work_experience[${index}].description[${i}]`, val)} multiline />
+                                                </li>
                                             ))}
                                         </ul>
                                     </div>
@@ -78,29 +86,22 @@ export const Template3Web: React.FC<TemplateProps> = ({ data, profileImage, lang
                         {personal_info.email && (
                             <div>
                                 <span className="block font-bold text-slate-800 text-xs mb-1">Email</span>
-                                {personal_info.email}
+                                <EditableField value={personal_info.email} onChange={(val) => onUpdate?.('personal_info.email', val)} />
                             </div>
                         )}
                         {personal_info.phone && (
                             <div>
                                 <span className="block font-bold text-slate-800 text-xs mb-1">Phone</span>
-                                {personal_info.phone}
+                                <EditableField value={personal_info.phone} onChange={(val) => onUpdate?.('personal_info.phone', val)} />
                             </div>
                         )}
                         {personal_info.location && (
                             <div>
                                 <span className="block font-bold text-slate-800 text-xs mb-1">Location</span>
-                                {personal_info.location}
+                                <EditableField value={personal_info.location} onChange={(val) => onUpdate?.('personal_info.location', val)} />
                             </div>
                         )}
-                        {personal_info.linkedinUrl && (
-                            <div>
-                                <span className="block font-bold text-slate-800 text-xs mb-1">LinkedIn</span>
-                                <span className="text-blue-600/80 text-xs">
-                                    LinkedIn Profile
-                                </span>
-                            </div>
-                        )}
+
                     </div>
                 </section>
 
@@ -112,11 +113,17 @@ export const Template3Web: React.FC<TemplateProps> = ({ data, profileImage, lang
                         <div className="space-y-6">
                             {education.map((edu, index) => (
                                 <div key={index}>
-                                    <h4 className="font-bold text-slate-800 leading-tight">{edu.school}</h4>
+                                    <h4 className="font-bold text-slate-800 leading-tight">
+                                        <EditableField value={edu.school} onChange={(val) => onUpdate?.(`education[${index}].school`, val)} />
+                                    </h4>
                                     <div className="text-xs text-slate-500 font-medium my-1">
-                                        {edu.startDate} - {edu.endDate || 'Present'}
+                                        <EditableField value={edu.startDate} onChange={(val) => onUpdate?.(`education[${index}].startDate`, val)} />
+                                        {' - '}
+                                        <EditableField value={edu.endDate || ''} onChange={(val) => onUpdate?.(`education[${index}].endDate`, val)} placeholder="Present" />
                                     </div>
-                                    <div className="text-sm text-slate-600 italic">{edu.degree}</div>
+                                    <div className="text-sm text-slate-600 italic">
+                                        <EditableField value={edu.degree} onChange={(val) => onUpdate?.(`education[${index}].degree`, val)} />
+                                    </div>
                                 </div>
                             ))}
                         </div>
@@ -150,6 +157,21 @@ export const Template3Web: React.FC<TemplateProps> = ({ data, profileImage, lang
                             {languages.filter(l => l.visible).map((lang, index) => (
                                 <li key={index} className="text-sm text-slate-700 font-medium">
                                     {lang.name}
+                                </li>
+                            ))}
+                        </ul>
+                    </section>
+                )}
+
+                {data.certifications && data.certifications.length > 0 && (
+                    <section>
+                        <h3 className="text-sm font-bold text-[#475569] uppercase tracking-widest mb-4 border-b border-slate-300 pb-2">
+                            Certifications
+                        </h3>
+                        <ul className="space-y-2">
+                            {data.certifications.filter(c => c.visible).map((cert, index) => (
+                                <li key={index} className="text-sm text-slate-700 font-medium">
+                                    {cert.name}
                                 </li>
                             ))}
                         </ul>

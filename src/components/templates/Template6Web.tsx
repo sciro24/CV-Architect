@@ -25,12 +25,7 @@ export const Template6Web: React.FC<TemplateProps> = ({ data, profileImage, lang
                     {personal_info.email && <span>{personal_info.email}</span>}
                     {personal_info.email && personal_info.phone && <span>|</span>}
                     {personal_info.phone && <span>{personal_info.phone}</span>}
-                    {personal_info.phone && personal_info.linkedinUrl && <span>|</span>}
-                    {personal_info.linkedinUrl && (
-                        <span className="hover:underline cursor-default">
-                            LinkedIn
-                        </span>
-                    )}
+
                 </div>
             </header>
 
@@ -113,6 +108,17 @@ export const Template6Web: React.FC<TemplateProps> = ({ data, profileImage, lang
                         </h2>
                         <div className="text-sm">
                             {languages.filter(l => l.visible).map(l => l.name).join(' • ')}
+                        </div>
+                    </section>
+                )}
+
+                {data.certifications && data.certifications.length > 0 && (
+                    <section>
+                        <h2 className="text-sm font-bold uppercase tracking-widest mb-2 border-b pb-1" style={{ color: primaryColor, borderColor: '#e2e8f0' }}>
+                            Certifications
+                        </h2>
+                        <div className="text-sm">
+                            {data.certifications.filter(c => c.visible).map(c => c.name).join(' • ')}
                         </div>
                     </section>
                 )}

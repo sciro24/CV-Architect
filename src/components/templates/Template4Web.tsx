@@ -1,15 +1,17 @@
 import React from 'react';
 import { ResumeData } from '../../types/resume';
 import { Language } from '../../utils/translations';
+import { EditableField } from '../EditableField';
 
 interface TemplateProps {
     data: ResumeData;
     profileImage?: string;
     language: Language;
     primaryColor?: string;
+    onUpdate?: (path: string, value: any) => void;
 }
 
-export const Template4Web: React.FC<TemplateProps> = ({ data, profileImage, language, primaryColor = '#000000' }) => {
+export const Template4Web: React.FC<TemplateProps> = ({ data, profileImage, language, primaryColor = '#000000', onUpdate }) => {
     const { personal_info, work_experience, education, skills, languages } = data;
 
     return (
@@ -18,17 +20,13 @@ export const Template4Web: React.FC<TemplateProps> = ({ data, profileImage, lang
             <header className="flex justify-between items-start mb-12 border-b-2 pb-8" style={{ borderColor: primaryColor }}>
                 <div className="flex-1">
                     <h1 className="text-5xl font-light uppercase tracking-widest mb-4" style={{ color: primaryColor }}>
-                        {personal_info.fullName}
+                        <EditableField value={personal_info.fullName} onChange={(val) => onUpdate?.('personal_info.fullName', val)} />
                     </h1>
                     <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-gray-500 font-mono">
-                        {personal_info.email && <span>{personal_info.email}</span>}
-                        {personal_info.phone && <span>{personal_info.phone}</span>}
-                        {personal_info.location && <span>{personal_info.location}</span>}
-                        {personal_info.linkedinUrl && (
-                            <span className="hover:underline cursor-default">
-                                LinkedIn
-                            </span>
-                        )}
+                        {personal_info.email && <span><EditableField value={personal_info.email} onChange={(val) => onUpdate?.('personal_info.email', val)} /></span>}
+                        {personal_info.phone && <span><EditableField value={personal_info.phone} onChange={(val) => onUpdate?.('personal_info.phone', val)} /></span>}
+                        {personal_info.location && <span><EditableField value={personal_info.location} onChange={(val) => onUpdate?.('personal_info.location', val)} /></span>}
+
                     </div>
                 </div>
                 {profileImage && (
@@ -50,9 +48,9 @@ export const Template4Web: React.FC<TemplateProps> = ({ data, profileImage, lang
                             <h2 className="text-sm font-bold uppercase tracking-widest mb-4" style={{ color: primaryColor }}>
                                 About Me
                             </h2>
-                            <p className="text-gray-700 leading-relaxed text-justify">
-                                {personal_info.summary}
-                            </p>
+                            <div className="text-gray-700 leading-relaxed text-justify">
+                                <EditableField value={personal_info.summary} onChange={(val) => onUpdate?.('personal_info.summary', val)} multiline className="w-full" />
+                            </div>
                         </section>
                     )}
 
@@ -66,17 +64,25 @@ export const Template4Web: React.FC<TemplateProps> = ({ data, profileImage, lang
                                     <div key={index} className="relative border-l border-gray-200 pl-6 ml-1">
                                         <div className="absolute -left-1 top-2 w-2 h-2 rounded-full" style={{ backgroundColor: primaryColor }}></div>
                                         <div className="mb-2">
-                                            <h3 className="font-bold text-lg" style={{ color: primaryColor }}>{exp.title}</h3>
+                                            <h3 className="font-bold text-lg" style={{ color: primaryColor }}>
+                                                <EditableField value={exp.title} onChange={(val) => onUpdate?.(`work_experience[${index}].title`, val)} />
+                                            </h3>
                                             <div className="flex justify-between items-baseline text-sm mt-1">
-                                                <span className="font-medium text-gray-800">{exp.company}</span>
+                                                <span className="font-medium text-gray-800">
+                                                    <EditableField value={exp.company} onChange={(val) => onUpdate?.(`work_experience[${index}].company`, val)} />
+                                                </span>
                                                 <span className="text-gray-500 font-mono">
-                                                    {exp.startDate} — {exp.endDate || 'Present'}
+                                                    <EditableField value={exp.startDate} onChange={(val) => onUpdate?.(`work_experience[${index}].startDate`, val)} />
+                                                    {' — '}
+                                                    <EditableField value={exp.endDate || ''} onChange={(val) => onUpdate?.(`work_experience[${index}].endDate`, val)} placeholder="Present" />
                                                 </span>
                                             </div>
                                         </div>
                                         <ul className="text-gray-600 text-sm leading-relaxed list-disc list-inside">
                                             {exp.description.map((desc, i) => (
-                                                <li key={i}>{desc}</li>
+                                                <li key={i}>
+                                                    <EditableField value={desc} onChange={(val) => onUpdate?.(`work_experience[${index}].description[${i}]`, val)} multiline />
+                                                </li>
                                             ))}
                                         </ul>
                                     </div>
@@ -97,10 +103,16 @@ export const Template4Web: React.FC<TemplateProps> = ({ data, profileImage, lang
                                 {education.map((edu, index) => (
                                     <div key={index}>
                                         <div className="text-sm text-gray-500 font-mono mb-1">
-                                            {edu.startDate} - {edu.endDate || 'Present'}
+                                            <EditableField value={edu.startDate} onChange={(val) => onUpdate?.(`education[${index}].startDate`, val)} />
+                                            {' - '}
+                                            <EditableField value={edu.endDate || ''} onChange={(val) => onUpdate?.(`education[${index}].endDate`, val)} placeholder="Present" />
                                         </div>
-                                        <h3 className="font-bold leading-tight mb-1" style={{ color: primaryColor }}>{edu.school}</h3>
-                                        <div className="text-sm text-gray-700">{edu.degree}</div>
+                                        <h3 className="font-bold leading-tight mb-1" style={{ color: primaryColor }}>
+                                            <EditableField value={edu.school} onChange={(val) => onUpdate?.(`education[${index}].school`, val)} />
+                                        </h3>
+                                        <div className="text-sm text-gray-700">
+                                            <EditableField value={edu.degree} onChange={(val) => onUpdate?.(`education[${index}].degree`, val)} />
+                                        </div>
                                     </div>
                                 ))}
                             </div>
@@ -134,6 +146,21 @@ export const Template4Web: React.FC<TemplateProps> = ({ data, profileImage, lang
                                     </span>
                                 ))}
                             </div>
+                        </section>
+                    )}
+
+                    {data.certifications && data.certifications.length > 0 && (
+                        <section>
+                            <h2 className="text-sm font-bold uppercase tracking-widest mb-6" style={{ color: primaryColor }}>
+                                Certifications
+                            </h2>
+                            <ul className="space-y-2">
+                                {data.certifications.filter(c => c.visible).map((cert, index) => (
+                                    <li key={index} className="text-sm text-gray-700 border-b border-gray-100 pb-1">
+                                        {cert.name}
+                                    </li>
+                                ))}
+                            </ul>
                         </section>
                     )}
                 </aside>

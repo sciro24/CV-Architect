@@ -181,9 +181,7 @@ export const Template4Pdf: React.FC<TemplateProps> = ({ data, profileImage, lang
                             {personal_info.email && <Text>{personal_info.email}</Text>}
                             {personal_info.phone && <Text>{personal_info.phone}</Text>}
                             {personal_info.location && <Text>{personal_info.location}</Text>}
-                            {personal_info.linkedinUrl && (
-                                <Text>LinkedIn Profile</Text>
-                            )}
+
                         </View>
                     </View>
                     {profileImage && (
@@ -250,6 +248,15 @@ export const Template4Pdf: React.FC<TemplateProps> = ({ data, profileImage, lang
                                 <Text style={styles.sectionTitle}>Languages</Text>
                                 {languages.filter(l => l.visible).map((lang, index) => (
                                     <Text key={index} style={styles.langBadge}>{lang.name}</Text>
+                                ))}
+                            </View>
+                        )}
+
+                        {data.certifications && data.certifications.length > 0 && (
+                            <View style={styles.section}>
+                                <Text style={styles.sectionTitle}>Certifications</Text>
+                                {data.certifications.filter(c => c.visible).map((cert, index) => (
+                                    <Text key={index} style={styles.skillItem}>{cert.name}</Text>
                                 ))}
                             </View>
                         )}

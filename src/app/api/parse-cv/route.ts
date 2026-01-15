@@ -16,49 +16,57 @@ export async function POST(req: NextRequest) {
 
     // Convert file to buffer 
     const arrayBuffer = await file.arrayBuffer();
-    const buffer = Buffer.from(arrayBuffer);
 
-    // Dynamic import for pdf-parse to avoid top-level bundling issues with Next.js App Router
-    let pdfParse: any;
-    try {
-      const pdfParseModule = await import('pdf-parse');
-      pdfParse = pdfParseModule.default || pdfParseModule; // Handle ESM/CJS interop
-
-      // Double check it's a function
-      if (typeof pdfParse !== 'function') {
-        // Some bundlers nest it deeply, check default.default just in case
-        if (typeof (pdfParse as any).default === 'function') {
-          pdfParse = (pdfParse as any).default;
-        }
-      }
-    } catch (importError) {
-      console.error('Failed to load pdf-parse module dynamically:', importError);
-      throw new Error('Server Configuration Error: PDF Parser could not be loaded.');
-    }
-
-    if (typeof pdfParse !== 'function') {
-      console.error('pdf-parse loaded as:', typeof pdfParse, pdfParse);
-      throw new Error('PDF Parser library initialization failed (not a function).');
-    }
-
-    // Parse PDF text
     let text = '';
-    try {
-      const pdfData = await pdfParse(buffer);
-      text = pdfData.text;
-    } catch (pdfError) {
-      console.error('Error parsing PDF content:', pdfError);
-      throw new Error('Failed to read PDF file content. Ensure it is a valid PDF.');
+
+    if (file.type === 'text/plain' || file.name.endsWith('.txt')) {
+      const decoder = new TextDecoder('utf-8');
+      text = decoder.decode(arrayBuffer);
+    } else {
+      // PDF Processing
+      const buffer = Buffer.from(arrayBuffer);
+
+      // Dynamic import for pdf-parse to avoid top-level bundling issues with Next.js App Router
+      let pdfParse: any;
+      try {
+        const pdfParseModule = await import('pdf-parse');
+        pdfParse = pdfParseModule.default || pdfParseModule; // Handle ESM/CJS interop
+
+        // Double check it's a function
+        if (typeof pdfParse !== 'function') {
+          // Some bundlers nest it deeply, check default.default just in case
+          if (typeof (pdfParse as any).default === 'function') {
+            pdfParse = (pdfParse as any).default;
+          }
+        }
+      } catch (importError) {
+        console.error('Failed to load pdf-parse module dynamically:', importError);
+        throw new Error('Server Configuration Error: PDF Parser could not be loaded.');
+      }
+
+      if (typeof pdfParse !== 'function') {
+        console.error('pdf-parse loaded as:', typeof pdfParse, pdfParse);
+        throw new Error('PDF Parser library initialization failed (not a function).');
+      }
+
+      // Parse PDF text
+      try {
+        const pdfData = await pdfParse(buffer);
+        text = pdfData.text;
+      } catch (pdfError) {
+        console.error('Error parsing PDF content:', pdfError);
+        throw new Error('Failed to read PDF file content. Ensure it is a valid PDF.');
+      }
     }
 
     if (!text || text.length < 50) {
-      throw new Error('Could not extract enough text from PDF. It might be image-based or empty.');
+      throw new Error('Could not extract enough text from file. It might be empty.');
     }
 
     // Call Gemini
     // Call Gemini
-    // Using gemma-3-27b-it as requested (or gemma-3-27b if it is the precise string)
-    const model = genAI.getGenerativeModel({ model: 'gemma-3-27b-it' });
+    // Models to try in order of preference
+    const models = ['gemma-3-27b-it', 'gemma-3-12b-it'];
 
     const systemPrompt = `Sei un esperto HR specializzato in ottimizzazione CV per sistemi ATS (Applicant Tracking Systems).
 
@@ -68,6 +76,7 @@ export async function POST(req: NextRequest) {
 1. Traduci TUTTO il contenuto descrittivo (Summary, Descrizioni lavori, Skills) in: **${language}**
 2. NON tradurre: Nomi Aziende, Nomi Scuole/Università, Nomi Certificazioni
 3. Usa verbi d'azione e metodo STAR (Situation-Task-Action-Result) ma sii ESTREMAMENTE conciso
+4. SE UN'ESPERIENZA NON HA DESCRIZIONE: Genera 2 bullet points generici e professionali basati sul Job Title. NON inventare fatti specifici o numeri, descrivi mansioni standard per quel ruolo.
 
 **LIMITI DI LUNGHEZZA (RISPETTA RIGOROSAMENTE)**:
 - Summary: max 200 caratteri
@@ -124,9 +133,26 @@ Struttura JSON richiesta:
     
     Non includere markdown o backticks. Restituisci solo il raw JSON.`;
 
-    const result = await model.generateContent([systemPrompt, text.slice(0, 30000)]);
-    const response = await result.response;
-    const jsonString = response.text().replace(/```json/g, '').replace(/```/g, '').trim();
+    let jsonString = '';
+    let lastError;
+
+    for (const modelName of models) {
+      try {
+        console.log(`Attempting with model: ${modelName}`);
+        const model = genAI.getGenerativeModel({ model: modelName });
+        const result = await model.generateContent([systemPrompt, text.slice(0, 30000)]);
+        const response = await result.response;
+        jsonString = response.text().replace(/```json/g, '').replace(/```/g, '').trim();
+        break;
+      } catch (e) {
+        console.warn(`Model ${modelName} failed:`, e instanceof Error ? e.message : e);
+        lastError = e;
+      }
+    }
+
+    if (!jsonString) {
+      throw lastError || new Error('All models failed to generate content');
+    }
 
     let resumeData: ResumeData;
     try {

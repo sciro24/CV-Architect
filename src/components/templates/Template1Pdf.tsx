@@ -200,12 +200,7 @@ export const Template1Pdf: React.FC<TemplateProps> = ({ data, profileImage, lang
                                 <Text style={styles.contactValue}>{personal_info.location}</Text>
                             </View>
                         )}
-                        {personal_info.linkedinUrl && (
-                            <View style={styles.contactItem}>
-                                <Text style={styles.contactLabel}>LinkedIn</Text>
-                                <Text style={styles.contactValue}>{personal_info.linkedinUrl.replace(/^https?:\/\//, '')}</Text>
-                            </View>
-                        )}
+
                     </View>
 
                     {skills && skills.length > 0 && (
@@ -268,6 +263,20 @@ export const Template1Pdf: React.FC<TemplateProps> = ({ data, profileImage, lang
                                         <Text style={styles.date}>{edu.startDate} - {edu.endDate || 'Present'}</Text>
                                     </View>
                                     <Text style={styles.company}>{edu.degree}</Text>
+                                </View>
+                            ))}
+                        </View>
+                    )}
+
+                    {data.certifications && data.certifications.length > 0 && (
+                        <View style={styles.section}>
+                            <Text style={styles.sectionTitle}>Certifications</Text>
+                            {data.certifications.filter(c => c.visible).map((cert, index) => (
+                                <View key={index} style={[styles.experienceItem, { borderLeftWidth: 0, paddingLeft: 0, marginBottom: 4 }]}>
+                                    <View style={styles.bulletPoint}>
+                                        <View style={styles.bullet} />
+                                        <Text style={styles.description}>{cert.name}</Text>
+                                    </View>
                                 </View>
                             ))}
                         </View>

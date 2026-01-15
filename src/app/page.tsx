@@ -56,7 +56,7 @@ export default function Home() {
   // New State for "Landing View" vs "Editor View"
   const isEditorMode = !!resumeData || isAnalyzing;
 
-  const handlePdfSelect = (selectedFile: File) => {
+  const handleFileSelect = (selectedFile: File) => {
     setFile(selectedFile);
     setError(null);
     // Auto-start generation if on landing page
@@ -165,6 +165,53 @@ export default function Home() {
     setCustomColors({});
   };
 
+  const handleDataUpdate = (path: string, value: any) => {
+    if (!resumeData) return;
+    setResumeData(prev => {
+      if (!prev) return null;
+      // Deep clone to avoid mutation issues
+      const newData = JSON.parse(JSON.stringify(prev));
+
+      // Navigate paths like "personal_info.fullName" or "work_experience[0].title"
+      // Simple path support for now (we can use lodash set or similar if needed, but manual split is fine for shallow/medium depth)
+
+      const parts = path.split('.');
+      let current = newData;
+
+      // Handle array indices in path like "array[0]"
+      // But for robustness, I'll assume the component simply passes the full object update for arrays 
+      // OR keeps paths simple. 
+      // Actually, for "work_experience[0].title", regex is needed. 
+      // Let's implement a simple path setter.
+
+      for (let i = 0; i < parts.length - 1; i++) {
+        const part = parts[i];
+        // Check for array index: "work_experience[0]"
+        const arrayMatch = part.match(/^(.+)\[(\d+)\]$/);
+        if (arrayMatch) {
+          const key = arrayMatch[1];
+          const index = parseInt(arrayMatch[2]);
+          current = current[key][index];
+        } else {
+          current = current[part];
+        }
+      }
+
+      const lastPart = parts[parts.length - 1];
+      const arrayMatch = lastPart.match(/^(.+)\[(\d+)\]$/);
+
+      if (arrayMatch) {
+        const key = arrayMatch[1];
+        const index = parseInt(arrayMatch[2]);
+        current[key][index] = value;
+      } else {
+        current[lastPart] = value;
+      }
+
+      return newData;
+    });
+  };
+
   const Logo = () => (
     <div className="flex items-center gap-2">
       <div className="bg-gray-900 text-white p-2 rounded-lg shadow-md">
@@ -247,9 +294,9 @@ export default function Home() {
                   type="file"
                   className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
                   onChange={(e) => {
-                    if (e.target.files?.[0]) handlePdfSelect(e.target.files[0]);
+                    if (e.target.files?.[0]) handleFileSelect(e.target.files[0]);
                   }}
-                  accept=".pdf"
+                  accept=".pdf,.txt"
                 />
                 <div className="flex flex-col items-center justify-center gap-4">
                   <div className="bg-white p-4 rounded-lg border border-gray-100 shadow-sm group-hover:scale-105 transition-transform text-[#0077b5]">
@@ -392,7 +439,7 @@ export default function Home() {
         <footer className="bg-white border-t border-gray-200 py-12 px-6 relative z-10">
           <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
             <Logo />
-            <p className="text-xs text-gray-400 font-mono">{t.footer.rights}</p>
+            <p className="text-xs text-gray-400 font-mono">{t.footer.rights} | Created by Diego Scirocco</p>
           </div>
         </footer>
       </div>
@@ -502,8 +549,11 @@ export default function Home() {
                 </div>
               ) : (
                 <FileDropzone
-                  onFileSelect={handlePdfSelect}
-                  accept={{ 'application/pdf': ['.pdf'] }}
+                  onFileSelect={handleFileSelect}
+                  accept={{
+                    'application/pdf': ['.pdf'],
+                    'text/plain': ['.txt']
+                  }}
                   label={t.editor.changePdf}
                   selectedFile={file}
                 />
@@ -679,6 +729,7 @@ export default function Home() {
                 profileImage={profileImageUrl}
                 language={selectedLanguage as any}
                 customColor={customColors[templateId]}
+                onUpdate={handleDataUpdate}
               />
             ) : (
               <div className="h-full flex items-center justify-center text-gray-300 font-mono text-xs uppercase tracking-widest">

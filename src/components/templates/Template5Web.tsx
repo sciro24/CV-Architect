@@ -57,14 +57,7 @@ export const Template5Web: React.FC<TemplateProps> = ({ data, profileImage, lang
                                     <span style={{ color: primaryColor }} className="opacity-70">📍</span> {personal_info.location}
                                 </div>
                             )}
-                            {personal_info.linkedinUrl && (
-                                <div className="flex items-center gap-2">
-                                    <span style={{ color: primaryColor }} className="opacity-70">🔗</span>
-                                    <span className="font-medium">
-                                        LinkedIn Profile
-                                    </span>
-                                </div>
-                            )}
+
                         </div>
                     </section>
 
@@ -118,6 +111,22 @@ export const Template5Web: React.FC<TemplateProps> = ({ data, profileImage, lang
                                 {languages.filter(l => l.visible).map((lang, index) => (
                                     <li key={index} className="text-sm font-medium text-gray-700 flex justify-between border-b border-gray-200 pb-1">
                                         {lang.name}
+                                    </li>
+                                ))}
+                            </ul>
+                        </section>
+                    )}
+
+                    {data.certifications && data.certifications.length > 0 && (
+                        <section>
+                            <h3 className="text-lg font-bold uppercase mb-4 flex items-center gap-2" style={{ color: primaryColor }}>
+                                <span className="w-2 h-2 rounded-full" style={{ backgroundColor: primaryColor }}></span>
+                                Certifications
+                            </h3>
+                            <ul className="space-y-2">
+                                {data.certifications.filter(c => c.visible).map((cert, index) => (
+                                    <li key={index} className="text-sm font-medium text-gray-700 flex justify-between border-b border-gray-200 pb-1">
+                                        {cert.name}
                                     </li>
                                 ))}
                             </ul>

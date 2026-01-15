@@ -244,12 +244,7 @@ export const Template3Pdf: React.FC<TemplateProps> = ({ data, profileImage, lang
                                 <Text style={styles.contactValue}>{personal_info.location}</Text>
                             </View>
                         )}
-                        {personal_info.linkedinUrl && (
-                            <View style={styles.contactItem}>
-                                <Text style={styles.contactLabel}>LinkedIn</Text>
-                                <Text style={styles.contactValue}>Link to Profile</Text>
-                            </View>
-                        )}
+
                     </View>
 
                     {education && education.length > 0 && (
@@ -281,6 +276,15 @@ export const Template3Pdf: React.FC<TemplateProps> = ({ data, profileImage, lang
                             <Text style={styles.sidebarTitle}>Languages</Text>
                             {languages.filter(l => l.visible).map((lang, index) => (
                                 <Text key={index} style={styles.contactValue}>• {lang.name}</Text>
+                            ))}
+                        </View>
+                    )}
+
+                    {data.certifications && data.certifications.length > 0 && (
+                        <View style={styles.sidebarSection}>
+                            <Text style={styles.sidebarTitle}>Certifications</Text>
+                            {data.certifications.filter(c => c.visible).map((cert, index) => (
+                                <Text key={index} style={styles.contactValue}>• {cert.name}</Text>
                             ))}
                         </View>
                     )}
