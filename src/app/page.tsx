@@ -13,6 +13,7 @@ import { SectionEditor } from '@/components/SectionEditor';
 import { Language, siteTranslations } from '@/utils/translations';
 import { ImageCropperModal } from '@/components/ImageCropperModal';
 import { exportToDocx, exportToJson, exportToTxt } from '@/utils/export';
+import { ChatInterface } from '@/components/ChatInterface';
 
 const LANGUAGES: Language[] = ['Italiano', 'English', 'Español', 'Français', 'Deutsch'];
 
@@ -33,7 +34,11 @@ export default function Home() {
   const [templateId, setTemplateId] = useState<string>('template1');
   const [selectedLanguage, setSelectedLanguage] = useState<Language>('Italiano');
   const [customColors, setCustomColors] = useState<Record<string, string>>({});
+
   const [originalImageSrc, setOriginalImageSrc] = useState<string | null>(null);
+
+  // Input Method Tab State
+  const [activeTab, setActiveTab] = useState<'pdf' | 'text' | 'chat'>('pdf');
 
   const PRESET_COLORS = [
     // Dark Professional
@@ -288,25 +293,91 @@ export default function Home() {
               {t.hero.subtitle}
             </p>
 
-            <div className="bg-white p-2 rounded-xl shadow-xl shadow-gray-200/50 max-w-lg mx-auto border border-gray-100">
-              <div className="border border-dashed border-gray-300 rounded-lg p-10 hover:bg-gray-50/50 hover:border-gray-400 transition-all cursor-pointer group relative bg-gray-50/30">
-                <input
-                  type="file"
-                  className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
-                  onChange={(e) => {
-                    if (e.target.files?.[0]) handleFileSelect(e.target.files[0]);
-                  }}
-                  accept=".pdf,.txt"
-                />
-                <div className="flex flex-col items-center justify-center gap-4">
-                  <div className="bg-white p-4 rounded-lg border border-gray-100 shadow-sm group-hover:scale-105 transition-transform text-[#0077b5]">
-                    <Linkedin size={36} />
+            <div className="bg-white p-6 rounded-2xl shadow-xl shadow-gray-200/50 max-w-2xl mx-auto border border-gray-100">
+
+              {/* Tabs */}
+              <div className="flex p-1 bg-gray-100 rounded-lg mb-6">
+                <button
+                  onClick={() => setActiveTab('pdf')}
+                  className={`flex-1 py-2 text-xs font-bold rounded-md transition-all ${activeTab === 'pdf' ? 'bg-white shadow-sm text-gray-900' : 'text-gray-500 hover:text-gray-700'}`}
+                >
+                  📄 Existing CV (PDF)
+                </button>
+                <button
+                  onClick={() => setActiveTab('text')}
+                  className={`flex-1 py-2 text-xs font-bold rounded-md transition-all ${activeTab === 'text' ? 'bg-white shadow-sm text-gray-900' : 'text-gray-500 hover:text-gray-700'}`}
+                >
+                  📝 Text Notes
+                </button>
+                <button
+                  onClick={() => setActiveTab('chat')}
+                  className={`flex-1 py-2 text-xs font-bold rounded-md transition-all ${activeTab === 'chat' ? 'bg-white shadow-sm text-gray-900' : 'text-gray-500 hover:text-gray-700'}`}
+                >
+                  🤖 Chat Interview
+                </button>
+              </div>
+
+              {/* Content Areas */}
+              <div className="min-h-[300px] flex flex-col justify-center">
+
+                {activeTab === 'pdf' && (
+                  <div className="border-2 border-dashed border-gray-200 rounded-xl p-10 hover:bg-gray-50/50 hover:border-gray-400 transition-all cursor-pointer group relative bg-gray-50/30">
+                    <input
+                      type="file"
+                      className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                      onChange={(e) => {
+                        if (e.target.files?.[0]) handleFileSelect(e.target.files[0]);
+                      }}
+                      accept=".pdf"
+                    />
+                    <div className="flex flex-col items-center justify-center gap-4">
+                      <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm group-hover:scale-105 transition-transform text-[#0077b5]">
+                        <Linkedin size={40} />
+                      </div>
+                      <div>
+                        <h3 className="text-lg font-bold text-gray-900">Upload LinkedIn PDF or CV</h3>
+                        <p className="text-xs text-gray-500 mt-2">Drag & drop or click to browse</p>
+                      </div>
+                    </div>
                   </div>
-                  <div>
-                    <h3 className="text-lg font-bold text-gray-900">{t.hero.uploadTitle}</h3>
-                    <p className="text-sm text-gray-500 mt-1">{t.hero.uploadDesc}</p>
+                )}
+
+                {activeTab === 'text' && (
+                  <div className="border-2 border-dashed border-gray-200 rounded-xl p-10 hover:bg-gray-50/50 hover:border-gray-400 transition-all cursor-pointer group relative bg-gray-50/30">
+                    <input
+                      type="file"
+                      className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                      onChange={(e) => {
+                        if (e.target.files?.[0]) handleFileSelect(e.target.files[0]);
+                      }}
+                      accept=".txt"
+                    />
+                    <div className="flex flex-col items-center justify-center gap-4">
+                      <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm group-hover:scale-105 transition-transform text-gray-700">
+                        <FileText size={40} />
+                      </div>
+                      <div>
+                        <h3 className="text-lg font-bold text-gray-900">Upload Text File</h3>
+                        <p className="text-xs text-gray-500 mt-2">Paste your experience in a .txt file</p>
+                      </div>
+                    </div>
                   </div>
-                </div>
+                )}
+
+                {activeTab === 'chat' && (
+                  <div className="w-full">
+                    <ChatInterface
+                      isGenerating={isAnalyzing}
+                      language={selectedLanguage}
+                      onGenerateCV={(text) => {
+                        const blob = new Blob([text], { type: 'text/plain' });
+                        const file = new File([blob], "interview_notes.txt", { type: "text/plain" });
+                        handleGenerateValues(undefined, file);
+                      }}
+                    />
+                  </div>
+                )}
+
               </div>
             </div>
 
