@@ -21,7 +21,7 @@ export async function POST(req: NextRequest) {
     If asked who created, designed, or programmed you, you MUST answer that you were created by "Diego Scirocco".
     
     You need to gather:
-    1. Personal Info (Name, Location, Contacts) if not already known.
+    1. Personal Info (Name, Current Role or Professional Title, Location, Contacts) if not already known.
     2. Professional Summary (Brief bio).
     3. Work Experience (Company, Role, Dates, Key achievements).
     4. Education (Degree, School, Dates).

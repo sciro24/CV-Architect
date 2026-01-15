@@ -22,7 +22,7 @@ export const dictionary: Record<Language, {
         languages: 'Lingue',
         downloadPdf: 'Scarica PDF',
         generatedWith: 'Generato con LinkedIn to CV',
-        chatGreeting: "Ciao! Sono il tuo Recruiter IA. Ti aiuterò a creare il tuo CV. Iniziamo con il tuo nome e il tuo ruolo attuale?"
+        chatGreeting: "Ciao! Sono il tuo Recruiter IA. Ti aiuterò a creare il tuo CV. Iniziamo con il tuo nome e il tuo ruolo o titolo professionale attuale?"
     },
     'English': {
         contact: 'Contact',
@@ -34,7 +34,7 @@ export const dictionary: Record<Language, {
         languages: 'Languages',
         downloadPdf: 'Download PDF',
         generatedWith: 'Generated with LinkedIn to CV',
-        chatGreeting: "Hi! I'm your AI Recruiter. I'm here to help you build your CV. Let's start with your name and your current role?"
+        chatGreeting: "Hi! I'm your AI Recruiter. I'm here to help you build your CV. Let's start with your name and your current role or professional title?"
     },
     'Español': {
         contact: 'Contacto',
@@ -46,7 +46,7 @@ export const dictionary: Record<Language, {
         languages: 'Idiomas',
         downloadPdf: 'Descargar PDF',
         generatedWith: 'Generado con LinkedIn to CV',
-        chatGreeting: "¡Hola! Soy tu Reclutador IA. Estoy aquí para ayudarte a crear tu CV. ¿Empezamos por tu nombre y tu puesto actual?"
+        chatGreeting: "¡Hola! Soy tu Reclutador IA. Estoy aquí para ayudarte a crear tu CV. ¿Empezamos por tu nombre y tu puesto o título profesional actual?"
     },
     'Français': {
         contact: 'Contact',
@@ -58,7 +58,7 @@ export const dictionary: Record<Language, {
         languages: 'Langues',
         downloadPdf: 'Télécharger PDF',
         generatedWith: 'Généré avec LinkedIn to CV',
-        chatGreeting: "Bonjour ! Je suis votre Recruteur IA. Je suis là pour vous aider à créer votre CV. Commençons par votre nom et votre poste actuel ?"
+        chatGreeting: "Bonjour ! Je suis votre Recruteur IA. Je suis là pour vous aider à créer votre CV. Commençons par votre nom et votre poste ou titre professionnel actuel ?"
     },
     'Deutsch': {
         contact: 'Kontakt',
@@ -70,7 +70,7 @@ export const dictionary: Record<Language, {
         languages: 'Sprachen',
         downloadPdf: 'PDF Herunterladen',
         generatedWith: 'Erstellt mit LinkedIn to CV',
-        chatGreeting: "Hallo! Ich bin Ihr KI-Recruiter. Ich helfe Ihnen beim Erstellen Ihres Lebenslaufs. Fangen wir mit Ihrem Namen und Ihrer aktuellen Rolle an?"
+        chatGreeting: "Hallo! Ich bin Ihr KI-Recruiter. Ich helfe Ihnen beim Erstellen Ihres Lebenslaufs. Fangen wir mit Ihrem Namen und Ihrem aktuellen Titel oder Rolle an?"
     }
 };
 
@@ -324,7 +324,7 @@ export const siteTranslations: Record<Language, {
             uploadTitle: 'CV / PDF LinkedIn',
             uploadDesc: 'Glisser-déposer ou cliquer pour parcourir',
             uploadButton: 'Générer CV',
-            noSignup: 'Pas d\'inscription • Gratuit • pas de PUBLICITÉ • Confidentialité',
+            noSignup: 'Pas d\'inscription • Gratuit • NO ADS • Confidentialité',
             inputTooltips: {
                 pdf: 'Téléchargez votre CV actuel ou l\'exportation de votre profil LinkedIn. Nous extrairons automatiquement les données.',
                 text: 'Collez votre expérience professionnelle, votre formation et vos compétences dans un simple fichier .txt.',
@@ -383,7 +383,7 @@ export const siteTranslations: Record<Language, {
             uploadTitle: 'CV / LinkedIn PDF',
             uploadDesc: 'Drag & Drop oder Klicken zum Durchsuchen',
             uploadButton: 'Lebenslauf Erstellen',
-            noSignup: 'Keine Anmeldung • Kostenlos • KEINE WERBUNG • Datenschutz',
+            noSignup: 'Keine Anmeldung • Kostenlos • NO ADS • Datenschutz',
             inputTooltips: {
                 pdf: 'Laden Sie Ihren aktuellen Lebenslauf oder Ihr LinkedIn-Profil hoch. Wir extrahieren die Daten automatisch.',
                 text: 'Fügen Sie Ihre Berufserfahrung, Ausbildung und Fähigkeiten in eine einfache .txt-Datei ein.',
