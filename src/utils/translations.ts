@@ -10,6 +10,7 @@ export const dictionary: Record<Language, {
     languages: string;
     downloadPdf: string;
     generatedWith: string;
+    chatGreeting: string;
 }> = {
     'Italiano': {
         contact: 'Contatti',
@@ -21,6 +22,7 @@ export const dictionary: Record<Language, {
         languages: 'Lingue',
         downloadPdf: 'Scarica PDF',
         generatedWith: 'Generato con LinkedIn to CV',
+        chatGreeting: "Ciao! Sono il tuo Recruiter IA. Ti aiuterò a creare il tuo CV. Iniziamo con il tuo nome e il tuo ruolo attuale?"
     },
     'English': {
         contact: 'Contact',
@@ -32,6 +34,7 @@ export const dictionary: Record<Language, {
         languages: 'Languages',
         downloadPdf: 'Download PDF',
         generatedWith: 'Generated with LinkedIn to CV',
+        chatGreeting: "Hi! I'm your AI Recruiter. I'm here to help you build your CV. Let's start with your name and your current role?"
     },
     'Español': {
         contact: 'Contacto',
@@ -43,6 +46,7 @@ export const dictionary: Record<Language, {
         languages: 'Idiomas',
         downloadPdf: 'Descargar PDF',
         generatedWith: 'Generado con LinkedIn to CV',
+        chatGreeting: "¡Hola! Soy tu Reclutador IA. Estoy aquí para ayudarte a crear tu CV. ¿Empezamos por tu nombre y tu puesto actual?"
     },
     'Français': {
         contact: 'Contact',
@@ -54,6 +58,7 @@ export const dictionary: Record<Language, {
         languages: 'Langues',
         downloadPdf: 'Télécharger PDF',
         generatedWith: 'Généré avec LinkedIn to CV',
+        chatGreeting: "Bonjour ! Je suis votre Recruteur IA. Je suis là pour vous aider à créer votre CV. Commençons par votre nom et votre poste actuel ?"
     },
     'Deutsch': {
         contact: 'Kontakt',
@@ -65,6 +70,7 @@ export const dictionary: Record<Language, {
         languages: 'Sprachen',
         downloadPdf: 'PDF Herunterladen',
         generatedWith: 'Erstellt mit LinkedIn to CV',
+        chatGreeting: "Hallo! Ich bin Ihr KI-Recruiter. Ich helfe Ihnen beim Erstellen Ihres Lebenslaufs. Fangen wir mit Ihrem Namen und Ihrer aktuellen Rolle an?"
     }
 };
 
@@ -83,6 +89,11 @@ export const siteTranslations: Record<Language, {
         uploadDesc: string;
         uploadButton: string;
         noSignup: string;
+        inputTooltips: {
+            pdf: string;
+            text: string;
+            chat: string;
+        };
     };
     features: {
         aiTitle: string;
@@ -130,13 +141,18 @@ export const siteTranslations: Record<Language, {
         },
         hero: {
             languageLabel: 'Lingua Sito e CV:',
-            titleStart: 'Trasforma il tuo Profilo LinkedIn in un',
-            titleHighlight: 'CV Professionale',
-            subtitle: 'Smetti di lottare con la formattazione. Carica il tuo PDF di LinkedIn e lascia che la nostra IA crei un curriculum stupendo e ottimizzato ATS in pochi secondi.',
-            uploadTitle: 'Carica PDF LinkedIn',
+            titleStart: 'Trasforma la tua Storia Professionale in un',
+            titleHighlight: 'CV Vincente',
+            subtitle: 'Smetti di lottare con la formattazione. Usa il tuo CV esistente, appunti o chatta con la nostra IA per creare un curriculum perfetto.',
+            uploadTitle: 'CV / PDF LinkedIn',
             uploadDesc: 'Trascina o Clicca per Scegliere',
             uploadButton: 'Genera Curriculum',
-            noSignup: 'Nessuna registrazione • Gratis • Privacy garantita'
+            noSignup: 'Nessuna registrazione • Gratis • Privacy garantita',
+            inputTooltips: {
+                pdf: 'Carica il tuo attuale CV o il profilo LinkedIn esportato in PDF. Estarremo automaticamente i dati.',
+                text: 'Incolla la tua esperienza lavorativa, formazione e skills in un file .txt semplice.',
+                chat: 'Parla con la nostra IA per costruire il CV passo passo rispondendo a semplici domande.'
+            }
         },
         features: {
             aiTitle: 'Estrazione IA',
@@ -184,13 +200,18 @@ export const siteTranslations: Record<Language, {
         },
         hero: {
             languageLabel: 'Site & CV Language:',
-            titleStart: 'Turn your LinkedIn Profile into a',
-            titleHighlight: 'Professional CV',
-            subtitle: 'Stop fighting with formatting. Upload your LinkedIn PDF and let our AI create a stunning, ATS-optimized resume in seconds.',
-            uploadTitle: 'Upload LinkedIn PDF',
+            titleStart: 'Transform your Professional History into a',
+            titleHighlight: 'Winning CV',
+            subtitle: 'Stop fighting with formatting. Use your existing CV, notes, or chat with AI to create a stunning, ATS-optimized resume in seconds.',
+            uploadTitle: 'CV / LinkedIn PDF',
             uploadDesc: 'Drag & Drop or Click to Browse',
             uploadButton: 'Generate Resume',
-            noSignup: 'No sign-up required • Free to use • Privacy focused'
+            noSignup: 'No sign-up required • Free to use • Privacy focused',
+            inputTooltips: {
+                pdf: 'Upload your current resume or LinkedIn profile export. We will automatically extract the data.',
+                text: 'Paste your work experience, education, and skills into a simple .txt file.',
+                chat: 'Chat with our AI to build your CV step-by-step by answering simple questions.'
+            }
         },
         features: {
             aiTitle: 'AI-Powered Extraction',
@@ -238,13 +259,18 @@ export const siteTranslations: Record<Language, {
         },
         hero: {
             languageLabel: 'Idioma Sitio y CV:',
-            titleStart: 'Transforma tu Perfil de LinkedIn en un',
-            titleHighlight: 'CV Profesional',
-            subtitle: 'Deja de luchar con el formato. Sube tu PDF de LinkedIn y deja que nuestra IA cree un currículum impresionante y optimizado para ATS en segundos.',
-            uploadTitle: 'Subir PDF de LinkedIn',
+            titleStart: 'Transforma tu Historia Profesional en un',
+            titleHighlight: 'CV Ganador',
+            subtitle: 'Deja de luchar con el formato. Usa tu CV actual, notas o chatea con la IA para crear un currículum impresionante en segundos.',
+            uploadTitle: 'CV / PDF LinkedIn',
             uploadDesc: 'Arrastra y suelta o haz clic para buscar',
             uploadButton: 'Generar Currículum',
-            noSignup: 'Sin registro • Gratis • Privacidad garantizada'
+            noSignup: 'Sin registro • Gratis • Privacidad garantizada',
+            inputTooltips: {
+                pdf: 'Sube tu currículum actual o la exportación de tu perfil de LinkedIn. Extraeremos los datos automáticamente.',
+                text: 'Pega tu experiencia laboral, educación y habilidades en un archivo .txt simple.',
+                chat: 'Chatea con nuestra IA para construir tu CV paso a paso respondiendo preguntas sencillas.'
+            }
         },
         features: {
             aiTitle: 'Extracción por IA',
@@ -292,13 +318,18 @@ export const siteTranslations: Record<Language, {
         },
         hero: {
             languageLabel: 'Langue Site et CV:',
-            titleStart: 'Transformez votre profil LinkedIn en un',
-            titleHighlight: 'CV Professionnel',
-            subtitle: 'Arrêtez de vous battre avec le formatage. Téléchargez votre PDF LinkedIn et laissez notre IA créer un CV époustouflant et optimisé ATS en quelques secondes.',
-            uploadTitle: 'Télécharger PDF LinkedIn',
+            titleStart: 'Transformez votre Parcours Pro en un',
+            titleHighlight: 'CV Gagnant',
+            subtitle: 'Arrêtez de vous battre avec le formatage. Utilisez votre CV actuel, des notes ou discutez avec l\'IA pour créer un CV époustouflant.',
+            uploadTitle: 'CV / PDF LinkedIn',
             uploadDesc: 'Glisser-déposer ou cliquer pour parcourir',
             uploadButton: 'Générer CV',
-            noSignup: 'Pas d\'inscription • Gratuit • Confidentialité'
+            noSignup: 'Pas d\'inscription • Gratuit • Confidentialité',
+            inputTooltips: {
+                pdf: 'Téléchargez votre CV actuel ou l\'exportation de votre profil LinkedIn. Nous extrairons automatiquement les données.',
+                text: 'Collez votre expérience professionnelle, votre formation et vos compétences dans un simple fichier .txt.',
+                chat: 'Discutez avec notre IA pour construire votre CV étape par étape en répondant à des questions simples.'
+            }
         },
         features: {
             aiTitle: 'Extraction par IA',
@@ -346,13 +377,18 @@ export const siteTranslations: Record<Language, {
         },
         hero: {
             languageLabel: 'Sprache:',
-            titleStart: 'Verwandeln Sie Ihr LinkedIn-Profil in einen',
-            titleHighlight: 'Professionellen CV',
-            subtitle: 'Schluss mit Formatierungskämpfen. Laden Sie Ihr LinkedIn-PDF hoch und lassen Sie unsere KI in Sekunden einen atemberaubenden Lebenslauf erstellen.',
-            uploadTitle: 'LinkedIn PDF Hochladen',
+            titleStart: 'Verwandeln Sie Ihre Berufserfahrung in einen',
+            titleHighlight: 'Gewinner-CV',
+            subtitle: 'Schluss mit Formatierungskämpfen. Nutzen Sie Ihren aktuellen CV, Notizen oder chatten Sie mit der KI.',
+            uploadTitle: 'CV / LinkedIn PDF',
             uploadDesc: 'Drag & Drop oder Klicken zum Durchsuchen',
             uploadButton: 'Lebenslauf Erstellen',
-            noSignup: 'Keine Anmeldung • Kostenlos • Datenschutz'
+            noSignup: 'Keine Anmeldung • Kostenlos • Datenschutz',
+            inputTooltips: {
+                pdf: 'Laden Sie Ihren aktuellen Lebenslauf oder Ihr LinkedIn-Profil hoch. Wir extrahieren die Daten automatisch.',
+                text: 'Fügen Sie Ihre Berufserfahrung, Ausbildung und Fähigkeiten in eine einfache .txt-Datei ein.',
+                chat: 'Chatten Sie mit unserer KI, um Ihren Lebenslauf Schritt für Schritt zu erstellen.'
+            }
         },
         features: {
             aiTitle: 'KI-Extraktion',

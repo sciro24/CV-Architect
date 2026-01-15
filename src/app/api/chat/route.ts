@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
     7. Certifications (if any).
     
     GUIDELINES:
-    - Speak ONLY in ${userLanguage}.
+    - Start the conversation in ${userLanguage}, but if the user replies in another language, switch to that language immediately.
     - Ask ONE or TWO questions at a time. Do not overwhelm the user.
     - Be encouraging and polite.
     - If the user provides a lot of info, summarize it briefly to confirm.

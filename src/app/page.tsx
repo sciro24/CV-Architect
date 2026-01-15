@@ -4,13 +4,13 @@ import React, { useState } from 'react';
 import FileDropzone from '@/components/FileDropzone';
 import ResumeRenderer from '@/components/ResumeRenderer';
 import { ResumeData } from '@/types/resume';
-import { FileText, Image as ImageIcon, Sparkles, Check, Download, Edit3, Linkedin, Star, Cpu, Layout, RefreshCw, FileCheck, Globe, Component, ChevronDown } from 'lucide-react';
+import { FileText, Image as ImageIcon, Sparkles, Check, Download, Edit3, Linkedin, Star, Cpu, Layout, RefreshCw, FileCheck, Globe, Component, ChevronDown, Info } from 'lucide-react';
 import { SkeletonLoader } from '@/components/SkeletonLoader';
 import { pdf } from '@react-pdf/renderer';
 import { getTemplate, templates } from '@/components/TemplateRegistry';
 import { saveAs } from 'file-saver';
 import { SectionEditor } from '@/components/SectionEditor';
-import { Language, siteTranslations } from '@/utils/translations';
+import { Language, siteTranslations, dictionary } from '@/utils/translations';
 import { ImageCropperModal } from '@/components/ImageCropperModal';
 import { exportToDocx, exportToJson, exportToTxt } from '@/utils/export';
 import { ChatInterface } from '@/components/ChatInterface';
@@ -296,24 +296,46 @@ export default function Home() {
             <div className="bg-white p-6 rounded-2xl shadow-xl shadow-gray-200/50 max-w-2xl mx-auto border border-gray-100">
 
               {/* Tabs */}
-              <div className="flex p-1 bg-gray-100 rounded-lg mb-6">
+              <div className="flex p-1 bg-gray-100 rounded-lg mb-6 gap-1">
                 <button
                   onClick={() => setActiveTab('pdf')}
-                  className={`flex-1 py-2 text-xs font-bold rounded-md transition-all ${activeTab === 'pdf' ? 'bg-white shadow-sm text-gray-900' : 'text-gray-500 hover:text-gray-700'}`}
+                  className={`flex-1 py-3 text-xs font-bold rounded-md transition-all flex items-center justify-center gap-2 group relative ${activeTab === 'pdf' ? 'bg-white shadow-sm text-gray-900' : 'text-gray-500 hover:text-gray-700'}`}
                 >
-                  📄 Existing CV (PDF)
+                  <span>📄 PDF / LinkedIn</span>
+                  <div className="group/tooltip relative">
+                    <Info size={12} className="text-gray-400 hover:text-gray-600" />
+                    <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 w-48 bg-gray-900 text-white text-[10px] p-2 rounded shadow-lg opacity-0 group-hover/tooltip:opacity-100 pointer-events-none transition-opacity z-50 font-medium leading-relaxed">
+                      {t.hero.inputTooltips.pdf}
+                      <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-900"></div>
+                    </div>
+                  </div>
                 </button>
                 <button
                   onClick={() => setActiveTab('text')}
-                  className={`flex-1 py-2 text-xs font-bold rounded-md transition-all ${activeTab === 'text' ? 'bg-white shadow-sm text-gray-900' : 'text-gray-500 hover:text-gray-700'}`}
+                  className={`flex-1 py-3 text-xs font-bold rounded-md transition-all flex items-center justify-center gap-2 group relative ${activeTab === 'text' ? 'bg-white shadow-sm text-gray-900' : 'text-gray-500 hover:text-gray-700'}`}
                 >
-                  📝 Text Notes
+                  <span>📝 Text Notes</span>
+                  <div className="group/tooltip relative">
+                    <Info size={12} className="text-gray-400 hover:text-gray-600" />
+                    <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 w-48 bg-gray-900 text-white text-[10px] p-2 rounded shadow-lg opacity-0 group-hover/tooltip:opacity-100 pointer-events-none transition-opacity z-50 font-medium leading-relaxed">
+                      {t.hero.inputTooltips.text}
+                      <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-900"></div>
+                    </div>
+                  </div>
                 </button>
                 <button
                   onClick={() => setActiveTab('chat')}
-                  className={`flex-1 py-2 text-xs font-bold rounded-md transition-all ${activeTab === 'chat' ? 'bg-white shadow-sm text-gray-900' : 'text-gray-500 hover:text-gray-700'}`}
+                  className={`flex-1 py-3 text-xs font-bold rounded-md transition-all flex items-center justify-center gap-2 group relative ${activeTab === 'chat' ? 'bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-md' : 'text-gray-500 hover:text-gray-700'}`}
                 >
-                  🤖 Chat Interview
+                  <Sparkles size={14} className={activeTab === 'chat' ? 'text-yellow-300' : ''} />
+                  <span>Chat Interview</span>
+                  <div className="group/tooltip relative">
+                    <Info size={12} className={activeTab === 'chat' ? 'text-indigo-200' : 'text-gray-400'} />
+                    <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 w-48 bg-gray-900 text-white text-[10px] p-2 rounded shadow-lg opacity-0 group-hover/tooltip:opacity-100 pointer-events-none transition-opacity z-50 font-medium leading-relaxed">
+                      {t.hero.inputTooltips.chat}
+                      <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-900"></div>
+                    </div>
+                  </div>
                 </button>
               </div>
 
@@ -335,8 +357,8 @@ export default function Home() {
                         <Linkedin size={40} />
                       </div>
                       <div>
-                        <h3 className="text-lg font-bold text-gray-900">Upload LinkedIn PDF or CV</h3>
-                        <p className="text-xs text-gray-500 mt-2">Drag & drop or click to browse</p>
+                        <h3 className="text-lg font-bold text-gray-900">{t.hero.uploadTitle}</h3>
+                        <p className="text-xs text-gray-500 mt-2">{t.hero.uploadDesc}</p>
                       </div>
                     </div>
                   </div>
@@ -369,6 +391,7 @@ export default function Home() {
                     <ChatInterface
                       isGenerating={isAnalyzing}
                       language={selectedLanguage}
+                      initialMessage={dictionary[selectedLanguage].chatGreeting}
                       onGenerateCV={(text) => {
                         const blob = new Blob([text], { type: 'text/plain' });
                         const file = new File([blob], "interview_notes.txt", { type: "text/plain" });

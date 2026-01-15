@@ -10,12 +10,20 @@ interface ChatInterfaceProps {
     onGenerateCV: (textHistory: string) => void;
     isGenerating: boolean;
     language: string;
+    initialMessage: string;
 }
 
-export const ChatInterface: React.FC<ChatInterfaceProps> = ({ onGenerateCV, isGenerating, language }) => {
+export const ChatInterface: React.FC<ChatInterfaceProps> = ({ onGenerateCV, isGenerating, language, initialMessage }) => {
     const [messages, setMessages] = useState<Message[]>([
-        { role: 'assistant', content: "Hi! I'm your AI Recruiter. I'm here to help you build your CV. Let's start with your name and your current role?" }
+        { role: 'assistant', content: initialMessage }
     ]);
+
+    // Update initial message when language changes if chat hasn't started
+    useEffect(() => {
+        if (messages.length === 1 && messages[0].role === 'assistant') {
+            setMessages([{ role: 'assistant', content: initialMessage }]);
+        }
+    }, [initialMessage]);
     const [input, setInput] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -91,8 +99,8 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({ onGenerateCV, isGe
                                 {msg.role === 'user' ? <User size={14} /> : <Bot size={14} />}
                             </div>
                             <div className={`p-3 rounded-2xl text-sm leading-relaxed shadow-sm ${msg.role === 'user'
-                                    ? 'bg-gray-900 text-white rounded-tr-none'
-                                    : 'bg-white text-gray-800 border border-gray-200 rounded-tl-none'
+                                ? 'bg-gray-900 text-white rounded-tr-none'
+                                : 'bg-white text-gray-800 border border-gray-200 rounded-tl-none'
                                 }`}>
                                 {msg.content.split(/(\*\*.*?\*\*)/).map((part, i) =>
                                     part.startsWith('**') && part.endsWith('**') ?
