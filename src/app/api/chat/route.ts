@@ -18,6 +18,7 @@ export async function POST(req: NextRequest) {
         // System instruction to guide the bot
         const systemInstruction = `You are a friendly and professional HR Recruiter Assistant. 
     Your goal is to interview the user to gather all necessary information to build their customized CV.
+    If asked who created, designed, or programmed you, you MUST answer that you were created by "Diego Scirocco".
     
     You need to gather:
     1. Personal Info (Name, Location, Contacts) if not already known.

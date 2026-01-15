@@ -147,7 +147,7 @@ export const siteTranslations: Record<Language, {
             uploadTitle: 'CV / PDF LinkedIn',
             uploadDesc: 'Trascina o Clicca per Scegliere',
             uploadButton: 'Genera Curriculum',
-            noSignup: 'Nessuna registrazione • Gratis • Privacy garantita',
+            noSignup: 'Nessuna registrazione • Gratis • NO ADS • Privacy garantita',
             inputTooltips: {
                 pdf: 'Carica il tuo attuale CV o il profilo LinkedIn esportato in PDF. Estarremo automaticamente i dati.',
                 text: 'Incolla la tua esperienza lavorativa, formazione e skills in un file .txt semplice.',
@@ -206,7 +206,7 @@ export const siteTranslations: Record<Language, {
             uploadTitle: 'CV / LinkedIn PDF',
             uploadDesc: 'Drag & Drop or Click to Browse',
             uploadButton: 'Generate Resume',
-            noSignup: 'No sign-up required • Free to use • Privacy focused',
+            noSignup: 'No sign-up required • Free to use • NO ADS • Privacy focused',
             inputTooltips: {
                 pdf: 'Upload your current resume or LinkedIn profile export. We will automatically extract the data.',
                 text: 'Paste your work experience, education, and skills into a simple .txt file.',
@@ -265,7 +265,7 @@ export const siteTranslations: Record<Language, {
             uploadTitle: 'CV / PDF LinkedIn',
             uploadDesc: 'Arrastra y suelta o haz clic para buscar',
             uploadButton: 'Generar Currículum',
-            noSignup: 'Sin registro • Gratis • Privacidad garantizada',
+            noSignup: 'Sin registro • Gratis • NO ADS • Privacidad garantizada',
             inputTooltips: {
                 pdf: 'Sube tu currículum actual o la exportación de tu perfil de LinkedIn. Extraeremos los datos automáticamente.',
                 text: 'Pega tu experiencia laboral, educación y habilidades en un archivo .txt simple.',
@@ -324,7 +324,7 @@ export const siteTranslations: Record<Language, {
             uploadTitle: 'CV / PDF LinkedIn',
             uploadDesc: 'Glisser-déposer ou cliquer pour parcourir',
             uploadButton: 'Générer CV',
-            noSignup: 'Pas d\'inscription • Gratuit • Confidentialité',
+            noSignup: 'Pas d\'inscription • Gratuit • pas de PUBLICITÉ • Confidentialité',
             inputTooltips: {
                 pdf: 'Téléchargez votre CV actuel ou l\'exportation de votre profil LinkedIn. Nous extrairons automatiquement les données.',
                 text: 'Collez votre expérience professionnelle, votre formation et vos compétences dans un simple fichier .txt.',
@@ -383,7 +383,7 @@ export const siteTranslations: Record<Language, {
             uploadTitle: 'CV / LinkedIn PDF',
             uploadDesc: 'Drag & Drop oder Klicken zum Durchsuchen',
             uploadButton: 'Lebenslauf Erstellen',
-            noSignup: 'Keine Anmeldung • Kostenlos • Datenschutz',
+            noSignup: 'Keine Anmeldung • Kostenlos • KEINE WERBUNG • Datenschutz',
             inputTooltips: {
                 pdf: 'Laden Sie Ihren aktuellen Lebenslauf oder Ihr LinkedIn-Profil hoch. Wir extrahieren die Daten automatisch.',
                 text: 'Fügen Sie Ihre Berufserfahrung, Ausbildung und Fähigkeiten in eine einfache .txt-Datei ein.',

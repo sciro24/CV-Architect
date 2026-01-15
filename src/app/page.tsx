@@ -296,10 +296,10 @@ export default function Home() {
             <div className="bg-white p-6 rounded-2xl shadow-xl shadow-gray-200/50 max-w-2xl mx-auto border border-gray-100">
 
               {/* Tabs */}
-              <div className="flex p-1 bg-gray-100 rounded-lg mb-6 gap-1">
+              <div className="flex flex-col sm:flex-row p-1 bg-gray-100 rounded-lg mb-6 gap-2 sm:gap-1">
                 <button
                   onClick={() => setActiveTab('pdf')}
-                  className={`flex-1 py-3 text-xs font-bold rounded-md transition-all flex items-center justify-center gap-2 group relative ${activeTab === 'pdf' ? 'bg-white shadow-sm text-gray-900' : 'text-gray-500 hover:text-gray-700'}`}
+                  className={`flex-1 py-3 text-xs font-bold rounded-md transition-all flex items-center justify-center gap-2 group relative ${activeTab === 'pdf' ? 'bg-white shadow-sm text-gray-900' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'}`}
                 >
                   <span>📄 PDF / LinkedIn</span>
                   <div className="group/tooltip relative">
@@ -325,12 +325,12 @@ export default function Home() {
                 </button>
                 <button
                   onClick={() => setActiveTab('chat')}
-                  className={`flex-1 py-3 text-xs font-bold rounded-md transition-all flex items-center justify-center gap-2 group relative ${activeTab === 'chat' ? 'bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-md' : 'text-gray-500 hover:text-gray-700'}`}
+                  className={`flex-1 py-3 text-xs font-bold rounded-md transition-all flex items-center justify-center gap-2 group relative bg-gradient-to-r from-indigo-600 to-violet-600 text-white ${activeTab === 'chat' ? 'shadow-md ring-2 ring-indigo-200 ring-offset-2 ring-offset-gray-100' : 'opacity-80 hover:opacity-100 shadow-sm'}`}
                 >
-                  <Sparkles size={14} className={activeTab === 'chat' ? 'text-yellow-300' : ''} />
+                  <Sparkles size={14} className="text-yellow-300" />
                   <span>Chat Interview</span>
                   <div className="group/tooltip relative">
-                    <Info size={12} className={activeTab === 'chat' ? 'text-indigo-200' : 'text-gray-400'} />
+                    <Info size={12} className="text-indigo-200" />
                     <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 w-48 bg-gray-900 text-white text-[10px] p-2 rounded shadow-lg opacity-0 group-hover/tooltip:opacity-100 pointer-events-none transition-opacity z-50 font-medium leading-relaxed">
                       {t.hero.inputTooltips.chat}
                       <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-900"></div>
