@@ -8,10 +8,11 @@ interface TemplateProps {
     profileImage?: string;
     language: Language;
     primaryColor?: string;
+    secondaryColor?: string;
     onUpdate?: (path: string, value: any) => void;
 }
 
-export const Template4Web: React.FC<TemplateProps> = ({ data, profileImage, language, primaryColor = '#000000', onUpdate }) => {
+export const Template4Web: React.FC<TemplateProps> = ({ data, profileImage, language, primaryColor = '#000000', secondaryColor = '#6b7280', onUpdate }) => {
     const { personal_info, work_experience, education, skills, languages } = data;
 
     return (

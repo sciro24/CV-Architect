@@ -48,6 +48,7 @@ export const templates: TemplateConfig[] = [
     Pdf: Template2Pdf,
     thumbnail: 'bg-[#2C3E50]',
     defaultPrimaryColor: '#2C3E50', // Navy
+    defaultSecondaryColor: '#3498db', // Blue
   },
   {
     id: 'template3',
@@ -57,6 +58,7 @@ export const templates: TemplateConfig[] = [
     Pdf: Template3Pdf,
     thumbnail: 'bg-[#F1F5F9]',
     defaultPrimaryColor: '#334155', // Slate 700
+    defaultSecondaryColor: '#64748b', // Slate 500
   },
   {
     id: 'template4',
@@ -66,6 +68,7 @@ export const templates: TemplateConfig[] = [
     Pdf: Template4Pdf,
     thumbnail: 'bg-white',
     defaultPrimaryColor: '#000000', // Black
+    defaultSecondaryColor: '#6b7280', // Gray 500
   },
   {
     id: 'template5',
@@ -75,6 +78,7 @@ export const templates: TemplateConfig[] = [
     Pdf: Template5Pdf,
     thumbnail: 'bg-indigo-600',
     defaultPrimaryColor: '#4F46E5', // Indigo 600
+    defaultSecondaryColor: '#818cf8', // Indigo 400
   },
   {
     id: 'template6',
@@ -84,6 +88,7 @@ export const templates: TemplateConfig[] = [
     Pdf: Template6Pdf,
     thumbnail: 'bg-white border-2 border-slate-200',
     defaultPrimaryColor: '#000000', // Black
+    defaultSecondaryColor: '#4b5563', // Gray 600
   },
   {
     id: 'template7',
@@ -93,6 +98,7 @@ export const templates: TemplateConfig[] = [
     Pdf: Template7Pdf,
     thumbnail: 'bg-white border-t-8 border-slate-700',
     defaultPrimaryColor: '#2d3748', // Dark Gray
+    defaultSecondaryColor: '#4a5568', // Gray 700
   },
   {
     id: 'template8',
@@ -102,6 +108,7 @@ export const templates: TemplateConfig[] = [
     Pdf: Template8Pdf,
     thumbnail: 'bg-slate-50',
     defaultPrimaryColor: '#0f172a', // Slate 900
+    defaultSecondaryColor: '#475569', // Slate 600
   }
 ];
 

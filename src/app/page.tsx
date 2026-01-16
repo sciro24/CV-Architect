@@ -48,6 +48,8 @@ export default function Home() {
     '#000000', // Black
     '#14532d', // Green 900
     '#7f1d1d', // Red 900
+    '#312e81', // Indigo 900
+    '#4c1d95', // Violet 900
   ];
 
   const SECONDARY_PRESETS = [
@@ -56,6 +58,8 @@ export default function Home() {
     '#0d9488', // Teal 600
     '#db2777', // Pink 600
     '#ca8a04', // Yellow 600
+    '#ea580c', // Orange 600
+    '#8b5cf6', // Violet 500
   ];
 
 

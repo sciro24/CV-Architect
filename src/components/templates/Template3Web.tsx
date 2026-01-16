@@ -8,10 +8,11 @@ interface TemplateProps {
     profileImage?: string;
     language: Language;
     primaryColor?: string;
+    secondaryColor?: string;
     onUpdate?: (path: string, value: any) => void;
 }
 
-export const Template3Web: React.FC<TemplateProps> = ({ data, profileImage, language, primaryColor = '#334155', onUpdate }) => {
+export const Template3Web: React.FC<TemplateProps> = ({ data, profileImage, language, primaryColor = '#334155', secondaryColor = '#64748b', onUpdate }) => {
     const { personal_info, work_experience, education, skills, languages } = data;
 
     return (
@@ -44,7 +45,7 @@ export const Template3Web: React.FC<TemplateProps> = ({ data, profileImage, lang
                                                 <EditableField value={exp.title} onChange={(val) => onUpdate?.(`work_experience[${index}].title`, val)} />
                                             </h3>
                                         </div>
-                                        <div className="text-[#64748B] text-sm font-medium mb-2 uppercase tracking-wide">
+                                        <div className="text-sm font-medium mb-2 uppercase tracking-wide" style={{ color: secondaryColor }}>
                                             <EditableField value={exp.company} onChange={(val) => onUpdate?.(`work_experience[${index}].company`, val)} />
                                             {' | '}
                                             <EditableField value={exp.startDate} onChange={(val) => onUpdate?.(`work_experience[${index}].startDate`, val)} />
