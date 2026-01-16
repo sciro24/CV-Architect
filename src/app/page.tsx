@@ -297,12 +297,12 @@ export default function Home() {
             <div className="bg-white p-6 rounded-2xl shadow-xl shadow-gray-200/50 max-w-2xl mx-auto border border-gray-100">
 
               {/* Tabs */}
-              <div className="flex flex-col sm:flex-row p-1 bg-gray-100 rounded-lg mb-6 gap-2 sm:gap-1">
+              <div className="flex flex-row p-1 bg-gray-100 rounded-lg mb-6 gap-1">
                 <button
                   onClick={() => setActiveTab('pdf')}
                   className={`flex-1 py-3 text-xs font-bold rounded-md transition-all flex items-center justify-center gap-2 group relative ${activeTab === 'pdf'
-                      ? 'bg-white shadow-md text-gray-900 ring-1 ring-gray-200 ring-offset-1'
-                      : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
+                    ? 'bg-white shadow-md text-gray-900 ring-1 ring-gray-200 ring-offset-1'
+                    : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
                     }`}
                 >
                   <span>📄 PDF / LinkedIn</span>
@@ -324,8 +324,8 @@ export default function Home() {
                 <button
                   onClick={() => setActiveTab('text')}
                   className={`flex-1 py-3 text-xs font-bold rounded-md transition-all flex items-center justify-center gap-2 group relative ${activeTab === 'text'
-                      ? 'bg-white shadow-md text-gray-900 ring-1 ring-gray-200 ring-offset-1'
-                      : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
+                    ? 'bg-white shadow-md text-gray-900 ring-1 ring-gray-200 ring-offset-1'
+                    : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
                     }`}
                 >
                   <span>📝 Text Notes</span>
@@ -347,8 +347,8 @@ export default function Home() {
                 <button
                   onClick={() => setActiveTab('chat')}
                   className={`flex-1 py-3 text-xs font-bold rounded-md transition-all flex items-center justify-center gap-2 group relative ${activeTab === 'chat'
-                      ? 'bg-white shadow-md text-gray-900 ring-1 ring-gray-200 ring-offset-1'
-                      : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
+                    ? 'bg-white shadow-md text-gray-900 ring-1 ring-gray-200 ring-offset-1'
+                    : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
                     }`}
                 >
                   <Sparkles size={14} className={activeTab === 'chat' ? 'text-indigo-600' : 'text-gray-400'} />
