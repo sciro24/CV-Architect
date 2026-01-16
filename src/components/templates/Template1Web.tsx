@@ -126,7 +126,7 @@ export const Template1Web: React.FC<TemplateProps> = ({ data, profileImage, lang
                                 Experience
                             </h2>
                             <div className="space-y-6">
-                                {work_experience.map((exp, index) => (
+                                {work_experience.filter(exp => exp.visible !== false).map((exp, index) => (
                                     <div key={index} className="relative pl-4 border-l-2 border-slate-200">
                                         <div className="absolute -left-[5px] top-1.5 w-2 h-2 rounded-full bg-slate-400"></div>
                                         <div className="flex justify-between items-baseline mb-1">
@@ -168,7 +168,7 @@ export const Template1Web: React.FC<TemplateProps> = ({ data, profileImage, lang
                                 Education
                             </h2>
                             <div className="space-y-4">
-                                {education.map((edu, index) => (
+                                {education.filter(edu => edu.visible !== false).map((edu, index) => (
                                     <div key={index}>
                                         <div className="flex justify-between items-baseline">
                                             <h3 className="font-bold text-lg text-slate-900">

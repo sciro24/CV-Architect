@@ -22,7 +22,7 @@ export interface TemplateConfig {
   id: string;
   name: string;
   styles: string;
-  Web: React.FC<{ data: ResumeData; profileImage?: string; language: Language; primaryColor?: string }>;
+  Web: React.FC<{ data: ResumeData; profileImage?: string; language: Language; primaryColor?: string; onUpdate?: (path: string, value: any) => void }>;
   Pdf: React.FC<{ data: ResumeData; profileImage?: string; language: Language; primaryColor?: string }>;
   thumbnail: string;
   defaultPrimaryColor: string;

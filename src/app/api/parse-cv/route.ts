@@ -163,6 +163,12 @@ Struttura JSON richiesta:
       // Transform certifications: first 3 visible
       resumeData = {
         ...rawData,
+        work_experience: Array.isArray(rawData.work_experience)
+          ? rawData.work_experience.map((w: any, index: number) => ({ ...w, visible: index < 2 }))
+          : [],
+        education: Array.isArray(rawData.education)
+          ? rawData.education.map((e: any, index: number) => ({ ...e, visible: index < 2 }))
+          : [],
         skills: Array.isArray(rawData.skills)
           ? rawData.skills.map((s: string | any, index: number) =>
             typeof s === 'string' ? { name: s, visible: index < 5 } : s)

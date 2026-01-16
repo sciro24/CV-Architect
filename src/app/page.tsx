@@ -42,18 +42,25 @@ export default function Home() {
   const [mobileTooltip, setMobileTooltip] = useState<string | null>(null);
 
   const PRESET_COLORS = [
-    // Dark Professional
+    // 8 Primary (Professional/Dark)
     '#0f172a', // Slate 900
     '#1e1b4b', // Indigo 950
     '#000000', // Black
-    // Lighter / Modern Professional
+    '#14532d', // Green 900
+    '#7f1d1d', // Red 900
+    '#312e81', // Indigo 900
+    '#1e293b', // Slate 800
+    '#4c1d95', // Violet 900
+
+    // 8 Secondary (Vibrant/Modern)
     '#0ea5e9', // Sky 500
     '#2563eb', // Blue 600
     '#0d9488', // Teal 600
     '#059669', // Emerald 600
     '#7c3aed', // Violet 600
-    '#ea580c', // Orange 600 (Burnt)
-    '#64748b', // Slate 500
+    '#ea580c', // Orange 600
+    '#db2777', // Pink 600
+    '#ca8a04', // Yellow 600
   ];
 
   // Translations wrapper
@@ -705,38 +712,58 @@ export default function Home() {
               </div>
 
               {/* Photo */}
-              <div className="mt-6">
-                <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2 block">{t.editor.profilePhoto}</label>
-                <div className="flex items-center gap-3">
+              {/* Photo - Highlighted Section */}
+              <div className="mt-8 bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-4 relative overflow-hidden group/photo">
+                <div className="absolute top-0 right-0 p-2 opacity-10 group-hover/photo:opacity-20 transition-opacity pointer-events-none">
+                  <ImageIcon size={40} className="text-blue-600" />
+                </div>
+
+                <label className="text-[10px] font-bold text-blue-900 uppercase tracking-widest mb-3 block flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-blue-600"></span>
+                  {t.editor.profilePhoto}
+                </label>
+
+                <div className="flex items-center gap-4 relative z-10">
                   {profileImageUrl ? (
-                    <div className="relative group">
-                      <img src={profileImageUrl} className="w-10 h-10 rounded object-cover border border-gray-200 shadow-sm" />
+                    <div className="relative group cursor-pointer" onClick={() => document.getElementById('photo-upload')?.click()}>
+                      <img src={profileImageUrl} className="w-14 h-14 rounded-full object-cover border-2 border-white shadow-md group-hover:scale-105 transition-transform" />
+                      <div className="absolute inset-0 bg-black/40 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                        <Edit3 size={16} className="text-white" />
+                      </div>
                       <button
-                        onClick={() => { setProfileImage(null); setProfileImageUrl(undefined); }}
-                        className="absolute -top-1 -right-1 bg-gray-900 text-white rounded-full p-0.5 opacity-0 group-hover:opacity-100 transition-opacity"
+                        onClick={(e) => { e.stopPropagation(); setProfileImage(null); setProfileImageUrl(undefined); }}
+                        className="absolute -top-1 -right-1 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity shadow-sm hover:bg-red-600"
+                        title="Remove photo"
                       >
-                        <svg className="w-2.5 h-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+                        <svg className="w-2.5 h-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M6 18L18 6M6 6l12 12" /></svg>
                       </button>
                     </div>
                   ) : (
-                    <div className="w-10 h-10 rounded bg-gray-50 border border-dashed border-gray-300 flex items-center justify-center text-gray-400 hover:border-gray-400 hover:text-gray-600 transition-colors cursor-pointer" onClick={() => document.getElementById('photo-upload')?.click()}>
-                      <ImageIcon size={14} />
+                    <div
+                      className="w-14 h-14 rounded-full bg-white border-2 border-dashed border-blue-300 flex items-center justify-center text-blue-400 group-hover/photo:border-blue-500 group-hover/photo:text-blue-600 transition-all cursor-pointer shadow-sm hover:scale-105"
+                      onClick={() => document.getElementById('photo-upload')?.click()}
+                    >
+                      <ImageIcon size={20} />
                     </div>
                   )}
-                  <div className="flex-1 flex gap-2">
-                    <button onClick={() => document.getElementById('photo-upload')?.click()} className="text-[10px] border border-gray-200 px-2 py-1 rounded hover:bg-gray-50 text-gray-600 font-medium">
+
+                  <div className="flex-1 flex flex-col gap-2">
+                    <button
+                      onClick={() => document.getElementById('photo-upload')?.click()}
+                      className="text-xs bg-white border border-blue-200 px-3 py-2 rounded-lg hover:bg-blue-600 hover:text-white hover:border-blue-600 text-blue-900 font-semibold shadow-sm transition-all w-full text-center"
+                    >
                       {profileImageUrl ? t.editor.changePhoto : t.editor.uploadPhoto}
                     </button>
+
                     {profileImageUrl && originalImageSrc && (
                       <button
                         onClick={() => {
                           setTempImageSrc(originalImageSrc);
                           setIsCropperOpen(true);
                         }}
-                        className="text-[10px] border border-gray-200 px-2 py-1 rounded hover:bg-gray-50 text-gray-600 font-medium flex items-center gap-1"
-                        title="Edit Crop"
+                        className="text-[10px] text-blue-600 hover:text-blue-800 font-medium flex items-center justify-center gap-1"
                       >
-                        <Edit3 size={10} />
+                        <Edit3 size={10} /> Adjust Crop
                       </button>
                     )}
                     <input id="photo-upload" type="file" className="hidden" accept="image/*" onChange={(e) => { if (e.target.files?.[0]) handleImageSelect(e.target.files[0]) }} />
@@ -774,22 +801,25 @@ export default function Home() {
                   <button
                     key={color}
                     onClick={() => setCustomColors(prev => ({ ...prev, [templateId]: color }))}
-                    className={`w-6 h-6 rounded-full border transition-transform hover:scale-110 ${customColors[templateId] === color ? 'border-gray-900 scale-110 shadow-sm' : 'border-gray-200'}`}
+                    className={`w-6 h-6 rounded-full border shadow-sm transition-all hover:scale-110 hover:shadow-md ${customColors[templateId] === color ? 'border-gray-900 ring-1 ring-gray-900 scale-110' : 'border-gray-200'}`}
                     style={{ backgroundColor: color }}
                     title={color}
                   />
                 ))}
-                <div className="relative group">
-                  <div className="w-6 h-6 rounded-full border border-gray-200 overflow-hidden flex items-center justify-center bg-white cursor-pointer hover:border-gray-400">
-                    <span className="text-[10px] pb-1 text-gray-400">+</span>
+
+                {/* Improved Custom Color Picker */}
+                <div className="relative group ml-1">
+                  <div className="w-6 h-6 rounded-full bg-gradient-to-tr from-pink-500 via-red-500 to-yellow-500 border border-gray-200 flex items-center justify-center cursor-pointer shadow-sm hover:scale-110 transition-transform">
                     <input
                       type="color"
                       className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
                       value={customColors[templateId] || '#000000'}
                       onChange={(e) => setCustomColors(prev => ({ ...prev, [templateId]: e.target.value }))}
+                      title="Custom Color"
                     />
                   </div>
                 </div>
+
                 {/* Reset Color */}
                 <button
                   onClick={() => setCustomColors(prev => {

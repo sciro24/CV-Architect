@@ -9,6 +9,7 @@ export interface WorkExperience {
   startDate: string;
   endDate: string;
   description: string[];
+  visible?: boolean;
 }
 
 export interface Education {
@@ -17,6 +18,7 @@ export interface Education {
   location: string;
   startDate: string;
   endDate: string;
+  visible?: boolean;
 }
 
 export interface Skill {

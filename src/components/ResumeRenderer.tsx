@@ -47,7 +47,7 @@ export default function ResumeRenderer({ data, templateId, profileImage, languag
             <div className="flex-1 overflow-auto p-8 flex justify-center items-start">
                 {/* Responsive scaling container */}
                 <div className="origin-top transform scale-[0.5] sm:scale-[0.6] md:scale-[0.75] lg:scale-[0.85] xl:scale-100 transition-transform bg-white shadow-2xl">
-                    <WebComponent data={data} profileImage={profileImage} language={language} primaryColor={primaryColor} />
+                    <WebComponent data={data} profileImage={profileImage} language={language} primaryColor={primaryColor} onUpdate={onUpdate} />
                 </div>
             </div>
         </div >
