@@ -34,6 +34,7 @@ export default function Home() {
   const [templateId, setTemplateId] = useState<string>('template1');
   const [selectedLanguage, setSelectedLanguage] = useState<Language>('Italiano');
   const [customColors, setCustomColors] = useState<Record<string, string>>({});
+  const [customSecondaryColors, setCustomSecondaryColors] = useState<Record<string, string>>({});
 
   const [originalImageSrc, setOriginalImageSrc] = useState<string | null>(null);
 
@@ -41,27 +42,23 @@ export default function Home() {
   const [activeTab, setActiveTab] = useState<'pdf' | 'text' | 'chat'>('pdf');
   const [mobileTooltip, setMobileTooltip] = useState<string | null>(null);
 
-  const PRESET_COLORS = [
-    // 8 Primary (Professional/Dark)
+  const PRIMARY_PRESETS = [
     '#0f172a', // Slate 900
     '#1e1b4b', // Indigo 950
     '#000000', // Black
     '#14532d', // Green 900
     '#7f1d1d', // Red 900
-    '#312e81', // Indigo 900
-    '#1e293b', // Slate 800
-    '#4c1d95', // Violet 900
+  ];
 
-    // 8 Secondary (Vibrant/Modern)
+  const SECONDARY_PRESETS = [
     '#0ea5e9', // Sky 500
     '#2563eb', // Blue 600
     '#0d9488', // Teal 600
-    '#059669', // Emerald 600
-    '#7c3aed', // Violet 600
-    '#ea580c', // Orange 600
     '#db2777', // Pink 600
     '#ca8a04', // Yellow 600
   ];
+
+
 
   // Translations wrapper
   const t = siteTranslations[selectedLanguage];
@@ -714,9 +711,7 @@ export default function Home() {
               {/* Photo */}
               {/* Photo - Highlighted Section */}
               <div className="mt-8 bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-4 relative overflow-hidden group/photo">
-                <div className="absolute top-0 right-0 p-2 opacity-10 group-hover/photo:opacity-20 transition-opacity pointer-events-none">
-                  <ImageIcon size={40} className="text-blue-600" />
-                </div>
+
 
                 <label className="text-[10px] font-bold text-blue-900 uppercase tracking-widest mb-3 block flex items-center gap-2">
                   <span className="w-1.5 h-1.5 rounded-full bg-blue-600"></span>
@@ -797,7 +792,7 @@ export default function Home() {
                 Primary Color
               </h3>
               <div className="flex flex-wrap gap-2">
-                {PRESET_COLORS.map(color => (
+                {PRIMARY_PRESETS.map(color => (
                   <button
                     key={color}
                     onClick={() => setCustomColors(prev => ({ ...prev, [templateId]: color }))}
@@ -830,6 +825,49 @@ export default function Home() {
                   className="text-[10px] text-gray-400 underline ml-auto hover:text-gray-600"
                 >
                   Default
+                </button>
+              </div>
+            </div>
+
+            {/* Secondary Color Row */}
+            <div className="mb-8 border-t border-gray-100 pt-6">
+              <h3 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-4 flex items-center gap-2">
+                Secondary Color
+              </h3>
+              <div className="flex flex-wrap gap-2">
+                {SECONDARY_PRESETS.map(color => (
+                  <button
+                    key={color}
+                    onClick={() => setCustomSecondaryColors(prev => ({ ...prev, [templateId]: color }))}
+                    className={`w-6 h-6 rounded-full border shadow-sm transition-all hover:scale-110 hover:shadow-md ${customSecondaryColors[templateId] === color ? 'border-gray-900 ring-1 ring-gray-900 scale-110' : 'border-gray-200'}`}
+                    style={{ backgroundColor: color }}
+                    title={color}
+                  />
+                ))}
+
+                {/* Custom Rainbow Picker Secondary */}
+                <div className="relative group ml-1">
+                  <div className="w-6 h-6 rounded-full bg-gradient-to-tr from-cyan-500 via-blue-500 to-purple-500 border border-gray-200 flex items-center justify-center cursor-pointer shadow-sm hover:scale-110 transition-transform">
+                    <input
+                      type="color"
+                      className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
+                      value={customSecondaryColors[templateId] || '#000000'}
+                      onChange={(e) => setCustomSecondaryColors(prev => ({ ...prev, [templateId]: e.target.value }))}
+                      title="Custom Secondary Color"
+                    />
+                  </div>
+                </div>
+
+                {/* Reset Color */}
+                <button
+                  onClick={() => setCustomSecondaryColors(prev => {
+                    const next = { ...prev };
+                    delete next[templateId];
+                    return next;
+                  })}
+                  className="text-[10px] text-gray-400 underline ml-auto hover:text-gray-600"
+                >
+                  Reset
                 </button>
               </div>
             </div>
@@ -883,6 +921,7 @@ export default function Home() {
                 profileImage={profileImageUrl}
                 language={selectedLanguage as any}
                 customColor={customColors[templateId]}
+                customSecondaryColor={customSecondaryColors[templateId]}
                 onUpdate={handleDataUpdate}
               />
             ) : (

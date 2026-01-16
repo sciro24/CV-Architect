@@ -9,10 +9,11 @@ interface TemplateProps {
     profileImage?: string;
     language: Language;
     primaryColor?: string;
+    secondaryColor?: string;
     onUpdate?: (path: string, value: any) => void;
 }
 
-export const Template1Web: React.FC<TemplateProps> = ({ data, profileImage, language, primaryColor = '#1E293B', onUpdate }) => {
+export const Template1Web: React.FC<TemplateProps> = ({ data, profileImage, language, primaryColor = '#1E293B', secondaryColor = '#475569', onUpdate }) => {
     const { personal_info, work_experience, education, skills, languages } = data;
 
     return (
@@ -142,7 +143,7 @@ export const Template1Web: React.FC<TemplateProps> = ({ data, profileImage, lang
                                                 <EditableField value={exp.endDate || ''} onChange={(val) => onUpdate?.(`work_experience[${index}].endDate`, val)} placeholder="Present" />
                                             </span>
                                         </div>
-                                        <div className="font-medium mb-2" style={{ color: primaryColor }}>
+                                        <div className="font-medium mb-2" style={{ color: secondaryColor }}>
                                             <EditableField value={exp.company} onChange={(val) => onUpdate?.(`work_experience[${index}].company`, val)} />
                                         </div>
                                         <ul className="list-disc list-inside text-slate-600 leading-relaxed text-sm">

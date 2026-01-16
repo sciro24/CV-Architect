@@ -15,10 +15,11 @@ interface ResumeRendererProps {
     profileImage?: string;
     language: Language;
     customColor?: string;
+    customSecondaryColor?: string;
     onUpdate?: (path: string, value: any) => void;
 }
 
-export default function ResumeRenderer({ data, templateId, profileImage, language, customColor, onUpdate }: ResumeRendererProps) {
+export default function ResumeRenderer({ data, templateId, profileImage, language, customColor, customSecondaryColor, onUpdate }: ResumeRendererProps) {
     const template = getTemplate(templateId);
     const t = dictionary[language] || dictionary['Italiano'];
 
@@ -31,6 +32,7 @@ export default function ResumeRenderer({ data, templateId, profileImage, languag
     }
 
     const primaryColor = customColor || template.defaultPrimaryColor;
+    const secondaryColor = customSecondaryColor || template.defaultSecondaryColor;
 
     const WebComponent = template.Web;
     // const PdfDocument = template.Pdf; // PdfDocument is not used in this component
@@ -47,7 +49,7 @@ export default function ResumeRenderer({ data, templateId, profileImage, languag
             <div className="flex-1 overflow-auto p-8 flex justify-center items-start">
                 {/* Responsive scaling container */}
                 <div className="origin-top transform scale-[0.5] sm:scale-[0.6] md:scale-[0.75] lg:scale-[0.85] xl:scale-100 transition-transform bg-white shadow-2xl">
-                    <WebComponent data={data} profileImage={profileImage} language={language} primaryColor={primaryColor} onUpdate={onUpdate} />
+                    <WebComponent data={data} profileImage={profileImage} language={language} primaryColor={primaryColor} secondaryColor={secondaryColor} onUpdate={onUpdate} />
                 </div>
             </div>
         </div >

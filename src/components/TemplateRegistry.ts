@@ -22,10 +22,11 @@ export interface TemplateConfig {
   id: string;
   name: string;
   styles: string;
-  Web: React.FC<{ data: ResumeData; profileImage?: string; language: Language; primaryColor?: string; onUpdate?: (path: string, value: any) => void }>;
-  Pdf: React.FC<{ data: ResumeData; profileImage?: string; language: Language; primaryColor?: string }>;
+  Web: React.FC<{ data: ResumeData; profileImage?: string; language: Language; primaryColor?: string; secondaryColor?: string; onUpdate?: (path: string, value: any) => void }>;
+  Pdf: React.FC<{ data: ResumeData; profileImage?: string; language: Language; primaryColor?: string; secondaryColor?: string }>;
   thumbnail: string;
   defaultPrimaryColor: string;
+  defaultSecondaryColor?: string;
 }
 
 export const templates: TemplateConfig[] = [
@@ -37,6 +38,7 @@ export const templates: TemplateConfig[] = [
     Pdf: Template1Pdf,
     thumbnail: 'bg-slate-800',
     defaultPrimaryColor: '#1E293B', // Slate 800
+    defaultSecondaryColor: '#475569', // Slate 600
   },
   {
     id: 'template2',
