@@ -39,6 +39,7 @@ export default function Home() {
 
   // Input Method Tab State
   const [activeTab, setActiveTab] = useState<'pdf' | 'text' | 'chat'>('pdf');
+  const [mobileTooltip, setMobileTooltip] = useState<string | null>(null);
 
   const PRESET_COLORS = [
     // Dark Professional
@@ -299,39 +300,68 @@ export default function Home() {
               <div className="flex flex-col sm:flex-row p-1 bg-gray-100 rounded-lg mb-6 gap-2 sm:gap-1">
                 <button
                   onClick={() => setActiveTab('pdf')}
-                  className={`flex-1 py-3 text-xs font-bold rounded-md transition-all flex items-center justify-center gap-2 group relative ${activeTab === 'pdf' ? 'bg-white shadow-sm text-gray-900' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'}`}
+                  className={`flex-1 py-3 text-xs font-bold rounded-md transition-all flex items-center justify-center gap-2 group relative ${activeTab === 'pdf'
+                      ? 'bg-white shadow-md text-gray-900 ring-1 ring-gray-200 ring-offset-1'
+                      : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
+                    }`}
                 >
                   <span>📄 PDF / LinkedIn</span>
-                  <div className="group/tooltip relative">
-                    <Info size={12} className="text-gray-400 hover:text-gray-600" />
-                    <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 w-48 bg-gray-900 text-white text-[10px] p-2 rounded shadow-lg opacity-0 group-hover/tooltip:opacity-100 pointer-events-none transition-opacity z-50 font-medium leading-relaxed">
+                  <div
+                    role="button"
+                    tabIndex={0}
+                    onClick={(e) => { e.stopPropagation(); setMobileTooltip(mobileTooltip === 'pdf' ? null : 'pdf'); }}
+                    className="group/tooltip relative p-1 -m-1 focus:outline-none"
+                  >
+                    <Info size={16} className={`text-gray-400 hover:text-gray-600 transition-colors ${mobileTooltip === 'pdf' ? 'text-gray-900' : ''}`} />
+                    <div className={`absolute bottom-full mb-3 left-1/2 -translate-x-1/2 w-48 bg-gray-900 text-white text-[10px] p-2 rounded shadow-lg transition-opacity z-50 font-medium leading-relaxed pointer-events-none ${mobileTooltip === 'pdf' ? 'opacity-100' : 'opacity-0 group-hover/tooltip:opacity-100'
+                      }`}>
                       {t.hero.inputTooltips.pdf}
                       <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-900"></div>
                     </div>
                   </div>
                 </button>
+
                 <button
                   onClick={() => setActiveTab('text')}
-                  className={`flex-1 py-3 text-xs font-bold rounded-md transition-all flex items-center justify-center gap-2 group relative ${activeTab === 'text' ? 'bg-white shadow-sm text-gray-900' : 'text-gray-500 hover:text-gray-700'}`}
+                  className={`flex-1 py-3 text-xs font-bold rounded-md transition-all flex items-center justify-center gap-2 group relative ${activeTab === 'text'
+                      ? 'bg-white shadow-md text-gray-900 ring-1 ring-gray-200 ring-offset-1'
+                      : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
+                    }`}
                 >
                   <span>📝 Text Notes</span>
-                  <div className="group/tooltip relative">
-                    <Info size={12} className="text-gray-400 hover:text-gray-600" />
-                    <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 w-48 bg-gray-900 text-white text-[10px] p-2 rounded shadow-lg opacity-0 group-hover/tooltip:opacity-100 pointer-events-none transition-opacity z-50 font-medium leading-relaxed">
+                  <div
+                    role="button"
+                    tabIndex={0}
+                    onClick={(e) => { e.stopPropagation(); setMobileTooltip(mobileTooltip === 'text' ? null : 'text'); }}
+                    className="group/tooltip relative p-1 -m-1 focus:outline-none"
+                  >
+                    <Info size={16} className={`text-gray-400 hover:text-gray-600 transition-colors ${mobileTooltip === 'text' ? 'text-gray-900' : ''}`} />
+                    <div className={`absolute bottom-full mb-3 left-1/2 -translate-x-1/2 w-48 bg-gray-900 text-white text-[10px] p-2 rounded shadow-lg transition-opacity z-50 font-medium leading-relaxed pointer-events-none ${mobileTooltip === 'text' ? 'opacity-100' : 'opacity-0 group-hover/tooltip:opacity-100'
+                      }`}>
                       {t.hero.inputTooltips.text}
                       <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-900"></div>
                     </div>
                   </div>
                 </button>
+
                 <button
                   onClick={() => setActiveTab('chat')}
-                  className={`flex-1 py-3 text-xs font-bold rounded-md transition-all flex items-center justify-center gap-2 group relative bg-gradient-to-r from-indigo-600 to-violet-600 text-white ${activeTab === 'chat' ? 'shadow-md ring-2 ring-indigo-200 ring-offset-2 ring-offset-gray-100' : 'opacity-80 hover:opacity-100 shadow-sm'}`}
+                  className={`flex-1 py-3 text-xs font-bold rounded-md transition-all flex items-center justify-center gap-2 group relative bg-gradient-to-r from-indigo-600 to-violet-600 text-white ${activeTab === 'chat'
+                      ? 'shadow-md ring-2 ring-indigo-500 ring-offset-2 scale-[1.02]'
+                      : 'opacity-80 hover:opacity-100 shadow-sm'
+                    }`}
                 >
                   <Sparkles size={14} className="text-yellow-300" />
                   <span>Chat Interview</span>
-                  <div className="group/tooltip relative">
-                    <Info size={12} className="text-indigo-200" />
-                    <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 w-48 bg-gray-900 text-white text-[10px] p-2 rounded shadow-lg opacity-0 group-hover/tooltip:opacity-100 pointer-events-none transition-opacity z-50 font-medium leading-relaxed">
+                  <div
+                    role="button"
+                    tabIndex={0}
+                    onClick={(e) => { e.stopPropagation(); setMobileTooltip(mobileTooltip === 'chat' ? null : 'chat'); }}
+                    className="group/tooltip relative p-1 -m-1 focus:outline-none"
+                  >
+                    <Info size={16} className={`text-indigo-200 hover:text-white transition-colors ${mobileTooltip === 'chat' ? 'text-white' : ''}`} />
+                    <div className={`absolute bottom-full mb-3 left-1/2 -translate-x-1/2 w-48 bg-gray-900 text-white text-[10px] p-2 rounded shadow-lg transition-opacity z-50 font-medium leading-relaxed pointer-events-none ${mobileTooltip === 'chat' ? 'opacity-100' : 'opacity-0 group-hover/tooltip:opacity-100'
+                      }`}>
                       {t.hero.inputTooltips.chat}
                       <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-900"></div>
                     </div>
