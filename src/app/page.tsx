@@ -313,7 +313,7 @@ export default function Home() {
                     className="group/tooltip relative p-1 -m-1 focus:outline-none"
                   >
                     <Info size={16} className={`text-gray-400 hover:text-gray-600 transition-colors ${mobileTooltip === 'pdf' ? 'text-gray-900' : ''}`} />
-                    <div className={`absolute bottom-full mb-3 left-1/2 -translate-x-1/2 w-48 bg-gray-900 text-white text-[10px] p-2 rounded shadow-lg transition-opacity z-50 font-medium leading-relaxed pointer-events-none ${mobileTooltip === 'pdf' ? 'opacity-100' : 'opacity-0 group-hover/tooltip:opacity-100'
+                    <div className={`absolute bottom-full mb-3 left-1/2 -translate-x-1/2 w-60 bg-gray-900 text-white text-xs p-3 rounded shadow-lg transition-opacity z-50 font-medium leading-relaxed pointer-events-none ${mobileTooltip === 'pdf' ? 'opacity-100' : 'opacity-0 group-hover/tooltip:opacity-100'
                       }`}>
                       {t.hero.inputTooltips.pdf}
                       <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-900"></div>
@@ -336,7 +336,7 @@ export default function Home() {
                     className="group/tooltip relative p-1 -m-1 focus:outline-none"
                   >
                     <Info size={16} className={`text-gray-400 hover:text-gray-600 transition-colors ${mobileTooltip === 'text' ? 'text-gray-900' : ''}`} />
-                    <div className={`absolute bottom-full mb-3 left-1/2 -translate-x-1/2 w-48 bg-gray-900 text-white text-[10px] p-2 rounded shadow-lg transition-opacity z-50 font-medium leading-relaxed pointer-events-none ${mobileTooltip === 'text' ? 'opacity-100' : 'opacity-0 group-hover/tooltip:opacity-100'
+                    <div className={`absolute bottom-full mb-3 left-1/2 -translate-x-1/2 w-60 bg-gray-900 text-white text-xs p-3 rounded shadow-lg transition-opacity z-50 font-medium leading-relaxed pointer-events-none ${mobileTooltip === 'text' ? 'opacity-100' : 'opacity-0 group-hover/tooltip:opacity-100'
                       }`}>
                       {t.hero.inputTooltips.text}
                       <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-900"></div>
@@ -346,12 +346,12 @@ export default function Home() {
 
                 <button
                   onClick={() => setActiveTab('chat')}
-                  className={`flex-1 py-3 text-xs font-bold rounded-md transition-all flex items-center justify-center gap-2 group relative bg-gradient-to-r from-indigo-600 to-violet-600 text-white ${activeTab === 'chat'
-                      ? 'shadow-md ring-2 ring-indigo-500 ring-offset-2 scale-[1.02]'
-                      : 'opacity-80 hover:opacity-100 shadow-sm'
+                  className={`flex-1 py-3 text-xs font-bold rounded-md transition-all flex items-center justify-center gap-2 group relative ${activeTab === 'chat'
+                      ? 'bg-white shadow-md text-gray-900 ring-1 ring-gray-200 ring-offset-1'
+                      : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
                     }`}
                 >
-                  <Sparkles size={14} className="text-yellow-300" />
+                  <Sparkles size={14} className={activeTab === 'chat' ? 'text-indigo-600' : 'text-gray-400'} />
                   <span>Chat Interview</span>
                   <div
                     role="button"
@@ -359,8 +359,8 @@ export default function Home() {
                     onClick={(e) => { e.stopPropagation(); setMobileTooltip(mobileTooltip === 'chat' ? null : 'chat'); }}
                     className="group/tooltip relative p-1 -m-1 focus:outline-none"
                   >
-                    <Info size={16} className={`text-indigo-200 hover:text-white transition-colors ${mobileTooltip === 'chat' ? 'text-white' : ''}`} />
-                    <div className={`absolute bottom-full mb-3 left-1/2 -translate-x-1/2 w-48 bg-gray-900 text-white text-[10px] p-2 rounded shadow-lg transition-opacity z-50 font-medium leading-relaxed pointer-events-none ${mobileTooltip === 'chat' ? 'opacity-100' : 'opacity-0 group-hover/tooltip:opacity-100'
+                    <Info size={16} className={`text-gray-400 hover:text-gray-600 transition-colors ${mobileTooltip === 'chat' ? 'text-gray-900' : ''}`} />
+                    <div className={`absolute bottom-full mb-3 left-1/2 -translate-x-1/2 w-60 bg-gray-900 text-white text-xs p-3 rounded shadow-lg transition-opacity z-50 font-medium leading-relaxed pointer-events-none ${mobileTooltip === 'chat' ? 'opacity-100' : 'opacity-0 group-hover/tooltip:opacity-100'
                       }`}>
                       {t.hero.inputTooltips.chat}
                       <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-900"></div>

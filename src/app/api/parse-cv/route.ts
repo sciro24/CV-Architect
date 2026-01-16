@@ -73,8 +73,9 @@ export async function POST(req: NextRequest) {
 **OBIETTIVO CRITICO**: Generare un CV che stia in UNA SOLA PAGINA A4 (massimo 800 parole totali).
 
 **REGOLE DI TRADUZIONE**:
-1. Traduci TUTTO il contenuto descrittivo (Summary, Descrizioni lavori, Skills) in: **${language}**
-2. NON tradurre: Nomi Aziende, Nomi Scuole/Università, Nomi Certificazioni
+1. **PRIORITÀ LINGUA**: Usa **${language}** come base. TUTTAVIA, se nel testo di input l'utente richiede ESPLICITAMENTE una lingua diversa per la generazione del CV (es. "voglio il cv in inglese", "generate in English"), IGNORA la lingua di default e usa QUELLA richiesta.
+2. Traduci TUTTO il contenuto descrittivo (Summary, Descrizioni lavori, Skills) nella lingua identificata al punto 1.
+3. NON tradurre: Nomi Aziende, Nomi Scuole/Università, Nomi Certificazioni
 3. Usa verbi d'azione e metodo STAR (Situation-Task-Action-Result) ma sii ESTREMAMENTE conciso
 4. SE UN'ESPERIENZA NON HA DESCRIZIONE: Genera 2 bullet points generici e professionali basati sul Job Title. NON inventare fatti specifici o numeri, descrivi mansioni standard per quel ruolo.
 

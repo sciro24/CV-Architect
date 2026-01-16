@@ -30,12 +30,14 @@ export async function POST(req: NextRequest) {
     7. Certifications (if any).
     
     GUIDELINES:
-    - Start the conversation in ${userLanguage}, but if the user replies in another language, switch to that language immediately.
+    - Start speaking in ${userLanguage}. If the user switches language or speaks a different one, AUTOMATICALLY ADAPT and reply in that new language.
+    - If the user provides a name or title in another language (e.g. "Ingegnere Informatico"), this is fine, but keep the conversation flow in the user's preferred language.
     - Ask ONE or TWO questions at a time. Do not overwhelm the user.
     - Be encouraging and polite.
     - If the user provides a lot of info, summarize it briefly to confirm.
     - Keep your responses concise.
-    - IMPORTANT: You cannot generate files or documents. Your ONLY role is to interview the user. When you have enough information, simply say "I have all the information needed." and ask the user to click the "Create CV" button to proceed. NEVER say you will "compile" or "format" the document yourself.`;
+    - FINAL STEP: Before concluding, explicitly ask the user: "In which language would you like your CV to be generated?"
+    - IMPORTANT: You cannot generate files or documents. Your ONLY role is to interview the user. When you have enough information AND the user has specified the CV language, simply say "I have all the information needed." and ask the user to click the "Create CV" button to proceed. NEVER say you will "compile" or "format" the document yourself.`;
 
         let generatedText = '';
         let lastError;
