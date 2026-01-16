@@ -305,7 +305,7 @@ export default function Home() {
             <div className="bg-white p-6 rounded-2xl shadow-xl shadow-gray-200/50 max-w-2xl mx-auto border border-gray-100">
 
               {/* Tabs */}
-              <div className="flex flex-row p-1 bg-gray-100 rounded-lg mb-6 gap-1">
+              <div className="flex flex-col sm:flex-row p-1 bg-gray-100 rounded-lg mb-6 gap-1">
                 <button
                   onClick={() => setActiveTab('pdf')}
                   className={`flex-1 py-3 text-xs font-bold rounded-md transition-all flex items-center justify-center gap-2 group relative ${activeTab === 'pdf'
@@ -657,7 +657,7 @@ export default function Home() {
 
       <main className="flex-1 flex flex-col lg:flex-row overflow-hidden bg-[#FAFAFA]">
         {/* Left Sidebar: Controls */}
-        <aside className="w-full lg:w-[350px] bg-white border-r border-gray-200 flex flex-col z-20 h-full">
+        <aside className="w-full lg:w-[350px] bg-white border-r border-gray-200 flex flex-col z-20 lg:h-full overflow-y-auto lg:overflow-y-visible">
           <div className="p-5 overflow-y-auto flex-1 custom-scrollbar">
             {/* Upload / Re-upload Section */}
             <div className="mb-8">
@@ -904,14 +904,14 @@ export default function Home() {
         </aside>
 
         {/* Right Area: Preview */}
-        <div className="flex-1 bg-[#F5F5F7] relative h-full overflow-hidden flex flex-col p-4">
+        <div className="flex-1 bg-[#F5F5F7] relative min-h-[600px] lg:h-full overflow-hidden flex flex-col p-4">
           {/* Grid Background in Preview Area for technical feel */}
           <div className="absolute inset-0 z-0 pointer-events-none opacity-30" style={{
             backgroundImage: 'radial-gradient(#C5C7CB 1px, transparent 1px)',
             backgroundSize: '20px 20px'
           }}></div>
 
-          <div className="bg-white shadow-[0_4px_30px_rgba(0,0,0,0.08)] h-full overflow-hidden w-full max-w-[210mm] mx-auto z-10">
+          <div className="bg-white shadow-[0_4px_30px_rgba(0,0,0,0.08)] min-h-[500px] lg:h-full overflow-auto w-full max-w-[210mm] mx-auto z-10">
             {isAnalyzing ? (
               <div className="h-full w-full flex flex-col items-center justify-center bg-white p-10">
                 <div className="w-8 h-8 border-2 border-gray-900 border-t-transparent rounded-full animate-spin mb-4"></div>
